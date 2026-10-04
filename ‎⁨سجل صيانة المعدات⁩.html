@@ -1,0 +1,718 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>سجل صيانة المعدات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@500;600;700&display=swap">
+<style>
+/* Layout: mobile-first field tool — sticky header, single column of panels, fixed bottom tab bar with a raised scan button; detail opens as a bottom sheet. */
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --sunk:#E4E8ED; --ink:#14202E; --muted:#5A6777; --line:#D6DCE3;
+  --primary:#0E4A5A; --primary-ink:#FFFFFF; --tag:#F0A81C; --tag-ink:#2A1C00;
+  --ok:#1E7A4C; --ok-bg:#E2F2E9; --warn:#9A6200; --warn-bg:#FBF0D9; --bad:#B4302A; --bad-bg:#F9E3E1; --none:#5A6777; --none-bg:#E6EAEE;
+  --f-display:"Readex Pro","IBM Plex Sans Arabic",Tahoma,sans-serif;
+  --f-body:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E151C; --surface:#16202A; --sunk:#1D2935; --ink:#E5EBF1; --muted:#93A1B0; --line:#273443;
+  --primary:#5DB2C6; --primary-ink:#06222A; --tag:#F2B640; --tag-ink:#2A1C00;
+  --ok:#5CCB91; --ok-bg:#15301F; --warn:#F0BE5A; --warn-bg:#33260D; --bad:#F08079; --bad-bg:#3A1A18; --none:#93A1B0; --none-bg:#222E3A;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E151C; --surface:#16202A; --sunk:#1D2935; --ink:#E5EBF1; --muted:#93A1B0; --line:#273443;
+  --primary:#5DB2C6; --primary-ink:#06222A; --tag:#F2B640; --tag-ink:#2A1C00;
+  --ok:#5CCB91; --ok-bg:#15301F; --warn:#F0BE5A; --warn-bg:#33260D; --bad:#F08079; --bad-bg:#3A1A18; --none:#93A1B0; --none-bg:#222E3A;
+  color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+#app{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:0 110px}
+*{box-sizing:border-box}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;font-weight:600}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:14px 10px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-tag{width:30px;height:20px;background:var(--tag);border-radius:4px 10px 10px 4px;position:relative;flex:none}
+.brand-tag::after{content:"";position:absolute;right:5px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--bg)}
+.brand h1{font-size:18px}
+.today{font-size:13px;color:var(--muted)}
+
+.banner{background:var(--warn-bg);color:var(--warn);border-radius:var(--r);padding:10px 14px;font-size:14px;margin-bottom:14px}
+.section{display:grid;gap:10px;margin-bottom:22px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.sec-head h2{font-size:16px}
+.label{font-size:12px;letter-spacing:.04em;color:var(--muted);font-weight:600}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+@media (max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:grid;gap:2px;text-align:start;cursor:pointer}
+.stat b{font-family:var(--f-display);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat span{font-size:13px;color:var(--muted)}
+.stat.alert b{color:var(--bad)}
+.stat.warn b{color:var(--warn)}
+
+.list{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--line);width:100%;background:none;border-inline:0;border-bottom:0;text-align:start;cursor:pointer}
+.row:first-child{border-top:0}
+.row:hover{background:var(--sunk)}
+.row .main{flex:1;min-width:0;display:grid;gap:1px}
+.row .t{font-weight:600;overflow-wrap:anywhere}
+.row .s{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.row .end{display:grid;justify-items:end;gap:4px;flex:none}
+.empty{padding:22px 16px;text-align:center;color:var(--muted);font-size:14px}
+
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-ok{color:var(--ok);background:var(--ok-bg)}
+.st-soon{color:var(--warn);background:var(--warn-bg)}
+.st-over,.st-fault{color:var(--bad);background:var(--bad-bg)}
+.st-never{color:var(--none);background:var(--none-bg)}
+.type{font-size:12px;font-weight:600;padding:2px 8px;border-radius:6px;border:1px solid var(--line);white-space:nowrap}
+.type.t-fault{border-color:var(--bad);color:var(--bad)}
+.type.t-pm{border-color:var(--primary);color:var(--primary)}
+.verif{font-size:12px;color:var(--ok);font-weight:600;white-space:nowrap}
+.verif.manual{color:var(--warn)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-weight:600;cursor:pointer;text-align:center}
+.btn.primary{background:var(--primary);color:var(--primary-ink);border-color:var(--primary)}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn.block{width:100%}
+.btn:disabled{opacity:.5;cursor:default}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px}
+.btn-row .btn{flex:1 1 140px}
+.link{background:none;border:0;color:var(--primary);font-weight:600;cursor:pointer;padding:4px 0}
+
+.field{display:grid;gap:5px}
+.field > span{font-size:13px;font-weight:600;color:var(--muted)}
+input[type=text],input[type=number],input[type=date],input[type=month],select,textarea{width:100%;min-height:44px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+textarea{min-height:90px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:480px){.grid2{grid-template-columns:1fr}}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px}
+.toolbar > *{flex:1 1 150px;min-width:0}
+
+.seg{display:flex;background:var(--sunk);border-radius:10px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg button{flex:1 1 auto;border:0;background:none;border-radius:8px;padding:8px 10px;font-weight:600;font-size:14px;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed=true]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg.fault button[aria-pressed=true][data-v=fault]{color:var(--bad)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--primary);color:var(--primary-ink);border-color:var(--primary)}
+
+/* inspection tag — equipment identity */
+.tagcard{display:flex;gap:14px;align-items:stretch;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;position:relative}
+.tagstrip{width:62px;flex:none;background:var(--tag);color:var(--tag-ink);border-radius:8px 8px 22px 22px;display:grid;place-items:center;padding:22px 4px 10px;position:relative}
+.tagstrip::before{content:"";position:absolute;top:8px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 2px rgba(0,0,0,.18)}
+.tagstrip .mono{writing-mode:vertical-rl;font-size:15px;font-weight:600;direction:ltr}
+.tagbody{flex:1;min-width:0;display:grid;gap:4px;align-content:start}
+.tagbody h3{font-size:19px;overflow-wrap:anywhere}
+
+.kv{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+@media (max-width:520px){.kv{grid-template-columns:repeat(2,1fr)}}
+.kv div{background:var(--surface);padding:10px 12px;display:grid;gap:2px}
+.kv b{font-family:var(--f-display);font-size:18px;font-weight:600;font-variant-numeric:tabular-nums}
+.kv span{font-size:12px;color:var(--muted)}
+
+.log{padding:12px 14px;border-top:1px solid var(--line);display:grid;gap:6px}
+.log:first-child{border-top:0}
+.log .h{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.log .when{font-size:13px;color:var(--muted)}
+.log p{margin:0;overflow-wrap:anywhere}
+.parts{font-size:13px;background:var(--sunk);border-radius:8px;padding:6px 10px}
+
+/* scan */
+.scanpad{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px 16px;display:grid;gap:14px;justify-items:center;text-align:center}
+.scanbtn{width:min(260px,100%);aspect-ratio:1;max-width:100%;border-radius:24px;border:2px dashed var(--primary);display:grid;place-items:center;align-content:center;gap:10px;cursor:pointer;background:var(--sunk);color:var(--primary);font-family:var(--f-display);font-weight:600;font-size:18px;position:relative}
+.scanbtn svg{width:64px;height:64px}
+.scanbtn input,.filepick input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.filepick{position:relative;display:inline-block}
+.scanmsg{min-height:22px;font-size:14px}
+.scanmsg.err{color:var(--bad)}
+
+/* bottom nav */
+nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.tabs .in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);align-items:end}
+nav.tabs button{background:none;border:0;padding:8px 2px 9px;display:grid;justify-items:center;gap:2px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button[aria-current=page]{color:var(--primary)}
+nav.tabs .scan-tab .disc{width:54px;height:54px;border-radius:50%;background:var(--primary);color:var(--primary-ink);display:grid;place-items:center;margin-top:-22px;box-shadow:0 4px 12px rgba(0,0,0,.2);border:4px solid var(--surface)}
+nav.tabs .scan-tab .disc svg{width:26px;height:26px}
+
+/* sheet */
+#sheet{position:fixed;inset:0;z-index:20;background:rgba(8,14,20,.5);display:flex;align-items:flex-end;justify-content:center}
+#sheet .panel{background:var(--bg);width:100%;max-width:760px;max-height:92%;overflow-y:auto;border-radius:18px 18px 0 0;padding-inline:16px;padding-block:8px calc(24px + env(safe-area-inset-bottom,0px))}
+#sheet .grab{display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--bg);padding-block:8px;z-index:1}
+#sheet .grab h2{font-size:17px}
+.x{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:20px;line-height:1}
+.stack{display:grid;gap:14px}
+
+.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 12px;text-align:start;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;color:var(--muted);font-weight:600;background:var(--sunk)}
+td.wrap{white-space:normal;min-width:180px}
+tr:last-child td{border-bottom:0}
+.bar{height:8px;border-radius:4px;background:var(--primary);min-width:2px}
+
+.qrgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.qr{background:#fff;color:#111;border-radius:10px;padding:10px;display:grid;justify-items:center;gap:4px;text-align:center;border:1px solid var(--line)}
+.qr svg{width:100%;max-width:130px;height:auto}
+.qr .mono{font-size:14px;font-weight:600}
+.qr .n{font-size:12px}
+
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;max-width:calc(100% - 32px);text-align:center}
+.confirm{background:var(--bad-bg);color:var(--bad);border-radius:10px;padding:10px 12px;display:grid;gap:8px;font-size:14px}
+@media (prefers-reduced-motion:no-preference){#sheet .panel{animation:up .22s ease-out}@keyframes up{from{transform:translateY(30px);opacity:.6}}}
+</style>
+
+<div id="app" dir="rtl" lang="ar">
+  <header class="top">
+    <div class="brand"><span class="brand-tag" aria-hidden="true"></span><h1>سجل الصيانة</h1></div>
+    <div class="today" id="today"></div>
+  </header>
+  <div id="banner"></div>
+  <main id="view"></main>
+
+  <nav class="tabs" aria-label="الأقسام"><div class="in">
+    <button data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg>الرئيسية</button>
+    <button data-tab="equip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>الأجهزة</button>
+    <button data-tab="scan" class="scan-tab"><span class="disc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3M8 12h8"/></svg></span>مسح</button>
+    <button data-tab="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"/><path d="M9 13h6M9 17h6M9 9h3"/></svg>التقارير</button>
+    <button data-tab="admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21v-2a4 4 0 014-4h4M9 11a4 4 0 100-8 4 4 0 000 8zM16 17h6M19 14v6"/></svg>الإدارة</button>
+  </div></nav>
+
+  <div id="sheet" hidden><div class="panel" role="dialog" aria-modal="true"><div class="grab"><h2 id="sheet-title"></h2><button class="x" data-act="close" aria-label="إغلاق">×</button></div><div id="sheet-body" class="stack"></div></div></div>
+  <div id="toast" hidden></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const fmtD=x=>{const d=new Date(x);return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`};
+const fmtT=x=>{const d=new Date(x);return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
+const DAY=864e5;
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+const TYPES={pm:'صيانة دورية',repair:'إصلاح',inspect:'فحص',fault:'بلاغ عطل'};
+const TASKS=['تنظيف','تشحيم','فحص كهرباء','تغيير فلتر','شد براغي','فحص تسريب','معايرة','تغيير زيت','فحص ضغط','فحص حرارة'];
+const COND={ok:'يعمل',warn:'يعمل بملاحظات',down:'متوقف'};
+const ST={ok:'سليم',soon:'قريب الموعد',over:'متأخر',never:'لم تُسجل صيانة',fault:'عطل مفتوح'};
+
+let db=null,user=null,downloads=null,myId=null,canWrite=true,live=false;
+const now0=new Date();
+const S={clients:new Map(),equip:new Map(),logs:[],byEq:new Map(),settings:{},names:{},view:'home',
+  loaded:{c:false,e:false,l:false},eqClient:'',eqSearch:'',eqStatus:'',sheet:null,
+  rep:{mode:'month',day:ymd(now0),month:`${now0.getFullYear()}-${pad(now0.getMonth()+1)}`,from:ymd(new Date(now0-30*DAY)),to:ymd(now0),client:'',tech:''},
+  stickClient:''};
+
+$('#today').textContent=new Intl.DateTimeFormat('ar',{weekday:'long',day:'numeric',month:'long'}).format(now0);
+
+function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,2600)}
+
+/* ---------- derived data ---------- */
+function rebuild(){
+  S.byEq=new Map();
+  for(const l of S.logs){(S.byEq.get(l.equipmentId)||S.byEq.set(l.equipmentId,[]).get(l.equipmentId)).push(l)}
+}
+function eqStatus(e){
+  const ls=S.byEq.get(e.id)||[];
+  const last=ls[0]||null;
+  const openFault=ls.some(l=>l.type==='fault'&&l.open);
+  const interval=Number(e.intervalDays)||30;
+  let st='never',due=null,diff=null;
+  if(last){due=new Date(new Date(last.at).getTime()+interval*DAY);diff=Math.ceil((due-Date.now())/DAY);st=diff<0?'over':diff<=5?'soon':'ok'}
+  return {st,last,due,diff,openFault,interval,count2y:ls.filter(l=>Date.now()-new Date(l.at)<730*DAY).length,total:ls.length};
+}
+function chip(st){return `<span class="chip st-${st}">${ST[st]}</span>`}
+function clientName(id){return S.clients.get(id)?.name||'بدون عميل'}
+function techKey(l){return l.techId||('n:'+(l.techName||'?'))}
+function techName(l){return (l.techId&&S.names[l.techId])||l.techName||'فني'}
+function verif(l){return l.method==='manual'?'<span class="verif manual">إدخال يدوي</span>':'<span class="verif">تم بالمسح</span>'}
+function sortedEquip(list){return list.sort((a,b)=>a.id.localeCompare(b.id))}
+
+/* ---------- views ---------- */
+function render(){
+  document.querySelectorAll('nav.tabs button').forEach(b=>{if(b.dataset.tab===S.view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+  const v=$('#view');
+  const fn={home:vHome,scan:vScan,equip:vEquip,reports:vReports,admin:vAdmin}[S.view];
+  v.innerHTML=fn();
+  if(S.view==='admin')mountStickers();
+}
+function loadingOrEmpty(){
+  if(!live)return '';
+  if(!(S.loaded.c&&S.loaded.e))return '<div class="empty">جاري تحميل البيانات…</div>';
+  return '';
+}
+
+function vHome(){
+  const l0=loadingOrEmpty();if(l0)return l0;
+  const eqs=[...S.equip.values()];
+  if(!eqs.length)return `<div class="section"><div class="list"><div class="empty">
+    <p style="margin:0 0 6px;font-weight:600;color:var(--ink)">لا توجد أجهزة بعد</p>
+    أضف أول عميل ثم أجهزته من قسم <b>الإدارة</b>، واطبع ستيكرات QR وألصقها على الأجهزة.</div></div>
+    <button class="btn primary block" data-tab="admin">ابدأ من الإدارة</button></div>`;
+  const today=ymd(new Date()), mStart=new Date();mStart.setDate(1);mStart.setHours(0,0,0,0);
+  const todayLogs=S.logs.filter(l=>ymd(new Date(l.at))===today);
+  const monthLogs=S.logs.filter(l=>new Date(l.at)>=mStart);
+  const stats=eqs.map(e=>({e,s:eqStatus(e)}));
+  const due=stats.filter(x=>x.s.st==='over'||x.s.st==='never'||x.s.st==='soon')
+    .sort((a,b)=>{const r={over:0,never:1,soon:2};return r[a.s.st]-r[b.s.st]||(a.s.diff??0)-(b.s.diff??0)});
+  const faults=S.logs.filter(l=>l.type==='fault'&&l.open);
+  const overN=stats.filter(x=>x.s.st==='over'||x.s.st==='never').length;
+  return `
+  <div class="stats">
+    <button class="stat" data-tab="reports" data-rep="day"><b>${todayLogs.length}</b><span>أعمال اليوم</span></button>
+    <button class="stat ${overN?'alert':''}" data-act="filter-status" data-st="due"><b>${overN}</b><span>أجهزة متأخرة أو فائتة</span></button>
+    <button class="stat ${faults.length?'warn':''}" data-act="goto-faults"><b>${faults.length}</b><span>أعطال مفتوحة</span></button>
+    <button class="stat" data-tab="reports" data-rep="month"><b>${monthLogs.length}</b><span>أعمال هذا الشهر</span></button>
+  </div>
+  <div class="section"><div class="sec-head"><h2>تحتاج زيارة</h2><span class="small muted num">${due.length} جهاز</span></div>
+    <div class="list">${due.length?due.slice(0,8).map(x=>eqRow(x.e,x.s)).join(''):'<div class="empty">كل الأجهزة ضمن موعد الصيانة</div>'}</div>
+    ${due.length>8?`<button class="link" data-act="filter-status" data-st="due">عرض الكل (${due.length})</button>`:''}</div>
+  <div class="section" id="faults"><div class="sec-head"><h2>أعطال مفتوحة وقطع غيار</h2></div>
+    <div class="list">${faults.length?faults.map(faultRow).join(''):'<div class="empty">لا توجد أعطال مفتوحة</div>'}</div></div>
+  <div class="section"><div class="sec-head"><h2>آخر الأعمال</h2></div>
+    <div class="list">${S.logs.length?S.logs.slice(0,8).map(logRow).join(''):'<div class="empty">لم تُسجل أعمال بعد. امسح ستيكر أي جهاز لتسجيل أول عمل.</div>'}</div></div>`;
+}
+function eqRow(e,s){s=s||eqStatus(e);
+  const last=s.last?`آخر زيارة ${fmtD(s.last.at)}`:'لا توجد زيارات';
+  return `<button class="row" data-act="open-eq" data-id="${esc(e.id)}"><div class="main"><span class="t">${esc(e.name)}</span>
+  <span class="s"><span class="mono">${esc(e.id)}</span> · ${esc(clientName(e.clientId))}${e.location?' · '+esc(e.location):''}</span></div>
+  <div class="end">${s.openFault?chip('fault'):chip(s.st)}<span class="small muted num">${last}</span></div></button>`}
+function logRow(l){const e=S.equip.get(l.equipmentId);
+  return `<button class="row" data-act="open-eq" data-id="${esc(l.equipmentId)}"><div class="main"><span class="t">${esc(e?.name||l.equipmentId)}</span>
+  <span class="s">${esc(techName(l))} · ${esc(l.notes||(l.tasks||[]).join('، ')||'—')}</span></div>
+  <div class="end"><span class="type ${l.type==='fault'?'t-fault':l.type==='pm'?'t-pm':''}">${TYPES[l.type]||l.type}</span><span class="small muted num">${fmtD(l.at)} ${fmtT(l.at)}</span></div></button>`}
+function faultRow(l){const e=S.equip.get(l.equipmentId);
+  const p=(l.parts||[]).filter(x=>x.name).map(x=>`${esc(x.name)} ×${esc(x.qty||1)}`).join('، ');
+  return `<button class="row" data-act="open-eq" data-id="${esc(l.equipmentId)}"><div class="main"><span class="t">${esc(e?.name||l.equipmentId)} <span class="mono small muted">${esc(l.equipmentId)}</span></span>
+  <span class="s">${esc(l.notes||'')}${p?' · قطع: '+p:''}</span></div><div class="end">${chip('fault')}<span class="small muted num">${fmtD(l.at)}</span></div></button>`}
+
+function vScan(){
+  const opts=sortedEquip([...S.equip.values()]).map(e=>`<option value="${esc(e.id)}">${esc(e.name)} — ${esc(clientName(e.clientId))}</option>`).join('');
+  return `<div class="section">
+  <div class="scanpad">
+    <label class="scanbtn" for="scan-cam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><rect x="8" y="8" width="3" height="3"/><rect x="13" y="8" width="3" height="3"/><rect x="8" y="13" width="3" height="3"/><path d="M13 13h3v3"/></svg>صوّر ستيكر الجهاز
+      <input id="scan-cam" type="file" accept="image/*" capture="environment" aria-label="تصوير الستيكر"></label>
+    <div id="scan-msg" class="scanmsg muted">قرّب الكاميرا من رمز QR حتى يكون واضحاً، ثم التقط الصورة</div>
+    <div class="filepick"><span class="link">أو اختر صورة من المعرض</span><input id="scan-file" type="file" accept="image/*" aria-label="اختيار صورة"></div>
+  </div></div>
+  <div class="section"><div class="sec-head"><h2>إدخال يدوي</h2><span class="small muted">يُسجَّل كإدخال يدوي غير موثّق</span></div>
+    <div class="toolbar"><select id="manual-eq"><option value="">اختر الجهاز…</option>${opts}</select>
+    <button class="btn" data-act="manual-open">فتح الجهاز</button></div></div>
+  <p class="small muted">إذا كانت الستيكرات مطبوعة مع رابط الصفحة، يكفي توجيه كاميرا الجوال العادية للرمز فتفتح صفحة الجهاز مباشرة.</p>`;
+}
+
+function vEquip(){
+  const l0=loadingOrEmpty();if(l0)return l0;
+  const q=S.eqSearch.trim().toLowerCase();
+  let rows=sortedEquip([...S.equip.values()]).map(e=>({e,s:eqStatus(e)}))
+    .filter(x=>!S.eqClient||x.e.clientId===S.eqClient)
+    .filter(x=>!q||[x.e.id,x.e.name,x.e.location,x.e.category].join(' ').toLowerCase().includes(q))
+    .filter(x=>!S.eqStatus||(S.eqStatus==='due'?['over','never','soon'].includes(x.s.st):S.eqStatus==='fault'?x.s.openFault:x.s.st===S.eqStatus));
+  const cOpts=[...S.clients.values()].map(c=>`<option value="${esc(c.id)}" ${S.eqClient===c.id?'selected':''}>${esc(c.name)}</option>`).join('');
+  const sOpts=[['','كل الحالات'],['due','تحتاج زيارة'],['over','متأخر'],['never','لم تُسجل صيانة'],['soon','قريب الموعد'],['ok','سليم'],['fault','عطل مفتوح']]
+    .map(([v,t])=>`<option value="${v}" ${S.eqStatus===v?'selected':''}>${t}</option>`).join('');
+  return `<div class="section">
+    <div class="sec-head"><h2>الأجهزة</h2>${canWrite?'<button class="btn primary" data-act="new-eq">+ جهاز</button>':''}</div>
+    <div class="toolbar">
+      <input type="text" id="eq-search" placeholder="بحث بالاسم أو الرمز أو الموقع" value="${esc(S.eqSearch)}">
+      <select id="eq-client"><option value="">كل العملاء</option>${cOpts}</select>
+      <select id="eq-status">${sOpts}</select>
+    </div>
+    <div class="small muted num">${rows.length} من ${S.equip.size} جهاز</div>
+    <div class="list">${rows.length?rows.map(x=>eqRow(x.e,x.s)).join(''):'<div class="empty">لا توجد أجهزة مطابقة</div>'}</div>
+  </div>`;
+}
+
+/* ---------- reports ---------- */
+function period(){const r=S.rep;let a,b,label;
+  if(r.mode==='day'){a=new Date(r.day+'T00:00');b=new Date(a.getTime());b.setDate(b.getDate()+1);label='التقرير اليومي — '+fmtD(a)}
+  else if(r.mode==='month'){const [y,m]=r.month.split('-').map(Number);a=new Date(y,m-1,1);b=new Date(y,m,1);label=`التقرير الشهري — ${pad(m)}/${y}`}
+  else{a=new Date(r.from+'T00:00');b=new Date(r.to+'T00:00');b.setDate(b.getDate()+1);label=`تقرير الفترة ${fmtD(a)} – ${fmtD(new Date(b-DAY))}`}
+  return {a,b,label}}
+function computeReport(){
+  const {a,b,label}=period();const r=S.rep;
+  const eqs=sortedEquip([...S.equip.values()].filter(e=>!r.client||e.clientId===r.client));
+  const logs=S.logs.filter(l=>{const t=new Date(l.at);return t>=a&&t<b&&(!r.client||l.clientId===r.client)&&(!r.tech||techKey(l)===r.tech)});
+  const visited=new Set(logs.map(l=>l.equipmentId));
+  const missed=eqs.filter(e=>!visited.has(e.id));
+  const byTech={};logs.forEach(l=>{const k=techKey(l);const t=byTech[k]||(byTech[k]={name:techName(l),n:0,eq:new Set(),scan:0});t.n++;t.eq.add(l.equipmentId);if(l.method!=='manual')t.scan++});
+  const byType={};logs.forEach(l=>byType[l.type]=(byType[l.type]||0)+1);
+  const parts={};logs.forEach(l=>(l.parts||[]).forEach(p=>{const k=(p.name||'').trim();if(!k)return;const o=parts[k]||(parts[k]={name:k,qty:0,eqs:new Set(),open:false});o.qty+=Number(p.qty)||1;o.eqs.add(l.equipmentId);if(l.open)o.open=true}));
+  return {a,b,label,eqs,logs,visited,missed,byTech:Object.values(byTech).sort((x,y)=>y.n-x.n),byType,parts:Object.values(parts).sort((x,y)=>y.qty-x.qty),
+    openFaults:logs.filter(l=>l.type==='fault'&&l.open),clientLabel:r.client?clientName(r.client):'كل العملاء'}
+}
+function vReports(){
+  const l0=loadingOrEmpty();if(l0)return l0;
+  const r=S.rep,R=computeReport();
+  const cOpts=[...S.clients.values()].map(c=>`<option value="${esc(c.id)}" ${r.client===c.id?'selected':''}>${esc(c.name)}</option>`).join('');
+  const techs={};S.logs.forEach(l=>techs[techKey(l)]=techName(l));
+  const tOpts=Object.entries(techs).map(([k,n])=>`<option value="${esc(k)}" ${r.tech===k?'selected':''}>${esc(n)}</option>`).join('');
+  const dateCtl=r.mode==='day'?`<label class="field"><span>اليوم</span><input type="date" id="rep-day" value="${r.day}"></label>`
+    :r.mode==='month'?`<label class="field"><span>الشهر</span><input type="month" id="rep-month" value="${r.month}"></label>`
+    :`<div class="grid2"><label class="field"><span>من</span><input type="date" id="rep-from" value="${r.from}"></label><label class="field"><span>إلى</span><input type="date" id="rep-to" value="${r.to}"></label></div>`;
+  const maxT=Math.max(1,...Object.values(R.byType));
+  const cover=R.eqs.length?Math.round(R.visited.size/R.eqs.length*100):0;
+  return `<div class="section">
+    <div class="seg" role="group" aria-label="نوع التقرير">
+      <button data-act="rep-mode" data-v="day" aria-pressed="${r.mode==='day'}">يومي</button>
+      <button data-act="rep-mode" data-v="month" aria-pressed="${r.mode==='month'}">شهري</button>
+      <button data-act="rep-mode" data-v="range" aria-pressed="${r.mode==='range'}">فترة مخصصة</button></div>
+    ${dateCtl}
+    <div class="grid2"><label class="field"><span>العميل</span><select id="rep-client"><option value="">كل العملاء</option>${cOpts}</select></label>
+    <label class="field"><span>الفني</span><select id="rep-tech"><option value="">كل الفنيين</option>${tOpts}</select></label></div>
+  </div>
+  <div class="section"><div class="sec-head"><h2>${esc(R.label)}</h2><span class="small muted">${esc(R.clientLabel)}</span></div>
+  <div class="kv"><div><b>${R.logs.length}</b><span>إجمالي الأعمال</span></div><div><b>${R.visited.size}/${R.eqs.length}</b><span>أجهزة تمت زيارتها</span></div>
+    <div><b style="color:${R.missed.length?'var(--bad)':'var(--ok)'}">${R.missed.length}</b><span>أجهزة لم تتم زيارتها</span></div><div><b>${cover}%</b><span>نسبة التغطية</span></div></div>
+  <div class="btn-row"><button class="btn primary" data-act="dl-report">تنزيل التقرير للطباعة</button><button class="btn" data-act="dl-csv">Excel (CSV)</button></div></div>
+
+  <div class="section"><h2 style="font-size:16px">حسب نوع العمل</h2>
+    <div class="list" style="padding:6px 0">${Object.keys(TYPES).map(k=>`<div class="row" style="cursor:default"><span style="width:92px;flex:none" class="small">${TYPES[k]}</span><div style="flex:1;min-width:0"><div class="bar" style="width:${(R.byType[k]||0)/maxT*100}%;${k==='fault'?'background:var(--bad)':''}"></div></div><b class="num" style="width:32px;text-align:end">${R.byType[k]||0}</b></div>`).join('')}</div></div>
+
+  <div class="section"><h2 style="font-size:16px">أعمال الفنيين</h2>
+    ${R.byTech.length?`<div class="table-wrap"><table><thead><tr><th>الفني</th><th>الأعمال</th><th>الأجهزة</th><th>بالمسح</th></tr></thead><tbody>
+    ${R.byTech.map(t=>`<tr><td>${esc(t.name)}</td><td class="num">${t.n}</td><td class="num">${t.eq.size}</td><td class="num">${t.scan}/${t.n}</td></tr>`).join('')}</tbody></table></div>`:'<div class="list"><div class="empty">لا أعمال في هذه الفترة</div></div>'}</div>
+
+  <div class="section"><div class="sec-head"><h2 style="font-size:16px">أجهزة لم تمر عليها الصيانة</h2><span class="small muted num">${R.missed.length}</span></div>
+    <div class="list">${R.missed.length?R.missed.map(e=>eqRow(e)).join(''):'<div class="empty">كل الأجهزة تمت زيارتها في هذه الفترة</div>'}</div></div>
+
+  <div class="section"><div class="sec-head"><h2 style="font-size:16px">قطع الغيار المطلوبة</h2>${R.parts.length?'<button class="link" data-act="dl-parts">تنزيل القائمة</button>':''}</div>
+    ${R.parts.length?`<div class="table-wrap"><table><thead><tr><th>القطعة</th><th>الكمية</th><th>الأجهزة</th><th>الحالة</th></tr></thead><tbody>
+    ${R.parts.map(p=>`<tr><td>${esc(p.name)}</td><td class="num">${p.qty}</td><td class="mono small">${[...p.eqs].map(esc).join(' ')}</td><td>${p.open?chip('fault'):'<span class="small muted">تم</span>'}</td></tr>`).join('')}</tbody></table></div>`:'<div class="list"><div class="empty">لا توجد قطع غيار مسجلة في هذه الفترة</div></div>'}</div>
+
+  <div class="section"><h2 style="font-size:16px">تفاصيل الأعمال</h2>
+    ${R.logs.length?`<div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الجهاز</th><th>النوع</th><th>العمل</th><th>الفني</th><th>التوثيق</th></tr></thead><tbody>
+    ${R.logs.map(l=>{const e=S.equip.get(l.equipmentId);return `<tr><td class="num">${fmtD(l.at)} ${fmtT(l.at)}</td><td>${esc(e?.name||'')} <span class="mono small muted">${esc(l.equipmentId)}</span></td><td>${TYPES[l.type]||''}</td><td class="wrap">${esc([...(l.tasks||[]),l.notes].filter(Boolean).join(' — '))}</td><td>${esc(techName(l))}</td><td>${verif(l)}</td></tr>`}).join('')}
+    </tbody></table></div>`:'<div class="list"><div class="empty">لا أعمال في هذه الفترة</div></div>'}</div>`;
+}
+
+/* ---------- admin ---------- */
+function vAdmin(){
+  const cl=[...S.clients.values()].sort((a,b)=>(a.name||'').localeCompare(b.name||'','ar'));
+  const counts={};S.equip.forEach(e=>counts[e.clientId]=(counts[e.clientId]||0)+1);
+  const demo=[...S.equip.values()].some(e=>e.demo)||cl.some(c=>c.demo)||S.logs.some(l=>l.demo);
+  if(!S.stickClient&&cl[0])S.stickClient=cl[0].id;
+  return `
+  ${!canWrite?'<div class="banner">لديك صلاحية عرض فقط. تستطيع مشاهدة السجلات والتقارير وتنزيلها.</div>':''}
+  <div class="section"><div class="sec-head"><h2>العملاء والمواقع</h2>${canWrite?'<button class="btn primary" data-act="new-client">+ عميل</button>':''}</div>
+    <div class="list">${cl.length?cl.map(c=>`<button class="row" data-act="edit-client" data-id="${esc(c.id)}"><div class="main"><span class="t">${esc(c.name)}</span><span class="s">${esc(c.contact||'')}${c.address?' · '+esc(c.address):''}</span></div><div class="end"><span class="small muted num">${counts[c.id]||0} جهاز</span></div></button>`).join(''):'<div class="empty">أضف أول عميل (مصنع، شركة، موقع)</div>'}</div></div>
+
+  <div class="section"><div class="sec-head"><h2>ستيكرات QR</h2></div>
+    <div class="toolbar"><select id="stick-client">${cl.map(c=>`<option value="${esc(c.id)}" ${S.stickClient===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select>
+    <button class="btn primary" data-act="dl-stickers" ${cl.length?'':'disabled'}>تنزيل ورقة الستيكرات</button></div>
+    <div id="stick-prev" class="qrgrid"></div>
+    <p class="small muted" style="margin:0">ورقة A4 جاهزة للطباعة على ورق ستيكر، ١٢ ستيكر في الصفحة. يُفضَّل تغليفها بلاصق شفاف في المواقع الحارة أو الرطبة.</p></div>
+
+  <div class="section"><div class="sec-head"><h2>رابط الصفحة في الستيكر</h2></div>
+    <label class="field"><span>الصق رابط هذه الصفحة (من زر المشاركة) ليُطبع داخل رمز QR</span>
+    <input type="text" id="base-url" dir="ltr" placeholder="https://claude.ai/…" value="${esc(S.settings.baseUrl||'')}" ${canWrite?'':'disabled'}></label>
+    ${canWrite?'<button class="btn" data-act="save-url">حفظ الرابط</button>':''}
+    <p class="small muted" style="margin:0">بدون رابط يعمل المسح من داخل الصفحة فقط. مع الرابط تفتح كاميرا الجوال العادية صفحة الجهاز مباشرة.</p></div>
+
+  <div class="section"><div class="sec-head"><h2>الفني</h2></div>
+    <label class="field"><span>اسمك كما يظهر في التقارير (على هذا الجهاز)</span><input type="text" id="tech-name" value="${esc(store.get('techName')||'')}"></label></div>
+
+  ${demo&&canWrite?`<div class="section"><div class="sec-head"><h2>البيانات التجريبية</h2></div>
+    <p class="small muted" style="margin:0">العميل والأجهزة المعلّمة بـ (مثال) للتجربة فقط.</p>
+    <div id="demo-confirm"><button class="btn danger" data-act="ask-demo">حذف البيانات التجريبية</button></div></div>`:''}`;
+}
+function qrText(code){const u=(S.settings.baseUrl||'').trim().replace(/#.*$/,'');return u?`${u}#${code}`:`MNT:${code}`}
+function qrSvg(text,cell){if(!window.qrcode)return '<div class="small">QR غير متاح</div>';const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:cell||4,margin:2,scalable:true})}
+function mountStickers(){const box=$('#stick-prev');if(!box)return;
+  const eqs=sortedEquip([...S.equip.values()].filter(e=>e.clientId===S.stickClient));
+  box.innerHTML=eqs.length?eqs.slice(0,12).map(e=>`<div class="qr">${qrSvg(qrText(e.id))}<span class="mono">${esc(e.id)}</span><span class="n">${esc(e.name)}</span></div>`).join(''):'<div class="small muted">لا أجهزة لهذا العميل</div>';
+}
+
+/* ---------- sheets ---------- */
+function openSheet(title,html,state){$('#sheet-title').textContent=title;$('#sheet-body').innerHTML=html;$('#sheet').hidden=false;S.sheet=state||null;$('#sheet .panel').scrollTop=0}
+function closeSheet(){$('#sheet').hidden=true;S.sheet=null;if(location.hash){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}}
+
+function tagHead(e){return `<div class="tagcard"><div class="tagstrip"><span class="mono">${esc(e.id)}</span></div><div class="tagbody">
+  <span class="label">${esc(clientName(e.clientId))}</span><h3>${esc(e.name)}</h3>
+  <span class="small muted">${[e.category,e.location].filter(Boolean).map(esc).join(' · ')||'—'}</span></div></div>`}
+
+function sheetEquip(id){
+  const e=S.equip.get(id);if(!e){openSheet('جهاز غير موجود',`<div class="empty">لم يُعثر على جهاز بالرمز <span class="mono">${esc(id)}</span>.</div>`);return}
+  const s=eqStatus(e),ls=S.byEq.get(id)||[];
+  openSheet('سجل الجهاز',`${tagHead(e)}
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${chip(s.st)}${s.openFault?chip('fault'):''}
+   <span class="small muted num">${s.due?(s.diff<0?`متأخر ${-s.diff} يوم عن الموعد`:`الصيانة القادمة ${fmtD(s.due)}`):'لم تُسجل أي صيانة لهذا الجهاز'}</span></div>
+  <div class="kv"><div><b>${s.count2y}</b><span>زيارات آخر سنتين</span></div><div><b>${s.last?fmtD(s.last.at):'—'}</b><span>آخر زيارة</span></div>
+   <div><b>${s.interval}</b><span>دورة الصيانة (يوم)</span></div><div><b>${ls.filter(l=>l.type==='fault').length}</b><span>بلاغات أعطال</span></div></div>
+  <div class="btn-row">${canWrite?`<button class="btn primary" data-act="log-manual" data-id="${esc(id)}">تسجيل عمل</button>`:''}
+   <button class="btn" data-act="dl-eq" data-id="${esc(id)}">تنزيل سجل الجهاز</button>${canWrite?`<button class="btn" data-act="edit-eq" data-id="${esc(id)}">تعديل</button>`:''}</div>
+  <div class="sec-head"><h2 style="font-size:16px">سجل الأعمال</h2><span class="small muted num">${ls.length}</span></div>
+  <div class="list">${ls.length?ls.map(l=>logCard(l)).join(''):'<div class="empty">لا توجد أعمال مسجلة</div>'}</div>
+  <div class="qr" style="max-width:200px;justify-self:center">${qrSvg(qrText(e.id))}<span class="mono">${esc(e.id)}</span><span class="n">ستيكر الجهاز</span></div>`,{kind:'equip',id});
+}
+function logCard(l){
+  const p=(l.parts||[]).filter(x=>x.name);
+  return `<div class="log"><div class="h"><span class="type ${l.type==='fault'?'t-fault':l.type==='pm'?'t-pm':''}">${TYPES[l.type]||l.type}</span>
+  <span class="when num">${fmtD(l.at)} · ${fmtT(l.at)}</span>${verif(l)}${l.demo?'<span class="small muted">(مثال)</span>':''}</div>
+  ${(l.tasks||[]).length?`<div class="small">${l.tasks.map(esc).join(' · ')}</div>`:''}
+  ${l.notes?`<p>${esc(l.notes)}</p>`:''}
+  ${p.length?`<div class="parts">قطع غيار: ${p.map(x=>`${esc(x.name)} ×${esc(x.qty||1)}`).join('، ')}</div>`:''}
+  <div class="small muted">${esc(techName(l))}${l.condition?' · حالة الجهاز: '+COND[l.condition]:''}${l.type==='fault'?(l.open?'':' · تم الإصلاح '+(l.resolvedAt?fmtD(l.resolvedAt):'')):''}</div>
+  ${l.type==='fault'&&l.open&&canWrite?`<div><button class="btn" data-act="resolve" data-id="${esc(l.id)}">تم إصلاح العطل</button></div>`:''}</div>`}
+
+let logCtx=null;
+function sheetLog(id,method){
+  const e=S.equip.get(id);if(!e){toast('الرمز غير مسجّل: '+id);return}
+  if(!canWrite){sheetEquip(id);return}
+  logCtx={id,method,scannedAt:method==='manual'?null:new Date().toISOString(),type:'pm',tasks:new Set(),condition:'ok'};
+  const s=eqStatus(e);
+  openSheet('تسجيل عمل',`${tagHead(e)}
+  <div class="${method==='manual'?'banner':''}" style="${method==='manual'?'':'color:var(--ok);font-weight:600;font-size:14px'}">${method==='manual'?'إدخال يدوي: لن يُعتبر هذا العمل موثّقاً بالمسح.':'تم التحقق بمسح الستيكر · '+fmtT(logCtx.scannedAt)}</div>
+  <div class="small muted num">${s.last?`آخر زيارة ${fmtD(s.last.at)} — ${esc(techName(s.last))}`:'أول زيارة مسجلة لهذا الجهاز'}${s.openFault?' · يوجد عطل مفتوح':''}</div>
+  <div class="field"><span>نوع العمل</span><div class="seg fault" id="lg-type">${Object.entries(TYPES).map(([k,v])=>`<button type="button" data-v="${k}" aria-pressed="${k==='pm'}">${v}</button>`).join('')}</div></div>
+  <div class="field"><span>ما تم عمله</span><div class="chips" id="lg-tasks">${TASKS.map(t=>`<button type="button" aria-pressed="false">${t}</button>`).join('')}</div></div>
+  <label class="field"><span>ملاحظات</span><textarea id="lg-notes" placeholder="اكتب ما تم عمله أو وصف العطل"></textarea></label>
+  <div class="field"><span>حالة الجهاز بعد الزيارة</span><div class="seg" id="lg-cond">${Object.entries(COND).map(([k,v])=>`<button type="button" data-v="${k}" aria-pressed="${k==='ok'}">${v}</button>`).join('')}</div></div>
+  <div class="field"><span>قطع غيار مطلوبة أو مستخدمة</span><div id="lg-parts" class="stack" style="gap:8px"></div><button type="button" class="link" data-act="add-part">+ إضافة قطعة</button></div>
+  <label class="field"><span>اسم الفني</span><input type="text" id="lg-tech" value="${esc(store.get('techName')||S.myName||'')}"></label>
+  <button class="btn primary block" data-act="save-log">حفظ العمل</button>`,{kind:'log',id});
+  addPart();
+}
+function addPart(){const box=$('#lg-parts');if(!box)return;const d=document.createElement('div');d.className='toolbar';d.innerHTML=`<input type="text" placeholder="اسم القطعة" class="pn" style="flex:3 1 160px"><input type="number" min="1" value="1" class="pq" style="flex:1 1 70px" aria-label="الكمية">`;box.appendChild(d)}
+
+function sheetEqForm(id){
+  const e=id?S.equip.get(id):null;
+  const nextCode=(()=>{let m=0;S.equip.forEach(x=>{const n=parseInt(String(x.id).replace(/\D/g,''),10);if(n>m)m=n});return 'EQ-'+String(m+1).padStart(4,'0')})();
+  const cl=[...S.clients.values()];
+  if(!cl.length){openSheet('جهاز جديد','<div class="empty">أضف عميلاً أولاً من قسم الإدارة.</div><button class="btn primary block" data-act="new-client">+ عميل</button>');return}
+  const iv=[7,14,30,60,90,180,365],lab={7:'أسبوعياً',14:'كل أسبوعين',30:'شهرياً',60:'كل شهرين',90:'كل ٣ أشهر',180:'كل ٦ أشهر',365:'سنوياً'};
+  openSheet(e?'تعديل الجهاز':'جهاز جديد',`
+  <label class="field"><span>رمز الجهاز (يُطبع في الستيكر)</span><input type="text" id="ef-code" dir="ltr" class="mono" value="${esc(e?e.id:nextCode)}" ${e?'disabled':''}></label>
+  <label class="field"><span>اسم الجهاز</span><input type="text" id="ef-name" value="${esc(e?.name||'')}" placeholder="مثال: ضاغط هواء رقم ٢"></label>
+  <div class="grid2"><label class="field"><span>العميل</span><select id="ef-client">${cl.map(c=>`<option value="${esc(c.id)}" ${(e?.clientId||S.eqClient||cl[0].id)===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></label>
+  <label class="field"><span>النوع</span><input type="text" id="ef-cat" value="${esc(e?.category||'')}" placeholder="ضاغط، مضخة، مكيف…"></label></div>
+  <div class="grid2"><label class="field"><span>الموقع داخل المصنع</span><input type="text" id="ef-loc" value="${esc(e?.location||'')}" placeholder="خط الإنتاج ١"></label>
+  <label class="field"><span>دورة الصيانة</span><select id="ef-int">${iv.map(d=>`<option value="${d}" ${(Number(e?.intervalDays)||30)===d?'selected':''}>${lab[d]}</option>`).join('')}</select></label></div>
+  <button class="btn primary block" data-act="save-eq" data-id="${esc(id||'')}">حفظ</button>
+  ${e?`<div id="del-eq"><button class="btn danger block" data-act="ask-del-eq">حذف الجهاز</button></div>`:''}`,{kind:'form',id});
+}
+function sheetClientForm(id){
+  const c=id?S.clients.get(id):null;
+  openSheet(c?'تعديل العميل':'عميل جديد',`
+  <label class="field"><span>اسم العميل أو المصنع</span><input type="text" id="cf-name" value="${esc(c?.name||'')}"></label>
+  <label class="field"><span>المسؤول ورقم التواصل</span><input type="text" id="cf-contact" value="${esc(c?.contact||'')}"></label>
+  <label class="field"><span>العنوان</span><input type="text" id="cf-addr" value="${esc(c?.address||'')}"></label>
+  ${canWrite?`<button class="btn primary block" data-act="save-client" data-id="${esc(id||'')}">حفظ</button>`:''}
+  ${c&&canWrite?`<div id="del-cl"><button class="btn danger block" data-act="ask-del-client">حذف العميل</button></div>`:''}`,{kind:'form'});
+}
+
+/* ---------- writes ---------- */
+async function write(fn,okMsg){
+  if(!db){toast('الحفظ يحتاج فتح الصفحة من claude.ai');return false}
+  try{await fn();if(okMsg)toast(okMsg);return true}
+  catch(err){
+    if(err&&err.code==='invalid_argument'&&canWrite===true&&S._writeOk!==true){canWrite=false;render();toast('ليست لديك صلاحية التعديل')}
+    else if(err&&err.code==='quota_exceeded')toast('امتلأت مساحة التخزين. احذف بيانات قديمة ثم أعد المحاولة');
+    else toast('لم يتم الحفظ، تحقق من الاتصال وأعد المحاولة');
+    return false}
+}
+
+/* ---------- downloads ---------- */
+async function save(filename,data){
+  if(!downloads){toast('التنزيل غير متاح في هذا العرض');return}
+  try{await downloads.save({filename,data})}catch(e){if(e&&e.code==='declined')return;if(e&&e.code==='rate_limited'){toast('انتظر قليلاً ثم أعد المحاولة');return}toast('تعذر التنزيل')}
+}
+const csvCell=v=>{v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+const csv=rows=>'﻿'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
+function docShell(title,body){return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>${esc(title)}</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>@page{size:A4;margin:14mm}body{font-family:"IBM Plex Sans Arabic",Tahoma,sans-serif;color:#111;font-size:12px;margin:0;padding:20px}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:14px;margin:18px 0 6px;border-bottom:2px solid #111;padding-bottom:3px}
+.meta{color:#555;margin-bottom:10px}.mono{font-family:"IBM Plex Mono",monospace}
+table{border-collapse:collapse;width:100%;margin-bottom:6px}th,td{border:1px solid #bbb;padding:5px 7px;text-align:right;vertical-align:top}th{background:#eee}
+.kpi{display:flex;gap:10px;flex-wrap:wrap}.kpi div{border:1px solid #bbb;padding:8px 12px;min-width:110px}.kpi b{display:block;font-size:18px}
+.sign{display:flex;gap:40px;margin-top:40px}.sign div{flex:1;border-top:1px solid #111;padding-top:6px}
+.bad{color:#b4302a}.ok{color:#1e7a4c}tr{page-break-inside:avoid}</style></head><body>${body}</body></html>`}
+function dlReport(){
+  const R=computeReport();
+  const body=`<h1>تقرير أعمال الصيانة</h1><div class="meta">${esc(R.label)} · العميل: ${esc(R.clientLabel)} · أُصدر في ${fmtD(new Date())} ${fmtT(new Date())}</div>
+  <div class="kpi"><div><b>${R.logs.length}</b>إجمالي الأعمال</div><div><b>${R.visited.size}/${R.eqs.length}</b>أجهزة تمت زيارتها</div><div><b class="${R.missed.length?'bad':'ok'}">${R.missed.length}</b>لم تتم زيارتها</div><div><b>${R.openFaults.length}</b>أعطال مفتوحة</div></div>
+  <h2>تفاصيل الأعمال</h2><table><tr><th>التاريخ</th><th>الرمز</th><th>الجهاز</th><th>الموقع</th><th>النوع</th><th>العمل المنجز</th><th>قطع الغيار</th><th>الفني</th><th>التوثيق</th></tr>
+  ${R.logs.slice().reverse().map(l=>{const e=S.equip.get(l.equipmentId)||{};return `<tr><td>${fmtD(l.at)} ${fmtT(l.at)}</td><td class="mono">${esc(l.equipmentId)}</td><td>${esc(e.name||'')}</td><td>${esc(e.location||'')}</td><td>${TYPES[l.type]||''}</td><td>${esc([...(l.tasks||[]),l.notes].filter(Boolean).join(' — '))}</td><td>${esc((l.parts||[]).filter(p=>p.name).map(p=>p.name+' ×'+(p.qty||1)).join('، '))}</td><td>${esc(techName(l))}</td><td>${l.method==='manual'?'يدوي':'مسح'}</td></tr>`}).join('')||'<tr><td colspan="9">لا أعمال</td></tr>'}</table>
+  <h2>أجهزة لم تتم زيارتها في الفترة</h2>${R.missed.length?`<table><tr><th>الرمز</th><th>الجهاز</th><th>الموقع</th><th>آخر زيارة</th></tr>${R.missed.map(e=>{const s=eqStatus(e);return `<tr><td class="mono">${esc(e.id)}</td><td>${esc(e.name)}</td><td>${esc(e.location||'')}</td><td>${s.last?fmtD(s.last.at):'لا يوجد'}</td></tr>`}).join('')}</table>`:'<p>تمت زيارة جميع الأجهزة.</p>'}
+  ${R.parts.length?`<h2>قطع الغيار المطلوبة</h2><table><tr><th>القطعة</th><th>الكمية</th><th>الأجهزة</th></tr>${R.parts.map(p=>`<tr><td>${esc(p.name)}</td><td>${p.qty}</td><td class="mono">${[...p.eqs].map(esc).join(' ')}</td></tr>`).join('')}</table>`:''}
+  ${R.byTech.length?`<h2>ملخص الفنيين</h2><table><tr><th>الفني</th><th>الأعمال</th><th>الأجهزة</th></tr>${R.byTech.map(t=>`<tr><td>${esc(t.name)}</td><td>${t.n}</td><td>${t.eq.size}</td></tr>`).join('')}</table>`:''}
+  <div class="sign"><div>توقيع مسؤول الصيانة</div><div>توقيع واعتماد العميل</div></div>`;
+  const nm=`تقرير-صيانة-${R.clientLabel}-${S.rep.mode==='month'?S.rep.month:ymd(R.a)}.html`.replace(/[\\/:*?"<>|\s]+/g,'-');
+  save(nm,docShell('تقرير الصيانة',body));
+}
+function dlCsv(){const R=computeReport();
+  save(`أعمال-الصيانة-${ymd(R.a)}.csv`,csv([['التاريخ','الوقت','الرمز','الجهاز','العميل','الموقع','النوع','الأعمال','ملاحظات','قطع الغيار','حالة الجهاز','الفني','التوثيق'],
+  ...R.logs.map(l=>{const e=S.equip.get(l.equipmentId)||{};return [fmtD(l.at),fmtT(l.at),l.equipmentId,e.name||'',clientName(l.clientId),e.location||'',TYPES[l.type]||'',(l.tasks||[]).join('، '),l.notes||'',(l.parts||[]).filter(p=>p.name).map(p=>p.name+' x'+(p.qty||1)).join('، '),COND[l.condition]||'',techName(l),l.method==='manual'?'يدوي':'مسح']})]))}
+function dlParts(){const R=computeReport();save(`قطع-الغيار-${ymd(R.a)}.csv`,csv([['القطعة','الكمية','الأجهزة','مفتوح'],...R.parts.map(p=>[p.name,p.qty,[...p.eqs].join(' '),p.open?'نعم':'لا'])]))}
+function dlEquip(id){const e=S.equip.get(id);if(!e)return;const s=eqStatus(e);const ls=(S.byEq.get(id)||[]);
+  const body=`<h1>سجل صيانة الجهاز</h1><div class="meta"><span class="mono">${esc(e.id)}</span> · ${esc(e.name)} · ${esc(clientName(e.clientId))}${e.location?' · '+esc(e.location):''}</div>
+  <div class="kpi"><div><b>${s.count2y}</b>زيارات آخر سنتين</div><div><b>${s.total}</b>إجمالي الزيارات</div><div><b>${s.last?fmtD(s.last.at):'—'}</b>آخر زيارة</div><div><b>${s.interval} يوم</b>دورة الصيانة</div></div>
+  <h2>الأعمال</h2><table><tr><th>التاريخ</th><th>النوع</th><th>العمل المنجز</th><th>قطع الغيار</th><th>حالة الجهاز</th><th>الفني</th></tr>
+  ${ls.map(l=>`<tr><td>${fmtD(l.at)} ${fmtT(l.at)}</td><td>${TYPES[l.type]||''}${l.type==='fault'?(l.open?' (مفتوح)':' (تم الإصلاح)'):''}</td><td>${esc([...(l.tasks||[]),l.notes].filter(Boolean).join(' — '))}</td><td>${esc((l.parts||[]).filter(p=>p.name).map(p=>p.name+' ×'+(p.qty||1)).join('، '))}</td><td>${COND[l.condition]||''}</td><td>${esc(techName(l))}</td></tr>`).join('')||'<tr><td colspan="6">لا أعمال</td></tr>'}</table>
+  <div class="sign"><div>توقيع مسؤول الصيانة</div><div>توقيع العميل</div></div>`;
+  save(`سجل-${e.id}.html`,docShell('سجل '+e.id,body))}
+function dlStickers(){
+  const eqs=sortedEquip([...S.equip.values()].filter(e=>e.clientId===S.stickClient));
+  if(!eqs.length){toast('لا أجهزة لهذا العميل');return}
+  const cn=clientName(S.stickClient);
+  const body=`<style>body{padding:0}.sheet{display:grid;grid-template-columns:repeat(3,1fr);gap:6mm}.st{border:1px dashed #999;border-radius:4mm;padding:4mm;display:grid;justify-items:center;gap:1mm;text-align:center;page-break-inside:avoid}.st svg{width:38mm;height:38mm}.c{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;letter-spacing:.04em}.n{font-size:11px}.h{font-size:9px;color:#444}</style>
+  <div class="sheet">${eqs.map(e=>`<div class="st">${qrSvg(qrText(e.id),5)}<div class="c">${esc(e.id)}</div><div class="n">${esc(e.name)}</div><div class="h">${esc(cn)} · امسح الرمز عند كل زيارة صيانة</div></div>`).join('')}</div>`;
+  save(`ستيكرات-${cn}.html`.replace(/[\\/:*?"<>|\s]+/g,'-'),docShell('ستيكرات '+cn,body));
+}
+
+/* ---------- QR decode ---------- */
+function parseCode(t){t=String(t||'').trim();if(t.includes('#'))t=t.split('#').pop();t=t.replace(/^MNT:/i,'').trim().toUpperCase();return /^[A-Z0-9][A-Z0-9_.~-]{0,40}$/.test(t)?t:null}
+async function loadBitmap(file){
+  if(window.createImageBitmap){try{return await createImageBitmap(file)}catch(e){}}
+  return await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=URL.createObjectURL(file)})}
+async function decodeFile(file){
+  const img=await loadBitmap(file);
+  if('BarcodeDetector' in window){try{const d=new BarcodeDetector({formats:['qr_code']});const r=await d.detect(img);if(r&&r[0])return r[0].rawValue}catch(e){}}
+  if(!window.jsQR)throw new Error('nolib');
+  const W=img.width||img.naturalWidth,H=img.height||img.naturalHeight;
+  for(const max of [1000,1600,700,450]){
+    const k=Math.min(1,max/Math.max(W,H)),w=Math.round(W*k),h=Math.round(H*k);
+    const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(img,0,0,w,h);
+    const r=jsQR(x.getImageData(0,0,w,h).data,w,h,{inversionAttempts:'attemptBoth'});if(r&&r.data)return r.data}
+  return null}
+async function onScanFile(file){
+  const msg=$('#scan-msg');if(!file)return;
+  msg.className='scanmsg muted';msg.textContent='جاري قراءة الرمز…';
+  try{
+    const raw=await decodeFile(file);const code=parseCode(raw);
+    if(!code){msg.className='scanmsg err';msg.textContent='لم يُقرأ الرمز. قرّب الكاميرا وتأكد من الإضاءة ثم صوّر مرة ثانية.';return}
+    if(!S.equip.has(code)){msg.className='scanmsg err';msg.textContent=`الرمز ${code} غير مسجّل في النظام.`;return}
+    msg.className='scanmsg';msg.textContent='تم: '+code;
+    sheetLog(code,'scan');
+  }catch(e){msg.className='scanmsg err';msg.textContent='تعذّرت قراءة الصورة. جرّب مرة ثانية.'}
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',async ev=>{
+  const t=ev.target.closest('[data-tab],[data-act],#lg-type button,#lg-cond button,#lg-tasks button');if(!t)return;
+  if(t.matches('#lg-type button')){t.parentNode.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t));logCtx.type=t.dataset.v;return}
+  if(t.matches('#lg-cond button')){t.parentNode.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b===t));logCtx.condition=t.dataset.v;return}
+  if(t.matches('#lg-tasks button')){const on=t.getAttribute('aria-pressed')!=='true';t.setAttribute('aria-pressed',on);on?logCtx.tasks.add(t.textContent):logCtx.tasks.delete(t.textContent);return}
+  if(t.dataset.tab){if(t.dataset.rep)S.rep.mode=t.dataset.rep==='day'?'day':'month';if(t.dataset.rep==='day')S.rep.day=ymd(new Date());S.view=t.dataset.tab;closeSheetIfOpen();render();window.scrollTo(0,0);return}
+  const a=t.dataset.act,id=t.dataset.id;
+  if(a==='close'){closeSheet();return}
+  if(a==='open-eq'){sheetEquip(id);return}
+  if(a==='filter-status'){S.eqStatus=t.dataset.st;S.eqClient='';S.eqSearch='';S.view='equip';render();return}
+  if(a==='goto-faults'){$('#faults')?.scrollIntoView({behavior:'smooth'});return}
+  if(a==='manual-open'){const v=$('#manual-eq').value;if(!v){toast('اختر الجهاز');return}sheetEquip(v);return}
+  if(a==='log-manual'){sheetLog(id,'manual');return}
+  if(a==='add-part'){addPart();return}
+  if(a==='save-log'){
+    const parts=[...document.querySelectorAll('#lg-parts .toolbar')].map(r=>({name:r.querySelector('.pn').value.trim(),qty:Math.max(1,parseInt(r.querySelector('.pq').value,10)||1)})).filter(p=>p.name);
+    const notes=$('#lg-notes').value.trim(),tn=$('#lg-tech').value.trim();
+    if(!notes&&!logCtx.tasks.size&&!parts.length){toast('اختر ما تم عمله أو اكتب ملاحظة');return}
+    if(tn)store.set('techName',tn);
+    const e=S.equip.get(logCtx.id);t.disabled=true;
+    const doc={equipmentId:e.id,clientId:e.clientId||'',type:logCtx.type,tasks:[...logCtx.tasks],notes,condition:logCtx.condition,parts,open:logCtx.type==='fault',
+      method:logCtx.method,scannedAt:logCtx.scannedAt,at:new Date().toISOString(),techId:myId||null,techName:tn||''};
+    const ok=await write(()=>db.collection('logs').add(doc),'تم حفظ العمل');
+    if(ok){S._writeOk=true;const eid=logCtx.id;logCtx=null;sheetEquip(eid)}else t.disabled=false;return}
+  if(a==='resolve'){await write(()=>db.doc('logs/'+id).update({open:false,resolvedAt:new Date().toISOString(),resolvedBy:myId||null}),'تم تحديث العطل');return}
+  if(a==='new-eq'){sheetEqForm(null);return}
+  if(a==='edit-eq'){sheetEqForm(id);return}
+  if(a==='save-eq'){
+    const code=(id||$('#ef-code').value.trim().toUpperCase());
+    if(!/^[A-Z0-9][A-Z0-9_.~-]{0,40}$/.test(code)){toast('الرمز: حروف إنجليزية وأرقام وشرطة فقط');return}
+    if(!id&&S.equip.has(code)){toast('هذا الرمز مستخدم لجهاز آخر');return}
+    const name=$('#ef-name').value.trim();if(!name){toast('اكتب اسم الجهاز');return}
+    const data={name,clientId:$('#ef-client').value,category:$('#ef-cat').value.trim(),location:$('#ef-loc').value.trim(),intervalDays:Number($('#ef-int').value)};
+    const ok=await write(()=>id?db.doc('equipment/'+id).update(data):db.doc('equipment/'+code).set({...data,createdAt:new Date().toISOString()}),'تم الحفظ');
+    if(ok){S._writeOk=true;sheetEquip(code)}return}
+  if(a==='ask-del-eq'){$('#del-eq').innerHTML=`<div class="confirm">سيُحذف الجهاز من القائمة. سجل أعماله يبقى في التقارير السابقة.<div class="btn-row"><button class="btn danger" data-act="del-eq">تأكيد الحذف</button><button class="btn" data-act="close">إلغاء</button></div></div>`;return}
+  if(a==='del-eq'){const eid=S.sheet?.id||$('#ef-code').value;await write(()=>db.doc('equipment/'+eid).delete(),'تم حذف الجهاز');closeSheet();return}
+  if(a==='new-client'){sheetClientForm(null);return}
+  if(a==='edit-client'){sheetClientForm(id);S.sheet={kind:'form',id};return}
+  if(a==='save-client'){const name=$('#cf-name').value.trim();if(!name){toast('اكتب اسم العميل');return}
+    const data={name,contact:$('#cf-contact').value.trim(),address:$('#cf-addr').value.trim()};
+    const ok=await write(()=>id?db.doc('clients/'+id).update(data):db.collection('clients').add({...data,createdAt:new Date().toISOString()}),'تم الحفظ');
+    if(ok){S._writeOk=true;closeSheet()}return}
+  if(a==='ask-del-client'){const cid=S.sheet?.id;const n=[...S.equip.values()].filter(e=>e.clientId===cid).length;
+    $('#del-cl').innerHTML=n?`<div class="confirm">لا يمكن حذف عميل لديه ${n} جهاز. احذف أجهزته أو انقلها أولاً.</div>`:`<div class="confirm">تأكيد حذف العميل؟<div class="btn-row"><button class="btn danger" data-act="del-client">حذف</button><button class="btn" data-act="close">إلغاء</button></div></div>`;return}
+  if(a==='del-client'){const cid=S.sheet?.id;await write(()=>db.doc('clients/'+cid).delete(),'تم حذف العميل');closeSheet();return}
+  if(a==='save-url'){const u=$('#base-url').value.trim();if(u&&!/^https:\/\//.test(u)){toast('الرابط يبدأ بـ https://');return}
+    await write(()=>db.doc('settings/main').set({...S.settings,baseUrl:u}),'تم حفظ الرابط');return}
+  if(a==='ask-demo'){$('#demo-confirm').innerHTML=`<div class="confirm">سيُحذف العميل والأجهزة والأعمال التجريبية فقط.<div class="btn-row"><button class="btn danger" data-act="del-demo">تأكيد</button><button class="btn" data-act="cancel-demo">إلغاء</button></div></div>`;return}
+  if(a==='cancel-demo'){render();return}
+  if(a==='del-demo'){t.disabled=true;
+    const refs=[...S.logs.filter(l=>l.demo).map(l=>'logs/'+l.id),...[...S.equip.values()].filter(e=>e.demo).map(e=>'equipment/'+e.id),...[...S.clients.values()].filter(c=>c.demo).map(c=>'clients/'+c.id)];
+    for(const r of refs){const ok=await write(()=>db.doc(r).delete());if(!ok)break}toast('تم حذف البيانات التجريبية');return}
+  if(a==='rep-mode'){S.rep.mode=t.dataset.v;render();return}
+  if(a==='dl-report'){dlReport();return}
+  if(a==='dl-csv'){dlCsv();return}
+  if(a==='dl-parts'){dlParts();return}
+  if(a==='dl-eq'){dlEquip(id);return}
+  if(a==='dl-stickers'){dlStickers();return}
+});
+function closeSheetIfOpen(){if(!$('#sheet').hidden)closeSheet()}
+$('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet()});
+document.addEventListener('change',e=>{const t=e.target;
+  if(t.id==='scan-cam'||t.id==='scan-file'){onScanFile(t.files&&t.files[0]);t.value='';return}
+  const map={'rep-day':['day'],'rep-month':['month'],'rep-from':['from'],'rep-to':['to'],'rep-client':['client'],'rep-tech':['tech']};
+  if(map[t.id]){if(t.value||t.id==='rep-client'||t.id==='rep-tech'){S.rep[map[t.id][0]]=t.value;render()}return}
+  if(t.id==='eq-client'){S.eqClient=t.value;render();return}
+  if(t.id==='eq-status'){S.eqStatus=t.value;render();return}
+  if(t.id==='stick-client'){S.stickClient=t.value;mountStickers();return}
+  if(t.id==='tech-name'){store.set('techName',t.value.trim());toast('تم حفظ الاسم');return}
+});
+document.addEventListener('input',e=>{if(e.target.id==='eq-search'){S.eqSearch=e.target.value;const pos=e.target.selectionStart;render();const i=$('#eq-search');i.focus();try{i.setSelectionRange(pos,pos)}catch(_){}}});
+
+/* ---------- live data ---------- */
+let refreshQueued=false;
+function refresh(){
+  if(refreshQueued)return;refreshQueued=true;
+  requestAnimationFrame(()=>{refreshQueued=false;rebuild();
+    const ae=document.activeElement;const keep=ae&&ae.id&&$('#view').contains(ae)&&['INPUT','TEXTAREA','SELECT'].includes(ae.tagName);
+    if(!keep)render();
+    if(S.sheet&&S.sheet.kind==='equip')sheetEquipRefresh();
+    resolveNames();checkHash()});
+}
+function sheetEquipRefresh(){const p=$('#sheet .panel'),y=p.scrollTop;sheetEquip(S.sheet.id);p.scrollTop=y}
+async function resolveNames(){
+  if(!user)return;const ids=[...new Set(S.logs.map(l=>l.techId).filter(Boolean))];if(!ids.length)return;
+  const ps=await user.profiles(ids);let ch=false;for(const id of ids){const n=ps[id]?.name||'';if(n&&S.names[id]!==n){S.names[id]=n;ch=true}}
+  if(ch){render();if(S.sheet&&S.sheet.kind==='equip')sheetEquipRefresh()}
+}
+let hashDone='';
+function checkHash(){
+  const h=decodeURIComponent((location.hash||'').slice(1));if(!h||h===hashDone||!S.loaded.e)return;
+  const code=parseCode(h);hashDone=h;if(code&&S.equip.has(code))sheetLog(code,'scan');
+}
+window.addEventListener('hashchange',()=>{hashDone='';checkHash()});
+
+function sub(path,cb,q){const ref=q||db.collection(path);ref.onSnapshot(cb,err=>{if(err&&err.code!=='revoked')toast('انقطع التحديث المباشر. أعد فتح الصفحة.')})}
+
+render();
+(async()=>{
+  if(!window.claude||!window.claude.use){$('#banner').innerHTML='<div class="banner">افتح هذه الصفحة من claude.ai حتى تُحفظ البيانات وتُشارك مع الفريق.</div>';return}
+  const [d,u,dl]=await Promise.all([claude.use('db'),claude.use('user'),claude.use('downloads')]);
+  db=d;user=u;downloads=dl;
+  if(!db){$('#banner').innerHTML='<div class="banner">سجّل الدخول إلى claude.ai لعرض بيانات الصيانة وحفظها.</div>';return}
+  live=true;render();
+  if(user){const me=await user.me();myId=me.id;S.myName=me.name||'';const cw=await user.can('data.write');if(cw===false)canWrite=false}
+  sub('clients',s=>{S.clients=new Map(s.docs.map(x=>[x.id,{id:x.id,...x.data()}]));S.loaded.c=true;refresh()});
+  sub('equipment',s=>{S.equip=new Map(s.docs.map(x=>[x.id,{id:x.id,...x.data()}]));S.loaded.e=true;refresh()});
+  sub('logs',s=>{S.logs=s.docs.map(x=>({id:x.id,...x.data()}));S.loaded.l=true;refresh()},db.collection('logs').orderBy('at','desc').limit(1000));
+  db.doc('settings/main').onSnapshot(s=>{S.settings=s.exists?{...s.data()}:{};if(S.view==='admin'&&!document.activeElement?.id?.startsWith('base'))render()},()=>{});
+})();
+})();
+</script>
+
+</body></html>
