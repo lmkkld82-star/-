@@ -15,8 +15,7 @@
 <title>فلل المعبيلة 6</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
 <style>
 :root{
   --bg:#EEF4F1;--surface:#FFFFFF;--surface2:#F3F8F6;--ink:#14231E;--ink2:#3F524A;--mut:#6E8079;
@@ -513,7 +512,7 @@ mark{background:var(--pri-soft);color:var(--pri);border-radius:3px;padding:0 1px
 </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root"><div style="min-height:100vh;display:grid;place-items:center;background:#0D5C4A;color:#fff;font:600 17px system-ui,-apple-system,sans-serif">فلل المعبيلة 6</div></div>
 <div class="snack" id="snack" role="status" aria-live="polite"><span id="snackT"></span><button id="snackU" hidden></button></div>
 <script>
 /* ───────── Icons ───────── */
@@ -855,8 +854,9 @@ function xImport(e){
   rd.onload=function(ev){try{snapshot();if(!loadObj(JSON.parse(ev.target.result)))throw 0;save();S.menu=false;applyTheme();render();snack("تم استيراد البيانات",true);}catch(er){_undo=null;snack("هذا الملف ليس نسخة احتياطية من التطبيق");}};
   rd.readAsText(fi);e.target.value="";
 }
+function loadXLSX(){return new Promise(function(ok,no){if(typeof XLSX!=="undefined")return ok();var sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";sc.onload=function(){ok();};sc.onerror=no;document.head.appendChild(sc);});}
 function xExcel(){
-  if(typeof XLSX==="undefined"){snack("تعذّر تحميل أداة Excel. تحقق من الاتصال بالإنترنت");return;}
+  if(typeof XLSX==="undefined"){snack("جارٍ تجهيز ملف Excel…");loadXLSX().then(xExcel,function(){snack("تعذّر تحميل أداة Excel. تحقق من الاتصال بالإنترنت");});return;}
   var wb=XLSX.utils.book_new(),gt=gT();
   var sd=[[S.name],["تاريخ التقرير",today()],[],["القسم","الإجمالي (ر.ع.)","النسبة %","عدد السطور"]];
   S.secs.forEach(function(s){var t=secT(s);sd.push([s.lb,+t.toFixed(3),gt?+(t/gt*100).toFixed(2):0,(S.data[s.id]||[]).length]);});
@@ -1337,7 +1337,8 @@ document.addEventListener("keydown",function(e){
   if(e.key==="Escape"){if(S.modal){S.modal=null;render();}else if(S.menu){S.menu=false;render();}else if(S.sOpen){S.sOpen=false;S.q="";render();}}
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();S.sOpen=true;render();var q=document.getElementById("q");if(q)q.focus();}
 });
-render();startSync();
+try{render();}catch(err){document.getElementById("root").innerHTML='<div style="padding:40px 20px;font:16px system-ui;text-align:center">حدث خطأ أثناء فتح التطبيق<br><small style="color:#888">'+esc(err&&err.message||err)+'</small></div>';}
+try{startSync();}catch(err){}
 if("serviceWorker" in navigator&&location.protocol==="https:"){navigator.serviceWorker.register("sw.js").catch(function(){});}
 </script>
 </body>
