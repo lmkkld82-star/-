@@ -938,7 +938,6 @@ function render(){
 function vContent(){
   if(SYNC.mode==="loading")return'<div class="page single"><div class="panel empty">'+ic("table")+'<h3>جارٍ تحميل بيانات المشروع</h3><p>نجلب آخر نسخة مشتركة بينك وبين شريكك.</p></div></div>';
   if(SYNC.ready&&!S.secs.length&&S.view!=="settings")return'<div class="page single"><div class="panel empty">'+ic("folder")+'<h3>لا توجد بيانات مشتركة بعد</h3><p>استورد آخر نسخة احتياطية من التطبيق القديم لتظهر هنا لك ولشريكك.</p><label class="btn btn-pri">'+ic("download","sm")+'استيراد نسخة احتياطية<input type="file" accept=".json,application/json" class="impf" hidden/></label></div></div>';
-  if(SYNC.mode==="denied"&&S.view!=="settings")return'<div class="page single"><div class="note" style="margin-bottom:12px">'+ic("link","sm")+'<span>المزامنة مع شريكك متوقفة لأن قاعدة البيانات في Firebase مقفلة. التطبيق يعمل الآن على هذا الجهاز فقط.</span></div></div>'+vContentInner();
   return vContentInner();
 }
 function vContentInner(){
