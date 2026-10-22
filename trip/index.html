@@ -554,6 +554,10 @@ mark.hit{animation:hitp 1.2s ease 2}
 .card2.bk h3{margin-bottom:4px}
 .bkp{font-size:12.5px;color:var(--muted);margin:0 0 10px;line-height:1.7}
 #bkTxt{width:100%;box-sizing:border-box;margin-top:10px;border:1.5px solid #e3d9c6;border-radius:12px;padding:8px 10px;font-family:var(--f-body);font-size:14px;background:var(--app);direction:ltr;text-align:left;resize:vertical}
+.rstat{margin:10px 2px 0;font-size:12.5px;color:var(--muted);line-height:1.6;display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px}
+.rstat i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--jade);box-shadow:0 0 0 3px var(--jade-l);margin-inline-end:4px}
+.rstat.live{color:#0d6b5c;font-weight:700}.rstat small{flex-basis:100%;font-weight:400;color:var(--muted);font-size:11.5px}
+.rstat.busy{color:var(--gold-d)}
 </style>
 </head>
 <body>
@@ -1484,26 +1488,51 @@ let rates=Object.assign({OMR:0.3845,CNY:7.1,THB:32.5,USD:1},load('tripapp-rates'
 let curAmt=load('tripapp-curamt',{c:'CNY',v:100});
 const toOMR=(v,c)=>v/rates[c]*rates.OMR;
 function renderCur(){
-  let h='<div class="phead teal"><div class="in"><h2>محوّل العملات</h2><p>اكتب المبلغ في أي خانة، والباقي يتحوّل تلقائياً · يعمل بدون إنترنت</p></div></div><div class="wrap"><div class="cur">';
+  let h='<div class="phead teal"><div class="in"><h2>محوّل العملات</h2><p>أسعار مباشرة مع الإنترنت، وبدونه يشتغل بآخر سعر محفوظ</p></div></div><div class="wrap"><div class="cur">';
   CUR.forEach(([c,n,sym,bg,fg])=>{h+='<div class="row"><div class="fl" style="background:'+bg+';color:'+fg+'">'+sym+'</div><div class="nm">'+n+'<small>'+c+'</small></div><input id="cv-'+c+'" inputmode="decimal" type="text" aria-label="'+n+'"></div>';});
-  h+='</div><div class="qamt">'+[10,50,100,500,1000,5000].map(v=>'<button type="button" data-q="'+v+'">'+v.toLocaleString('en-US')+'</button>').join('')+'</div>';
+  h+='</div><div class="rstat" id="rstat"></div><div class="qamt">'+[10,50,100,500,1000,5000].map(v=>'<button type="button" data-q="'+v+'">'+v.toLocaleString('en-US')+'</button>').join('')+'</div>';
   h+='<div class="sec-t">جدول سريع</div><div class="card2"><table class="ref"><tbody>'+
     [['100 يوان',100,'CNY'],['1,000 يوان',1000,'CNY'],['1,000 بات',1000,'THB'],['5,000 بات',5000,'THB'],['100 دولار',100,'USD']].map(r=>'<tr><td>'+r[0]+'</td><td>'+fmt(toOMR(r[1],r[2]),2)+' ر.ع</td></tr>').join('')+
   '</tbody></table></div>';
-  h+='<div class="sec-t">أسعار الصرف (مقابل 1 دولار) · عدّلها حسب سعر اليوم</div><div class="card2"><div class="rates">'+
+  h+='<div class="sec-t">أسعار الصرف (مقابل 1 دولار) · تقدر تعدّلها يدوياً</div><div class="card2"><div class="rates">'+
     ['OMR','CNY','THB'].map(c=>'<label>'+c+'<input type="text" inputmode="decimal" data-rate="'+c+'" value="'+rates[c]+'"></label>').join('')+
-    '<button class="pbtn l" type="button" id="rateReset" style="justify-self:start">الأسعار الافتراضية</button></div><div class="msg ok" id="rateMsg"></div></div></div>';
-  $('#v-cur').innerHTML=h; fillCur();
+    '<button class="pbtn" type="button" id="rateNow" style="justify-self:start">تحديث الآن</button><button class="pbtn l" type="button" id="rateReset" style="justify-self:start">الأسعار الافتراضية</button></div><div class="msg ok" id="rateMsg"></div></div></div>';
+  $('#v-cur').innerHTML=h; fillCur(); showRstat(); liveRates(false);
 }
+let rinfo=load('tripapp-rateinfo',{t:0,src:'default'}), rBusy=false;
+const MONS=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+function whenTxt(t){const d=new Date(t);return d.getDate()+' '+MONS[d.getMonth()]+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+function showRstat(msg){const el=$('#rstat');if(!el)return;let s,c='';
+  if(msg){s=msg;c='busy';}
+  else if(rinfo.src==='live'){s='<i></i>أسعار السوق المباشرة · آخر تحديث '+whenTxt(rinfo.t);c='live';}
+  else if(rinfo.src==='manual'){s='سعر عدّلته يدوياً'+(rinfo.t?' · آخر تحديث مباشر '+whenTxt(rinfo.t):'');}
+  else s='أسعار تقريبية افتراضية · افتح التطبيق مع الإنترنت ليتحدّث';
+  el.className='rstat '+c; el.innerHTML=s+(c==='live'?'<small>سعر السوق؛ الصرافات تعطي أقل بقليل</small>':'');}
+function liveRates(force){
+  if(rBusy) return; if(!force&&rinfo.src==='live'&&Date.now()-rinfo.t<3*3600e3) return;
+  if(!navigator.onLine){ if(force) showRstat('ما في إنترنت الحين · يشتغل بآخر سعر محفوظ'); return; }
+  rBusy=true; if(force) showRstat('جاري التحديث…');
+  const ctl=window.AbortController?new AbortController():null; const to=setTimeout(()=>ctl&&ctl.abort(),8000);
+  fetch('https://open.er-api.com/v6/latest/USD',{cache:'no-store',signal:ctl?ctl.signal:undefined}).then(r=>r.json()).then(j=>{
+    const R=j&&j.rates; if(!R||!(R.OMR>0&&R.CNY>0&&R.THB>0)) throw 0;
+    rates={OMR:+R.OMR,CNY:+R.CNY,THB:+R.THB,USD:1}; save('tripapp-rates',rates);
+    rinfo={t:Date.now(),src:'live'}; save('tripapp-rateinfo',rinfo);
+    if($('#cv-OMR')){ fillCur(); document.querySelectorAll('[data-rate]').forEach(i=>{i.value=rates[i.dataset.rate];}); const tb=document.querySelector('#v-cur table.ref'); if(tb) renderCur(); }
+    if(typeof renderExp==='function'&&$('#v-exp').innerHTML) renderExp();
+  }).catch(()=>{ if(force) showRstat('تعذّر التحديث · يشتغل بآخر سعر محفوظ'); setTimeout(()=>showRstat(),2500); })
+  .finally(()=>{clearTimeout(to);rBusy=false;showRstat();});
+}
+window.addEventListener('online',()=>liveRates(false));
 function fillCur(skip){const usd=curAmt.v/rates[curAmt.c];CUR.forEach(([c])=>{if(c===skip)return;const el=$('#cv-'+c);if(el)el.value=curAmt.v===''?'':fmt(usd*rates[c],c==='OMR'?3:2);});}
 $('#v-cur').addEventListener('input',e=>{
   const t=e.target;
   if(t.id&&t.id.startsWith('cv-')){const c=t.id.slice(3);const v=parseFloat(t.value.replace(/,/g,''));curAmt={c,v:isNaN(v)?'':v};save('tripapp-curamt',curAmt);fillCur(c);}
-  if(t.dataset.rate){const v=parseFloat(t.value);if(v>0){rates[t.dataset.rate]=v;save('tripapp-rates',rates);fillCur();$('#rateMsg').textContent='تم حفظ السعر';}}
+  if(t.dataset.rate){const v=parseFloat(t.value);if(v>0){rates[t.dataset.rate]=v;save('tripapp-rates',rates);rinfo.src='manual';save('tripapp-rateinfo',rinfo);fillCur();showRstat();$('#rateMsg').textContent='تم حفظ السعر';}}
 });
 $('#v-cur').addEventListener('click',e=>{
   const q=e.target.closest('[data-q]'); if(q){const c=curAmt.c||'CNY';curAmt={c,v:+q.dataset.q};save('tripapp-curamt',curAmt);fillCur();return;}
-  if(e.target.id==='rateReset'){rates={OMR:0.3845,CNY:7.1,THB:32.5,USD:1};save('tripapp-rates',rates);renderCur();}
+  if(e.target.id==='rateReset'){rates={OMR:0.3845,CNY:7.1,THB:32.5,USD:1};save('tripapp-rates',rates);rinfo={t:0,src:'default'};save('tripapp-rateinfo',rinfo);renderCur();return;}
+  if(e.target.id==='rateNow'){liveRates(true);return;}
 });
 $('#v-cur').addEventListener('change',e=>{if(e.target.dataset.rate) renderCur();});
 
@@ -1564,7 +1593,7 @@ function renderExp(){
   const sf=$('#sForm'); if(sf) sf.addEventListener('submit',e=>{e.preventDefault();const n=$('#s-n').value.trim();if(!n)return;shop.push({n,q:$('#s-q').value.trim(),w:$('#s-w').value.trim(),done:false});saveShop();renderExp();setTimeout(()=>{const i=$('#s-n');if(i)i.focus();},0);});
   const bi=$('#budget'); if(bi) bi.addEventListener('change',()=>{const v=parseFloat(bi.value);exp.budget=v>0?v:'';saveExp();renderExp();});
 }
-const BK_KEYS=['tripapp-exp','tripapp-shop','tripapp-cards','tripapp-rates','tripapp-curamt','tripbook-compare-v1'];
+const BK_KEYS=['tripapp-exp','tripapp-shop','tripapp-cards','tripapp-rates','tripapp-rateinfo','tripapp-curamt','tripbook-compare-v1'];
 function bkMake(){const o={};BK_KEYS.forEach(k=>{try{const v=localStorage.getItem(k);if(v!=null)o[k]=v;}catch(e){}});return 'TRIP1:'+btoa(unescape(encodeURIComponent(JSON.stringify(o))));}
 function bkRead(s){s=(s||'').replace(/\s+/g,'');const i=s.indexOf('TRIP1:');if(i<0)throw 0;return JSON.parse(decodeURIComponent(escape(atob(s.slice(i+6)))));}
 function bkDesc(o){const n=k=>{try{const v=JSON.parse(o[k]||'null');return Array.isArray(v)?v.length:(v&&Array.isArray(v.items)?v.items.length:0);}catch(e){return 0;}};
