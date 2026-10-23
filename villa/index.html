@@ -686,6 +686,7 @@ function migrate(){
     if(!S.data[s.id])S.data[s.id]=[];
   });
   if(!S.settings.linkMig){S.secs.forEach(function(s){s.cols.forEach(function(c){if(c.n===1&&((s.id==="construction"&&c.k==="الدفعات")||c.k==="دفعات العمال"))c.n=4;});});S.settings.linkMig=true;}
+  if(!S.settings.linkMig2){S.secs.forEach(function(s){if(s.id!=="workers"&&/الأيدي العاملة/.test(s.lb))s.cols.forEach(function(c){if(c.n===1)c.n=4;});});S.settings.linkMig2=true;}
   S.wp=(S.wp||[]).map(function(p){return{d:p.d||"",desc:p.desc||"",a:num(p.a)};});
   if(S.act&&!S.secs.some(function(s){return s.id===S.act;}))S.act="";
 }
