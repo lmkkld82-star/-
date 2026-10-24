@@ -1788,8 +1788,9 @@ const A={
  'tripapp-visited':{col:'visited',toMap:v=>{const m={};Object.keys(v||{}).forEach(k=>{m['v'+hash(k)]={k,t:v[k]};});return m;},
    fromMap:m=>{const o={};Object.values(m).forEach(x=>{if(x&&x.k)o[x.k]=x.t||1;});return o;},def:{}}
 };
-const S={code:LS.getItem('tripsync-code')||'',state:'off',fs:null,store:null,base:{},unsub:[],applying:false,timers:{},first:{}};
-try{const m=location.hash.match(/sync=([A-Za-z0-9]{6,20})/);if(m){S.code=m[1].toUpperCase();origSet.call(LS,'tripsync-code',S.code);history.replaceState(null,'',location.pathname+location.search);}}catch(e){}
+const SHARED='EYNKS7UT72JH';
+const S={code:SHARED,state:'off',fs:null,store:null,base:{},unsub:[],applying:false,timers:{},first:{}};
+
 const baseKey=k=>'tripsync-base:'+S.code+':'+k;
 const colName=k=>'trip_'+S.code+'_'+A[k].col;
 function setState(s){S.state=s;const el=document.getElementById('syState');if(el){el.className='sy-st '+s;el.innerHTML=stTxt();}const d=document.getElementById('syDot');if(d)d.className='sy-dot '+s;}
@@ -1847,30 +1848,11 @@ window.addEventListener('offline',()=>{ if(S.code) setState('offline'); });
 const genCode=()=>{const c='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let s='';const r=crypto.getRandomValues(new Uint32Array(8));for(let i=0;i<8;i++)s+=c[r[i]%c.length];return s;};
 const fmtCode=c=>c.slice(0,4)+'-'+c.slice(4);
 function card(){
-  if(!S.code) return '<div class="card2 sy"><div class="sy-h"><h3>المزامنة مع زميلك</h3><span class="sy-st off" id="syState">'+stTxt()+'</span></div>'+
-    '<p class="bkp">لما تفعّلها، المصاريف والمشتريات والملاحظات وعلامات الزيارة ومقارنة المصانع وبطاقات السائق تصير واحدة في الجوالين: أي تعديل عندك يطلع عنده خلال ثواني، والعكس.</p>'+
-    '<div class="btnrow"><button class="pbtn sun" type="button" id="syNew">إنشاء رمز مزامنة</button></div>'+
-    '<div class="sy-join"><input id="syIn" type="text" autocomplete="off" autocapitalize="characters" placeholder="أو الصق رمز زميلك هنا"><button class="pbtn" type="button" id="syJoin">ربط</button></div><div class="msg" id="syMsg"></div></div>';
   return '<div class="card2 sy on"><div class="sy-h"><h3>المزامنة مع زميلك</h3><span class="sy-st '+S.state+'" id="syState">'+stTxt()+'</span></div>'+
-    '<div class="sy-code"><small>رمز رحلتكم</small><b>'+fmtCode(S.code)+'</b></div>'+
-    '<p class="bkp">أرسل الرمز لزميلك، وهو يلصقه في نفس المكان في تطبيقه. أي واحد عنده الرمز يقدر يشوف ويعدّل البيانات، فلا ترسله لغيركم.</p>'+
-    '<div class="btnrow"><button class="pbtn sun" type="button" id="syShare">إرسال الرمز لزميلي</button><button class="pbtn c" type="button" id="syOff">إيقاف</button></div><div class="msg ok" id="syMsg"></div></div>';
+    '<p class="bkp">تلقائية: كل من يفتح رابط التطبيق يشوف نفس المصاريف والمشتريات والملاحظات وعلامات الزيارة ومقارنة المصانع، وأي تعديل يوصل للثاني خلال ثواني.</p></div>';
 }
 function rerender(){try{window.APP&&window.APP.reload&&window.APP.reload();}catch(e){}}
-function join(code){code=(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(code.length<6)return false;stop();S.code=code;origSet.call(LS,'tripsync-code',code);rerender();start();return true;}
-function click(e){
-  const id=e.target.id;
-  if(id==='syNew'){join(genCode());return true;}
-  if(id==='syJoin'){const v=(document.getElementById('syIn')||{}).value;if(!join(v)){const m=document.getElementById('syMsg');if(m)m.textContent='الرمز غير صحيح. انسخه كما وصلك.';}return true;}
-  if(id==='syShare'){const t='رمز مزامنة تطبيق رحلتنا: '+fmtCode(S.code)+'\nافتح التطبيق ← المصاريف ← المزامنة مع زميلك ← الصق الرمز واضغط ربط.\nالتطبيق: https://lmkkld82-star.github.io/-/trip/';
-    const m=document.getElementById('syMsg');
-    if(navigator.share) navigator.share({title:'رمز المزامنة',text:t}).catch(()=>{});
-    else (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{if(m)m.textContent='تم نسخ الرسالة، الصقها في الواتساب';},()=>{if(m)m.textContent=t;});
-    return true;}
-  if(id==='syOff'){if(!e.target.dataset.armed){e.target.dataset.armed='1';e.target.textContent='تأكيد الإيقاف؟';setTimeout(()=>{if(e.target.isConnected){delete e.target.dataset.armed;e.target.textContent='إيقاف';}},3000);return true;}
-    stop();S.code='';try{LS.removeItem('tripsync-code');}catch(x){}rerender();return true;}
-  return false;
-}
+function click(e){return false;}
 window.SYNC={card,click,state:()=>S.state};
 rerender(); start();
 })();
