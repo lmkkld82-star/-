@@ -617,6 +617,17 @@ mark.hit{animation:hitp 1.2s ease 2}
 .tab{transition:background .25s,color .25s,transform .12s}
 .card2{animation:none}
 @media (prefers-reduced-motion:reduce){.view.on:not(#v-book){animation:none}}
+.card2.sy .sy-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.card2.sy .sy-h h3{margin:0}
+.sy-st{margin-inline-start:auto;font-size:11.5px;font-weight:800;border-radius:20px;padding:3px 10px;background:var(--app2);color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+.sy-st.live{background:var(--jade-l);color:#0d6b5c}.sy-st.live i{width:7px;height:7px;border-radius:50%;background:var(--jade);animation:syp 1.6s infinite}
+.sy-st.connecting,.sy-st.offline{background:var(--gold-l);color:#7a5410}.sy-st.denied,.sy-st.error{background:var(--verm-l);color:#9a2d24}
+@keyframes syp{50%{opacity:.35}}
+.sy-join{display:flex;gap:8px;margin-top:10px}
+.sy-join input{flex:1;min-width:0;border:1.5px solid #e3d9c6;border-radius:12px;padding:8px 10px;font-family:var(--f-body);font-size:16px;background:var(--app);direction:ltr;text-align:center;letter-spacing:2px;text-transform:uppercase}
+.sy-code{text-align:center;background:var(--app);border:1.5px dashed var(--gold);border-radius:14px;padding:8px;margin:8px 0}
+.sy-code small{display:block;font-size:11px;color:var(--muted)}
+.sy-code b{font-size:24px;letter-spacing:4px;color:var(--hdr1);direction:ltr;display:inline-block;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -1425,7 +1436,14 @@ sRes.addEventListener('click',e=>{const it=e.target.closest('.srch-it');if(!it)r
 book.addEventListener('click',e=>{if(e.target.closest('[data-srch]')){e.preventDefault();openSearch();}});
 let built=false, ready=false;
 const start=()=>{ready=true;const r=book.getBoundingClientRect(); if(!r.width) return; lastW=r.width;lastH=r.height;build();built=true;};
+const tbReload=()=>{
+  try{const s=JSON.parse(localStorage.getItem(CMP_KEY)||'null'); if(s&&Array.isArray(s.items)){cmp.items=s.items; if(s.rate>0) cmp.rate=s.rate;}}catch(e){}
+  try{notes=JSON.parse(localStorage.getItem(NT_KEY)||'[]')||[];}catch(e){}
+  const ae=document.activeElement; const typing=ae&&ae.closest&&ae.closest('#ntHost,#cmpHost')&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName);
+  if(typing){setTimeout(tbReload,1500);return;}
+  renderCmp(); renderNotes(); };
 window.TB={
+  reload:tbReload,
   show(){ if(!ready) return; const r=book.getBoundingClientRect(); if(!built||Math.abs(r.width-lastW)>2||Math.abs(r.height-lastH)>2){ lastW=r.width;lastH=r.height; build(built?chapterOf(cur):null); built=true; } },
   search(){ const f=()=>{this.show();openSearch();}; if(ready) f(); else { const iv=setInterval(()=>{ if(ready){ clearInterval(iv); f(); } },100); } },
   open(id){ const doOpen=()=>{ this.show(); if(starts[id]!=null){ cur=starts[id]; layout(); } }; if(ready) doOpen(); else { const iv=setInterval(()=>{ if(ready){ clearInterval(iv); doOpen(); } },100); } }
@@ -1577,7 +1595,7 @@ function renderDriver(){
   }
   h+='</div>';
   $('#v-driver').innerHTML=h;
-  const f=$('#cardForm'); if(f) f.addEventListener('submit',e=>{e.preventDefault();const ar=$('#cf-ar').value.trim(),zh=$('#cf-zh').value.trim();if(!ar||!zh){$('#cfMsg').textContent='اكتب الاسم والنص.';return;}const c=load(customKey,[]);c.push({ar,zh});save(customKey,c);renderDriver();});
+  const f=$('#cardForm'); if(f) f.addEventListener('submit',e=>{e.preventDefault();const ar=$('#cf-ar').value.trim(),zh=$('#cf-zh').value.trim();if(!ar||!zh){$('#cfMsg').textContent='اكتب الاسم والنص.';return;}const c=load(customKey,[]);c.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),ar,zh});save(customKey,c);renderDriver();});
 }
 $('#v-driver').addEventListener('click',e=>{
   const s=e.target.closest('[data-seg]'); if(s){drvSeg=s.dataset.seg;renderDriver();return;}
@@ -1647,6 +1665,9 @@ $('#v-cur').addEventListener('change',e=>{if(e.target.dataset.rate) renderCur();
 const CATS=[['طيران','#2f74c0'],['فندق','#7b5cc4'],['أكل','#e8603f'],['مواصلات','#0f9d8f'],['تسوق','#f0a92e'],['بضاعة','#123a6b'],['أخرى','#8a8f98']];
 const WHO=['خالد','يونس','مشترك'];
 let exp=load('tripapp-exp',{items:[],budget:1500}), shop=load('tripapp-shop',[]);
+const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+if(shop.some(s=>!s.id)){shop.forEach(s=>{if(!s.id)s.id=newId();});save('tripapp-shop',shop);}
+{const cc=load('tripapp-cards',[]); if(cc.some(c=>!c.id)){cc.forEach(c=>{if(!c.id)c.id=newId();});save('tripapp-cards',cc);}}
 let expSeg='exp', xd={cat:'أكل',who:'مشترك',cur:'CNY'};
 const saveExp=()=>save('tripapp-exp',exp), saveShop=()=>save('tripapp-shop',shop);
 function renderExp(){
@@ -1688,6 +1709,7 @@ function renderExp(){
       if(shop.some(s=>s.done)) h+='<div class="btnrow"><button class="pbtn c" type="button" id="sClear">حذف المشتراة</button></div>';
     } else h+='<div class="empty2">القائمة فاضية. أضف هدايا الأهل وأي شيء ما تبغى تنساه.</div>';
   }
+  h+=window.SYNC?window.SYNC.card():'';
   h+='<div class="card2 bk"><h3>نقل البيانات والنسخ الاحتياطي</h3><p class="bkp">ينقل المصاريف وقائمة المشتريات ومقارنة المصانع وبطاقات السائق وأسعار العملات إلى نسخة ثانية من التطبيق.</p>'+
      '<div class="btnrow"><button class="pbtn sun" type="button" id="bkCopy">١ · انسخ بياناتي</button></div>'+
      '<textarea id="bkTxt" rows="3" placeholder="٢ · في النسخة الجديدة: الصق الرمز هنا"></textarea>'+
@@ -1697,7 +1719,7 @@ function renderExp(){
   const xf=$('#xForm'); if(xf) xf.addEventListener('submit',e=>{e.preventDefault();const a=parseFloat($('#x-a').value.replace(/,/g,''));if(!(a>0)){$('#xMsg').textContent='اكتب مبلغاً صحيحاً.';return;}
     xd.cur=$('#x-c').value; const now=new Date();
     exp.items.push({id:Date.now()+'',a,c:xd.cur,cat:xd.cat,who:xd.who,n:$('#x-n').value.trim(),d:now.getDate()+' '+(MON[now.getMonth()+1]||(now.getMonth()+1))});saveExp();renderExp();const m=$('#xMsg');if(m){m.className='msg ok';m.textContent='تمت الإضافة';}});
-  const sf=$('#sForm'); if(sf) sf.addEventListener('submit',e=>{e.preventDefault();const n=$('#s-n').value.trim();if(!n)return;shop.push({n,q:$('#s-q').value.trim(),w:$('#s-w').value.trim(),done:false});saveShop();renderExp();setTimeout(()=>{const i=$('#s-n');if(i)i.focus();},0);});
+  const sf=$('#sForm'); if(sf) sf.addEventListener('submit',e=>{e.preventDefault();const n=$('#s-n').value.trim();if(!n)return;shop.push({id:newId(),n,q:$('#s-q').value.trim(),w:$('#s-w').value.trim(),done:false});saveShop();renderExp();setTimeout(()=>{const i=$('#s-n');if(i)i.focus();},0);});
   const bi=$('#budget'); if(bi) bi.addEventListener('change',()=>{const v=parseFloat(bi.value);exp.budget=v>0?v:'';saveExp();renderExp();});
 }
 const BK_KEYS=['tripapp-exp','tripapp-shop','tripapp-cards','tripapp-rates','tripapp-rateinfo','tripapp-curamt','tripbook-compare-v1','tripbook-notes','tripapp-visited'];
@@ -1722,10 +1744,20 @@ $('#v-exp').addEventListener('click',e=>{
     if(!confirm('استرجاع: '+bkDesc(o)+'\nبيستبدل البيانات الحالية في هذي النسخة. متأكد؟'))return;
     Object.keys(o).forEach(k=>{if(BK_KEYS.includes(k))try{localStorage.setItem(k,o[k]);}catch(x){}});
     m.className='msg ok';m.textContent='تم الاسترجاع. يعاد تشغيل التطبيق…';try{localStorage.setItem('tripapp-view','exp');}catch(x){}setTimeout(()=>location.reload(),900);return;}
+  if(window.SYNC&&window.SYNC.click(e)) return;
   if(e.target.id==='xShare'){navigator.share({title:'مصاريف الرحلة',text:expSummary()}).catch(()=>{});}
 });
 $('#v-exp').addEventListener('change',e=>{const ch=e.target.closest('[data-sh]'); if(ch){shop[+ch.dataset.sh].done=ch.checked;saveShop();renderExp();}});
 
+function appReload(){
+  exp=load('tripapp-exp',{items:[],budget:1500}); shop=load('tripapp-shop',[]);
+  try{visited=JSON.parse(localStorage.getItem('tripapp-visited')||'{}')||{};}catch(e){}
+  const ae=document.activeElement; const typing=ae&&ae.closest&&ae.closest('.view')&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName);
+  if(typing){setTimeout(appReload,1500);return;}
+  const st=$('#dstrip')?$('#dstrip').scrollLeft:0, sy=$('#v-today').scrollTop, se=$('#v-exp').scrollTop;
+  renderToday(); if($('#dstrip')) $('#dstrip').scrollLeft=st; $('#v-today').scrollTop=sy; renderDriver(); renderExp(); $('#v-exp').scrollTop=se;
+}
+window.APP.reload=appReload;
 // ===================== boot =====================
 renderToday(); renderDriver(); renderCur(); renderExp();
 let startV='today'; try{const v=localStorage.getItem('tripapp-view'); if(['today','book','driver','cur','exp'].includes(v)) startV=v;}catch(e){}
@@ -1733,6 +1765,117 @@ show(startV);
 })();
 
 </script>
+<script>
+/* ===================== live sync between phones (Firestore) ===================== */
+(function(){
+const FB_CFG={apiKey:"AIzaSyCddsEwcS28synmIBdZgO3sjxW8svFmiqk",authDomain:"villa-tracker-d6afd.firebaseapp.com",projectId:"villa-tracker-d6afd",appId:"1:243044987734:web:4ed6fee900f3872601dcf7"};
+const LS=window.localStorage, origSet=Storage.prototype.setItem;
+const rd=(k,d)=>{try{const v=JSON.parse(LS.getItem(k)||'null');return v==null?d:v;}catch(e){return d;}};
+const wr=(k,v)=>{try{origSet.call(LS,k,JSON.stringify(v));}catch(e){}};
+const clean=o=>JSON.parse(JSON.stringify(o));
+const stable=o=>JSON.stringify(o,Object.keys(o||{}).sort());
+const byId=(a,b)=>String(a.id).localeCompare(String(b.id),'en',{numeric:true});
+const hash=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36);};
+const arr=(def)=>({toMap:v=>{const m={};(Array.isArray(v)?v:[]).forEach(i=>{if(i&&i.id)m['i'+i.id]=i;});return m;},fromMap:m=>Object.values(m).sort(byId),def});
+const A={
+ 'tripapp-exp':{col:'exp',toMap:v=>{const m={};((v&&v.items)||[]).forEach(i=>{if(i&&i.id)m['i'+i.id]=i;});m._budget={b:v&&v.budget!=null?v.budget:1500};return m;},
+   fromMap:m=>({items:Object.keys(m).filter(k=>k!=='_budget').map(k=>m[k]).sort(byId),budget:m._budget?m._budget.b:1500}),def:{items:[],budget:1500}},
+ 'tripapp-shop':Object.assign({col:'shop'},arr([])),
+ 'tripapp-cards':Object.assign({col:'cards'},arr([])),
+ 'tripbook-notes':Object.assign({col:'notes'},arr([])),
+ 'tripbook-compare-v1':{col:'cmp',toMap:v=>{const m={};((v&&v.items)||[]).forEach(i=>{if(i&&i.id)m['i'+i.id]=i;});if(v&&v.rate)m._rate={r:v.rate};return m;},
+   fromMap:m=>({items:Object.keys(m).filter(k=>k!=='_rate').map(k=>m[k]).sort(byId),rate:m._rate?m._rate.r:7.1}),def:{items:[],rate:7.1}},
+ 'tripapp-visited':{col:'visited',toMap:v=>{const m={};Object.keys(v||{}).forEach(k=>{m['v'+hash(k)]={k,t:v[k]};});return m;},
+   fromMap:m=>{const o={};Object.values(m).forEach(x=>{if(x&&x.k)o[x.k]=x.t||1;});return o;},def:{}}
+};
+const S={code:LS.getItem('tripsync-code')||'',state:'off',fs:null,store:null,base:{},unsub:[],applying:false,timers:{},first:{}};
+try{const m=location.hash.match(/sync=([A-Za-z0-9]{6,20})/);if(m){S.code=m[1].toUpperCase();origSet.call(LS,'tripsync-code',S.code);history.replaceState(null,'',location.pathname+location.search);}}catch(e){}
+const baseKey=k=>'tripsync-base:'+S.code+':'+k;
+const colName=k=>'trip_'+S.code+'_'+A[k].col;
+function setState(s){S.state=s;const el=document.getElementById('syState');if(el){el.className='sy-st '+s;el.innerHTML=stTxt();}const d=document.getElementById('syDot');if(d)d.className='sy-dot '+s;}
+function stTxt(){return {off:'غير مفعّلة',connecting:'جاري الاتصال…',live:'<i></i>متزامن مع زميلك',offline:'بدون إنترنت · يتزامن تلقائياً لما يرجع النت',denied:'المزامنة غير متاحة حالياً · البيانات محفوظة في جوالك',error:'تعذّر الاتصال · البيانات محفوظة في جوالك'}[S.state]||'';}
+Storage.prototype.setItem=function(k,v){origSet.call(this,k,v);if(this===LS&&A[k]&&S.store&&!S.applying)schedule(k);};
+function schedule(k){clearTimeout(S.timers[k]);S.timers[k]=setTimeout(()=>push(k),350);}
+function push(k){
+  if(!S.store||!S.first[k]) return;
+  const fs=S.fs, ad=A[k], local=ad.toMap(rd(k,ad.def)), base=S.base[k]||(S.base[k]={});
+  Object.keys(local).forEach(id=>{const s=stable(local[id]);if(base[id]!==s){base[id]=s;fs.setDoc(fs.doc(S.store,colName(k),id),clean(local[id])).catch(fail);}});
+  Object.keys(base).forEach(id=>{if(!(id in local)){delete base[id];fs.deleteDoc(fs.doc(S.store,colName(k),id)).catch(fail);}});
+  wr(baseKey(k),base);
+}
+function fail(e){const c=e&&e.code||'';if(c==='permission-denied')setState('denied');else if(c==='unavailable')setState('offline');else if(S.state!=='live')setState('error');}
+let reT=null;function refresh(){clearTimeout(reT);reT=setTimeout(()=>{try{window.APP&&window.APP.reload&&window.APP.reload();}catch(e){}try{window.TB&&window.TB.reload&&window.TB.reload();}catch(e){}},120);}
+function onSnap(k,qs){
+  const ad=A[k], local=ad.toMap(rd(k,ad.def)), base=S.base[k]||(S.base[k]={}); let changed=false;
+  if(!S.first[k]){
+    const R={};qs.docs.forEach(d=>{R[d.id]=d.data();});
+    Object.keys(R).forEach(id=>{const rs=stable(R[id]);
+      if(!(id in local)){ if(id in base){ S.fs.deleteDoc(S.fs.doc(S.store,colName(k),id)).catch(fail); delete base[id]; } else { local[id]=R[id]; base[id]=rs; changed=true; } }
+      else { const ls=stable(local[id]); if(ls===rs){base[id]=rs;} else if(base[id]!==undefined && base[id]!==ls){ /* edited here while offline: keep local, push later */ } else { local[id]=R[id]; base[id]=rs; changed=true; } } });
+    Object.keys(local).forEach(id=>{ if(!(id in R) && (id in base)){ delete local[id]; delete base[id]; changed=true; } });
+    S.first[k]=true;
+    if(changed){S.applying=true;wr(k,ad.fromMap(local));S.applying=false;}
+    wr(baseKey(k),base); push(k); if(changed) refresh(); return;
+  }
+  qs.docChanges().forEach(ch=>{ if(ch.doc.metadata.hasPendingWrites) return; const id=ch.doc.id;
+    if(ch.type==='removed'){ if(id in local){delete local[id];changed=true;} delete base[id]; }
+    else { const d=ch.doc.data(), rs=stable(d); if(base[id]!==rs || !(id in local) || stable(local[id])!==rs){ local[id]=d; base[id]=rs; changed=true; } } });
+  if(changed){S.applying=true;wr(k,ad.fromMap(local));S.applying=false;wr(baseKey(k),base);refresh();}
+}
+async function start(){
+  if(!S.code){setState('off');return;}
+  setState(navigator.onLine?'connecting':'offline');
+  Object.keys(A).forEach(k=>{S.base[k]=rd(baseKey(k),{});S.first[k]=false;});
+  try{
+    const V='10.12.2';
+    const appM=await import('https://www.gstatic.com/firebasejs/'+V+'/firebase-app.js');
+    const fs=await import('https://www.gstatic.com/firebasejs/'+V+'/firebase-firestore.js');
+    const app=appM.getApps().find(a=>a.name==='trip')||appM.initializeApp(FB_CFG,'trip');
+    let store; try{store=fs.initializeFirestore(app,{localCache:fs.persistentLocalCache({tabManager:fs.persistentMultipleTabManager()})});}catch(e){store=fs.getFirestore(app);}
+    S.fs=fs; S.store=store;
+    let got=0;
+    Object.keys(A).forEach(k=>{
+      S.unsub.push(fs.onSnapshot(fs.collection(store,colName(k)),{includeMetadataChanges:false},qs=>{
+        onSnap(k,qs); if(!qs.metadata.fromCache){ if(++got>=1) setState('live'); } else if(S.state==='connecting'&&!navigator.onLine) setState('offline');
+      },fail));
+    });
+  }catch(e){ setState(navigator.onLine?'error':'offline'); }
+}
+function stop(){S.unsub.forEach(u=>{try{u();}catch(e){}});S.unsub=[];S.store=null;setState('off');}
+window.addEventListener('online',()=>{ if(S.code&&!S.store) start(); else if(S.state==='offline') setState('live'); });
+window.addEventListener('offline',()=>{ if(S.code) setState('offline'); });
+const genCode=()=>{const c='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let s='';const r=crypto.getRandomValues(new Uint32Array(8));for(let i=0;i<8;i++)s+=c[r[i]%c.length];return s;};
+const fmtCode=c=>c.slice(0,4)+'-'+c.slice(4);
+function card(){
+  if(!S.code) return '<div class="card2 sy"><div class="sy-h"><h3>المزامنة مع زميلك</h3><span class="sy-st off" id="syState">'+stTxt()+'</span></div>'+
+    '<p class="bkp">لما تفعّلها، المصاريف والمشتريات والملاحظات وعلامات الزيارة ومقارنة المصانع وبطاقات السائق تصير واحدة في الجوالين: أي تعديل عندك يطلع عنده خلال ثواني، والعكس.</p>'+
+    '<div class="btnrow"><button class="pbtn sun" type="button" id="syNew">إنشاء رمز مزامنة</button></div>'+
+    '<div class="sy-join"><input id="syIn" type="text" autocomplete="off" autocapitalize="characters" placeholder="أو الصق رمز زميلك هنا"><button class="pbtn" type="button" id="syJoin">ربط</button></div><div class="msg" id="syMsg"></div></div>';
+  return '<div class="card2 sy on"><div class="sy-h"><h3>المزامنة مع زميلك</h3><span class="sy-st '+S.state+'" id="syState">'+stTxt()+'</span></div>'+
+    '<div class="sy-code"><small>رمز رحلتكم</small><b>'+fmtCode(S.code)+'</b></div>'+
+    '<p class="bkp">أرسل الرمز لزميلك، وهو يلصقه في نفس المكان في تطبيقه. أي واحد عنده الرمز يقدر يشوف ويعدّل البيانات، فلا ترسله لغيركم.</p>'+
+    '<div class="btnrow"><button class="pbtn sun" type="button" id="syShare">إرسال الرمز لزميلي</button><button class="pbtn c" type="button" id="syOff">إيقاف</button></div><div class="msg ok" id="syMsg"></div></div>';
+}
+function rerender(){try{window.APP&&window.APP.reload&&window.APP.reload();}catch(e){}}
+function join(code){code=(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(code.length<6)return false;stop();S.code=code;origSet.call(LS,'tripsync-code',code);rerender();start();return true;}
+function click(e){
+  const id=e.target.id;
+  if(id==='syNew'){join(genCode());return true;}
+  if(id==='syJoin'){const v=(document.getElementById('syIn')||{}).value;if(!join(v)){const m=document.getElementById('syMsg');if(m)m.textContent='الرمز غير صحيح. انسخه كما وصلك.';}return true;}
+  if(id==='syShare'){const t='رمز مزامنة تطبيق رحلتنا: '+fmtCode(S.code)+'\nافتح التطبيق ← المصاريف ← المزامنة مع زميلك ← الصق الرمز واضغط ربط.\nالتطبيق: https://lmkkld82-star.github.io/-/trip/';
+    const m=document.getElementById('syMsg');
+    if(navigator.share) navigator.share({title:'رمز المزامنة',text:t}).catch(()=>{});
+    else (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{if(m)m.textContent='تم نسخ الرسالة، الصقها في الواتساب';},()=>{if(m)m.textContent=t;});
+    return true;}
+  if(id==='syOff'){if(!e.target.dataset.armed){e.target.dataset.armed='1';e.target.textContent='تأكيد الإيقاف؟';setTimeout(()=>{if(e.target.isConnected){delete e.target.dataset.armed;e.target.textContent='إيقاف';}},3000);return true;}
+    stop();S.code='';try{LS.removeItem('tripsync-code');}catch(x){}rerender();return true;}
+  return false;
+}
+window.SYNC={card,click,state:()=>S.state};
+rerender(); start();
+})();
+</script>
+
 
 
 <script>
