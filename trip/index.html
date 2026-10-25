@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#14213d">
+<meta name="theme-color" content="#221d1a">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -628,6 +628,231 @@ mark.hit{animation:hitp 1.2s ease 2}
 .sy-code{text-align:center;background:var(--app);border:1.5px dashed var(--gold);border-radius:14px;padding:8px;margin:8px 0}
 .sy-code small{display:block;font-size:11px;color:var(--muted)}
 .sy-code b{font-size:24px;letter-spacing:4px;color:var(--hdr1);direction:ltr;display:inline-block;font-variant-numeric:tabular-nums}
+/* ================= THEME v4 · anodized: bronze, champagne, satin aluminium ================= */
+:root{
+  --ink:#1E2124; --muted:#6A6F73; --hair:#E1E3DE;
+  --app:#EDEEEA; --app2:#E3E5E0; --surf:#FFFFFF; --satin:#F5F6F3;
+  --hdr1:#2A2420; --hdr2:#3D3129; --bronze:#2A2420;
+  --gold:#C9AE78; --gold-d:#8E7240; --gold-l:#F1E7CF; --champ:#D9C291; --champ-hi:#F3E6C5;
+  --verm:#B0402E; --verm-l:#F4E2DC; --jade:#2A7768; --jade-l:#DDEDE8; --sky:#4C6884; --sky-l:#E3E9F0;
+  --teal:var(--jade); --teal-l:var(--jade-l); --coral:var(--verm); --coral-l:var(--verm-l); --sun:var(--gold); --sun-l:var(--gold-l);
+  --desk:#1B1816; --desk2:#3A3029;
+  --navy:#2A2420; --navy2:#4C6884; --brass:#B8964F; --brass-d:#8E7240; --brass-l:#EADFC5;
+  --shadow:0 1px 2px rgba(42,36,32,.05),0 12px 28px -16px rgba(42,36,32,.32);
+  --brushed:repeating-linear-gradient(90deg,rgba(255,255,255,.022) 0 1px,transparent 1px 4px),radial-gradient(120% 70% at 85% -10%,rgba(217,194,145,.20),transparent 60%),linear-gradient(170deg,#3E3229 0%,#2A2420 48%,#1E1B19 100%);
+}
+body,.view{background:var(--app)}
+.app[data-v="book"]{background:var(--desk)}
+/* ---------- window hero ---------- */
+.hero2{position:relative;color:#F4ECDA;padding:calc(8px + env(safe-area-inset-top,0px)) 16px 16px;border-radius:0 0 28px 28px;background:var(--brushed);box-shadow:0 14px 30px -20px rgba(20,16,12,.7)}
+.hero2>*{max-width:528px;margin-left:auto;margin-right:auto}
+.htop{display:flex;align-items:center;justify-content:space-between;height:42px;margin-bottom:6px}
+.brand{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:16px;color:var(--champ)}
+.sy-dot{width:7px;height:7px;border-radius:50%;background:rgba(217,194,145,.25)}
+.sy-dot.live{background:#63D3B8;box-shadow:0 0 0 3px rgba(99,211,184,.2)}
+.sy-dot.connecting,.sy-dot.offline{background:var(--champ)}
+.sy-dot.denied,.sy-dot.error{background:#E0705C}
+.hero2 .hsrch{position:static;width:40px;height:40px;border-radius:50%;border:1px solid rgba(217,194,145,.38);background:rgba(255,255,255,.05);color:var(--champ-hi);display:grid;place-items:center;cursor:pointer;padding:0}
+.hero2 .hsrch svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.win{position:relative;padding:7px 7px 6px;border-radius:12px;background:linear-gradient(135deg,#F2E4BF 0%,#BFA169 28%,#E9D6A6 52%,#A98B54 78%,#E6D2A0 100%);box-shadow:0 16px 34px -14px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(0,0,0,.25)}
+.glass{position:relative;height:216px;border-radius:5px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35),inset 0 6px 14px rgba(0,0,0,.25)}
+.pane-top{position:absolute;top:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 14px;font-size:12.5px;font-weight:700;color:var(--sub);z-index:2;white-space:nowrap}
+.pane-top .kick{color:var(--kick)}
+.pane-top .lt{font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis}
+.transom{position:absolute;top:44px;left:0;right:0;height:5px;background:linear-gradient(180deg,#F0E1B9,#B39761 55%,#8E7445);box-shadow:0 1px 2px rgba(0,0,0,.35);z-index:3}
+.pane-main{position:absolute;top:60px;right:16px;left:16px;z-index:2;color:var(--txt)}
+.pane-main h1{margin:0;font-size:33px;font-weight:800;line-height:1.15;text-shadow:var(--tsh)}
+.pane-main p{margin:6px 0 0;font-size:13px;line-height:1.6;color:var(--sub)}
+.skyline{position:absolute;left:0;right:0;bottom:0;height:120px;z-index:1}
+.skyline svg{width:100%;height:100%;display:block}
+.skyline svg path{fill:var(--sil)}
+.skyline svg .far{fill:var(--sil2)}
+.skyline svg .arc{fill:none;stroke:var(--sil);stroke-width:1.6;stroke-dasharray:4 6}
+.stars{position:absolute;left:0;right:0;top:0;height:62%;z-index:0;opacity:.85;background-image:radial-gradient(1.3px 1.3px at 12% 72%,#fff 60%,transparent 62%),radial-gradient(1px 1px at 22% 40%,#fff 60%,transparent 62%),radial-gradient(1.2px 1.2px at 35% 84%,#fff 60%,transparent 62%),radial-gradient(1px 1px at 48% 58%,#fff 60%,transparent 62%),radial-gradient(1.4px 1.4px at 58% 92%,#fff 60%,transparent 62%),radial-gradient(1px 1px at 70% 70%,#fff 60%,transparent 62%),radial-gradient(1.2px 1.2px at 82% 86%,#fff 60%,transparent 62%),radial-gradient(1px 1px at 92% 52%,#fff 60%,transparent 62%),radial-gradient(1px 1px at 6% 50%,#fff 60%,transparent 62%)}
+.refl{position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(112deg,transparent 0 38%,rgba(255,255,255,.13) 44%,rgba(255,255,255,.04) 50%,transparent 56%)}
+.win.anim .refl{animation:sweep 1.8s .2s cubic-bezier(.3,.6,.2,1) both}
+@keyframes sweep{from{transform:translateX(75%);opacity:0}to{transform:none;opacity:1}}
+.sky-night{background:radial-gradient(110% 80% at 15% 0%,#3A4677 0%,#1C2447 46%,#0D1229 100%);--txt:#F7F0DE;--sub:rgba(247,240,222,.74);--kick:#E9D29C;--sil:rgba(5,7,16,.9);--sil2:rgba(24,30,58,.8);--tsh:0 2px 14px rgba(0,0,0,.45)}
+.sky-dawn{background:linear-gradient(180deg,#2E3A68 0%,#6E5C8E 38%,#D98E7A 72%,#F4C08F 100%);--txt:#FFF8EC;--sub:rgba(255,248,236,.84);--kick:#FFE2AE;--sil:rgba(36,24,44,.82);--sil2:rgba(80,58,92,.5);--tsh:0 2px 12px rgba(40,20,40,.4)}
+.sky-day{background:linear-gradient(180deg,#5E98C4 0%,#94BEDC 45%,#D7E7EF 82%,#EEF3F2 100%);--txt:#13263A;--sub:rgba(19,38,58,.78);--kick:#6B5430;--sil:rgba(44,64,86,.52);--sil2:rgba(80,106,130,.26);--tsh:0 1px 10px rgba(255,255,255,.55)}
+.sky-dusk{background:linear-gradient(180deg,#2A2C55 0%,#6B4A72 40%,#D97A58 76%,#F1AE74 100%);--txt:#FFF7EA;--sub:rgba(255,247,234,.82);--kick:#FFDCA6;--sil:rgba(30,18,36,.85);--sil2:rgba(78,48,80,.5);--tsh:0 2px 12px rgba(30,10,30,.45)}
+.sill{height:4px;margin:6px 4px 1px;border-radius:3px;background:rgba(60,44,26,.35);overflow:hidden;display:flex;justify-content:flex-start}
+.sill i{display:block;height:100%;background:linear-gradient(90deg,#FFF4D6,#fff);border-radius:3px;box-shadow:0 0 8px rgba(255,240,200,.8)}
+.tzrow{display:grid;grid-template-columns:repeat(3,1fr);margin-top:14px}
+.tz{position:relative;text-align:center;padding:0 0 4px;color:#F7F0DE}
+.tz+.tz::before{content:"";position:absolute;right:0;top:6px;bottom:8px;width:1px;background:rgba(217,194,145,.2)}
+.tz span{display:block;font-size:11.5px;font-weight:700;color:rgba(217,194,145,.8)}
+.tz b{display:block;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;direction:ltr;line-height:1.25}
+.tz small{display:block;font-size:10.5px;color:rgba(244,236,218,.48)}
+.tz.on span{color:var(--champ-hi)}
+.tz.on::after{content:"";position:absolute;bottom:-4px;left:50%;width:18px;height:2px;margin-left:-9px;border-radius:2px;background:var(--champ)}
+.w2{padding-top:16px}
+/* ---------- boarding pass ---------- */
+.bpass{position:relative;background:var(--surf);border:1px solid var(--hair);border-radius:20px;box-shadow:var(--shadow);margin-bottom:12px;overflow:hidden}
+.bpass::before{content:"";position:absolute;top:0;right:0;left:0;height:4px;background:linear-gradient(90deg,#BFA169,#F2E4BF 50%,#BFA169)}
+.bp-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 0;font-size:12px;color:var(--muted)}
+.bp-head b{color:var(--ink);font-weight:800}
+.bp-route{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:6px 16px 14px}
+.bp-pt{color:var(--ink)}
+.bp-pt b{display:block;font-size:31px;font-weight:800;letter-spacing:1px;line-height:1.1;direction:ltr;text-align:right}
+.bp-pt.to b{text-align:left}
+.bp-pt.to{text-align:left}
+.bp-pt span{display:block;font-size:12px;color:var(--muted)}
+.bp-pt em{display:block;font-style:normal;font-weight:800;font-size:15px;color:var(--gold-d);font-variant-numeric:tabular-nums;margin-top:2px}
+.bp-mid{display:flex;align-items:center;gap:6px;color:var(--gold-d);min-width:84px}
+.bp-mid i{flex:1;border-top:1.5px dashed #D3C6A6}
+.bp-mid svg{width:22px;height:22px;fill:currentColor;stroke:none;transform:scaleX(-1)}
+.bp-perf{position:relative;height:0;margin:0 18px;border-top:2px dashed #E1E3DE}
+.bp-perf::before,.bp-perf::after{content:"";position:absolute;top:-12px;width:22px;height:22px;border-radius:50%;background:var(--app);box-shadow:inset 0 0 0 1px var(--hair)}
+.bp-perf::before{right:-30px}.bp-perf::after{left:-30px}
+.bp-foot{display:grid;grid-template-columns:1.3fr 1fr auto;gap:10px;align-items:end;padding:12px 16px 15px;color:var(--ink)}
+.bp-foot small{display:block;font-size:11px;color:var(--muted);margin-bottom:2px}
+.bp-foot b{display:block;font-size:13.5px;font-weight:800;line-height:1.35}
+.bp-cd{background:var(--bronze);color:var(--champ-hi);border-radius:12px;padding:6px 10px;text-align:center}
+.bp-cd small{color:rgba(243,230,197,.7)}
+.bp-cd b{font-variant-numeric:tabular-nums;white-space:nowrap;direction:rtl}
+/* ---------- cards, planner, timeline ---------- */
+.card2{border:1px solid var(--hair);border-radius:22px;box-shadow:var(--shadow)}
+.card2 h3{color:var(--ink)}
+.dstrip{gap:8px;padding:2px 2px 10px}
+.dchip{width:50px;border:1px solid var(--hair);background:var(--satin);border-radius:14px;padding:7px 0 6px;color:var(--ink);box-shadow:none}
+.dchip span{font-size:10.5px;color:var(--muted)}
+.dchip b{font-size:19px;font-weight:800}
+.dchip i{width:16px;height:3px;border-radius:2px;margin:5px auto 0}
+.dchip.gz i{background:var(--verm)}.dchip.bk i{background:var(--jade)}.dchip.tr i{background:var(--sky)}
+.dchip.today{border-color:var(--champ);box-shadow:inset 0 0 0 1px var(--champ)}
+.dchip.on{background:var(--bronze);border-color:var(--bronze);color:var(--champ-hi);box-shadow:0 10px 18px -10px rgba(42,36,32,.8)}
+.dchip.on span{color:rgba(243,230,197,.68)}
+.dchip.on i{opacity:.9}
+.dchip em svg{stroke:var(--jade)}.dchip.on em svg{stroke:#7FD9C4}
+.dayhead{gap:8px;margin:4px 0 8px;flex-wrap:wrap}
+.dayhead h3{font-size:17px}
+.city,.city.gz,.city.bk,.city.tr{background:transparent;border:1px solid currentColor;padding:1px 10px;font-size:11.5px}
+.city.gz{color:var(--verm)}.city.bk{color:var(--jade)}.city.tr{color:var(--sky)}
+.vprog{background:var(--satin);border:1px solid var(--hair);color:var(--muted)}
+.vprog.vfull{background:var(--jade-l);border-color:transparent;color:var(--jade)}
+.tl{margin-top:4px}
+.tl::before{right:70px;top:18px;bottom:18px;width:1.5px;background:var(--hair)}
+.tl li{display:grid;grid-template-columns:48px 30px minmax(0,1fr) auto;column-gap:8px;align-items:start;padding:8px 0}
+.tl .tm{width:auto;background:transparent;border:0;border-radius:0;padding:7px 0 0;font-size:12px;font-weight:800;color:var(--muted);text-align:center;align-self:start}
+.tl .ib{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;position:relative;z-index:1;box-shadow:0 0 0 4px var(--surf)}
+.tl .ib svg,.qa .qi svg,.pbtn svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tl .ib svg{width:16px;height:16px}
+.c-b{background:#F2EADA;color:#7A6136}.c-r{background:var(--verm-l);color:var(--verm)}.c-j{background:var(--jade-l);color:var(--jade)}.c-s{background:var(--sky-l);color:var(--sky)}
+.tl .tx{padding-top:5px;font-size:14px;line-height:1.55;color:var(--ink)}
+.tl .tx .tt{font-weight:700}
+.tl .tx small{display:block;margin-top:2px;font-size:12px;color:var(--muted)}
+.tl .tx small span+span::before{content:"، "}
+.tl .tx small .tg+span::before{content:"";margin:0 6px 0 0}
+.tg{background:transparent!important;font-weight:800;margin-inline-end:8px}
+.tg.c-b{color:#8E7240}.tg.c-r{color:var(--verm)}.tg.c-j{color:var(--jade)}.tg.c-s{color:var(--sky)}
+.tl .ml{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.mlink{margin:0;padding:2px 9px;border-radius:20px;background:var(--satin);border:1px solid var(--hair);color:var(--sky);font-size:12px}
+.mlink.a{background:#FAF6EC;border-color:#E9DFC8;color:#8E7240}
+.vchk{order:0;width:30px;height:30px;margin-top:0;border:1.5px dashed #C9CDC5;background:transparent}
+.vchk svg{stroke:#C2C6BE}
+.vchk.on{border:2px solid var(--jade);background:var(--jade-l);transform:rotate(-12deg);box-shadow:0 0 0 2px var(--surf),0 0 0 3.5px rgba(42,119,104,.38)}
+.vchk.on svg{stroke:var(--jade)}
+.tl li.done .tx{opacity:.5}
+.tl li.done .ib{opacity:.55;filter:saturate(.4)}
+.vtrip{margin-top:14px}
+.vtrip .vbar{background:var(--app2)}
+.vtrip .vbar i{background:linear-gradient(90deg,var(--jade),#5BB3A0)}
+/* ---------- quick actions ---------- */
+.sec-t{font-size:13px;font-weight:800;color:var(--ink);letter-spacing:0;margin:20px 4px 10px}
+.quick{gap:10px}
+.qa{display:grid;grid-template-columns:38px minmax(0,1fr);grid-template-rows:auto auto;column-gap:10px;row-gap:1px;align-items:center;background:var(--surf)!important;border:1px solid var(--hair);border-radius:18px;padding:12px;box-shadow:var(--shadow);color:var(--ink);overflow:visible}
+.qa::before{display:none!important}
+.qa .qi{grid-row:1/3;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;opacity:1;font-size:inherit}
+.qa .qi svg{width:19px;height:19px}
+.qa b{font-size:13.5px;line-height:1.3}
+.qa .qs{font-size:11.5px;color:var(--muted);opacity:1;line-height:1.35}
+/* ---------- buttons, segments, forms ---------- */
+.pbtn{background:var(--bronze);color:var(--champ-hi);border-radius:13px;box-shadow:0 8px 16px -10px rgba(42,36,32,.7)}
+.pbtn svg{width:16px;height:16px}
+.pbtn.l{background:var(--satin);color:var(--ink);border:1px solid var(--hair);box-shadow:none}
+.pbtn.sun{background:linear-gradient(135deg,#ECDBAE,#C9AE78 55%,#E6D2A0);color:#2A2117;box-shadow:0 8px 16px -10px rgba(142,114,64,.75)}
+.pbtn.c{background:var(--verm-l);color:var(--verm);box-shadow:none}
+.seg{background:var(--app2)}
+.seg button.on{color:var(--ink);box-shadow:0 2px 8px rgba(42,36,32,.12)}
+.f2 label{color:var(--ink)}
+.f2 input,.f2 select,.cur input,.rates input,#bkTxt,.sy-join input{background:var(--satin);border-color:var(--hair)}
+.f2 input:focus,.f2 select:focus,.cur input:focus{border-color:var(--gold-d);background:#fff}
+.chips button{border-color:var(--hair)}
+.chips button.on{background:var(--bronze);border-color:var(--bronze);color:var(--champ-hi)}
+.empty2{border-color:#D3D7CF}
+/* ---------- tab bar ---------- */
+.tabs{position:relative;margin:0 12px calc(8px + env(safe-area-inset-bottom,0px));padding:6px;border-radius:24px;border:1px solid rgba(217,194,145,.18);background:rgba(34,29,26,.93);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);box-shadow:0 16px 32px -14px rgba(20,16,12,.6)}
+.tab,.tab.on{position:relative;z-index:1;background:none!important;border-radius:18px}
+.tab{color:rgba(243,230,197,.5)}
+.tab.on{color:var(--champ-hi)}
+.tab.on svg{stroke:var(--champ)}
+.tab-ind{position:absolute;z-index:0;top:6px;bottom:6px;right:6px;width:calc((100% - 12px) / 5);border-radius:18px;background:linear-gradient(180deg,rgba(217,194,145,.24),rgba(217,194,145,.1));box-shadow:inset 0 0 0 1px rgba(217,194,145,.3);transform:translateX(calc(var(--ti,0) * -100%));transition:transform .38s cubic-bezier(.3,.7,.2,1);pointer-events:none}
+@media (prefers-reduced-motion:reduce){.tab-ind{transition:none}.win.anim .refl{animation:none}}
+/* ---------- section headers ---------- */
+.phead,.phead.teal,.phead.coral,.phead.sun{position:relative;overflow:hidden;background:var(--brushed);color:#F4ECDA;border-radius:0 0 26px 26px;padding:calc(18px + env(safe-area-inset-top,0px)) 20px 22px;margin-bottom:16px}
+.phead::after{content:"";position:absolute;inset:auto 22px 11px 22px;height:1px;background:linear-gradient(90deg,transparent,rgba(217,194,145,.5),transparent)}
+.phead h2{color:#F7F0DE;font-size:22px}
+.phead p{color:rgba(244,236,218,.66)}
+.hero::before,.hero::after{display:none}
+/* ---------- driver ---------- */
+.dcard{position:relative;overflow:hidden;border:1px solid var(--hair);box-shadow:none;border-radius:16px}
+.dcard::before{content:"";position:absolute;right:0;top:12px;bottom:12px;width:3px;border-radius:3px 0 0 3px;background:var(--verm)}
+.dcard:has(.en)::before{background:var(--jade)}
+.dcard .zh{color:var(--ink);font-size:18px;font-weight:400}
+.dcard .en{color:var(--jade)}
+.phr{border:1px solid var(--hair);box-shadow:none}
+.phr .zh{color:var(--verm)}.phr .zh.th{color:var(--jade)}
+.full{background:#FFFDF8}
+.full::before{background:linear-gradient(90deg,#BFA169,#F2E4BF 50%,#BFA169)}
+/* ---------- currency ---------- */
+.cur .row{border:1px solid var(--hair);box-shadow:none;border-radius:18px}
+.cur .fl{border-radius:50%}
+.qamt button{background:var(--surf);border:1px solid var(--hair);color:var(--ink)}
+.ref td{border-bottom-color:var(--hair)}
+.ref td:last-child{color:var(--ink)}
+/* ---------- expenses ---------- */
+.tot{color:var(--ink)}
+.pbar{height:8px;background:var(--app2)}
+.pbar i{background:linear-gradient(90deg,var(--jade),var(--gold))}
+.donut{display:flex;align-items:center;gap:16px;margin-top:14px}
+.donut .dc{position:relative;flex:none;width:120px;height:120px}
+.donut svg{width:120px;height:120px;display:block}
+.donut .ctr{position:absolute;inset:0;display:grid;place-content:center;text-align:center;color:var(--ink)}
+.donut .ctr b{font-size:21px;font-weight:800;line-height:1.1}
+.donut .ctr small{font-size:11px;color:var(--muted)}
+.dleg{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px;font-size:12.5px}
+.dleg div{display:flex;align-items:center;gap:8px}
+.dleg i{flex:none;width:9px;height:9px;border-radius:3px}
+.dleg span{flex:1;min-width:0;font-weight:700;color:var(--ink)}
+.dleg em{font-style:normal;font-weight:800;color:var(--muted);direction:ltr;font-variant-numeric:tabular-nums}
+.settle{background:var(--satin);border:1px solid var(--hair);color:var(--ink)}
+.xp,.shop{border:1px solid var(--hair);box-shadow:none}
+/* ---------- book ---------- */
+#v-book{background:radial-gradient(130% 80% at 50% 0%,#3A3029 0%,#1B1816 72%)}
+.cover,.backc{background:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0 1px,transparent 1px 4px),linear-gradient(165deg,#3E3229,#221D1A 72%)}
+.cover .frame,.backc .frame{border-color:rgba(217,194,145,.85)}
+.cover .frame2,.backc .frame2{border-color:rgba(217,194,145,.3)}
+.cover h1{color:#F7EEDC}
+.cover h1 em,.cover .kick,.cover .who small,.cover .cvsky{color:var(--champ)}
+.pin.a{background:#A88A52}
+.srch{background:rgba(27,24,22,.97)}
+.srch-top{box-shadow:0 0 0 2px var(--champ)}
+.srch-top button{background:var(--bronze);color:var(--champ-hi)}
+.srch-n{color:#E9D9B2}
+.srch-it{border-right-color:var(--champ)}
+.tosrch{background:#F1E9D8;color:#6B5430}
+.nt-tags button.on,.nt-filter button.on{background:var(--bronze);border-color:var(--bronze);color:var(--champ-hi)}
+.nt-add{background:linear-gradient(135deg,#ECDBAE,#C9AE78 55%,#E6D2A0)}
+
+#budget{color:var(--ink)!important;background:var(--satin)!important;border-color:var(--hair)!important}
+.dcard{flex-wrap:nowrap;align-items:center}
+.dcard .t{flex:1 1 42%;min-width:0}
+.dcard .zh,.dcard .en{flex:0 1 auto;max-width:56%;white-space:normal;word-break:break-all;line-height:1.35;text-align:left}
+.dcard .zh{font-size:17px}
+.sy-dot.denied,.sy-dot.error,.sy-dot.off{display:none}
+.tl .tx .tt{font-size:13.5px}
+@media (max-width:370px){.pane-main h1{font-size:28px}.glass{height:200px}.bp-pt b{font-size:26px}.tz b{font-size:18px}.tl li{grid-template-columns:42px 28px minmax(0,1fr) auto;column-gap:6px}.tl::before{right:62px}}
 </style>
 </head>
 <body>
@@ -656,7 +881,7 @@ mark.hit{animation:hitp 1.2s ease 2}
   <section class="view" id="v-cur" aria-label="العملات"></section>
   <section class="view" id="v-exp" aria-label="المصاريف"></section>
 </div>
-<nav class="tabs" aria-label="أقسام التطبيق">
+<nav class="tabs" aria-label="أقسام التطبيق"><i class="tab-ind" aria-hidden="true"></i>
   <button class="tab on" data-v="today" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>اليوم</button>
   <button class="tab" data-v="book" type="button"><svg viewBox="0 0 24 24"><path d="M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5z"/><path d="M12 6v14"/></svg>الكتاب</button>
   <button class="tab" data-v="driver" type="button"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="3"/><path d="M7 9h10M7 13h6"/><path d="M9 18l-1 3M15 18l1 3"/></svg>السائق</button>
@@ -877,7 +1102,7 @@ mark.hit{animation:hitp 1.2s ease 2}
       <tr><td class="k">ربل وسيليكون وشبك</td><td>داخل سوق بومي وحوله</td><td><span class="cn">密封条 · 玻璃胶 · 纱网</span><br>اطلب عينات</td></tr>
       <tr><td class="k">الشحن إلى عُمان</td><td>شياوبي<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%B0%8F%E5%8C%97&city=%E5%B9%BF%E5%B7%9E" target="_blank" rel="noopener" aria-label="شياوبي على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a>، قوانغتشو</td><td><span class="cn">小北</span><br>وكلاء شحن يتكلمون العربية</td></tr>
     </tbody></table></div>
-  <div class="note"><b class="t">اعرض الاسم الصيني على السائق</b>واطلب من المصنع عنوانه بالصيني أو سيارة من الفندق؛ كثير من المصانع ترسل سائقاً مجاناً للمشترين الجادين.</div><h3>المنزل الذكي: شاشات التحكم والمفاتيح</h3><p>شاشات التحكم على الجدار والمفاتيح الذكية أغلبها تنصنع في شنتشن وتشونغشان وفوشان، فأرخص سعر يكون في أسواق الجملة وعند المصانع، مو في المحلات.</p><div class="tw"><table><thead><tr><th>المكان</th><th>المسافة</th><th>الاسم الصيني · ملاحظة</th></tr></thead><tbody><tr><td class="k">مدينة هوايي، فوشان<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%8D%8E%E8%89%BA%E5%9B%BD%E9%99%85%E8%A3%85%E9%A5%B0%E5%8D%9A%E8%A7%88%E5%9F%8E&city=%E4%BD%9B%E5%B1%B1" target="_blank" rel="noopener" aria-label="هوايي على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>ضمن زيارة 4 نوفمبر</td><td><span class="cn">智能家居 · 智能开关 · 中控屏</span><br>ابدأ هنا: قسم الإنارة والمفاتيح، وقارن الأسعار</td></tr><tr><td class="k">بلدة قوتشن، تشونغشان<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%8F%A4%E9%95%87%E7%81%AF%E9%A5%B0%E5%9F%8E&city=%E4%B8%AD%E5%B1%B1" target="_blank" rel="noopener" aria-label="قوتشن على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>ساعة ونص بالسيارة</td><td><span class="cn">中山古镇灯饰城</span><br>عاصمة الإنارة في الصين: ألواح ومفاتيح بسعر المصنع</td></tr><tr><td class="k">هواتشيانغبي، شنتشن<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%8D%8E%E5%BC%BA%E5%8C%97&city=%E6%B7%B1%E5%9C%B3" target="_blank" rel="noopener" aria-label="هواتشيانغبي على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>ساعة بالقطار السريع من محطة قوانغتشو الجنوبية</td><td><span class="cn">深圳华强北</span><br>أكبر سوق إلكترونيات، والأرخص للكميات</td></tr><tr><td class="k">قانغدينغ، تيانخه<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%B2%97%E9%A1%B6%20%E7%94%B5%E8%84%91%E5%9F%8E&city=%E5%B9%BF%E5%B7%9E" target="_blank" rel="noopener" aria-label="قانغدينغ على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>30 دقيقة من الفندق</td><td><span class="cn">岗顶电脑城</span><br>ماركات معروفة بالمفرق، مثل Aqara وXiaomi</td></tr></tbody></table></div><div class="note"><b>قبل الشراء:</b> اختر مقاس <span class="cn">86型</span>، لأنه يركب في علب المفاتيح المربعة المستخدمة في عُمان. وتأكد إن التطبيق عالمي مثل Tuya أو Smart Life، مو نسخة للصين بس. واسأل الكهربائي إذا علبة المفتاح فيها سلك نيوترال، وإذا ما فيها اطلب نوع <span class="cn">单火</span> (بدون نيوترال). وخذ عينة وجرّبها قبل الكمية، واشحنها مع شحنة الألمنيوم.</div>
+  <div class="note"><b class="t">اعرض الاسم الصيني على السائق</b>واطلب من المصنع عنوانه بالصيني أو سيارة من الفندق؛ كثير من المصانع ترسل سائقاً مجاناً للمشترين الجادين.</div><h3>المنزل الذكي: شاشات التحكم والمفاتيح</h3><p>شاشات التحكم على الجدار والمفاتيح الذكية تُصنع أغلبها في شنتشن وتشونغشان وفوشان. في قوانغتشو تلقاها في أسواق الإنارة ومواد الديكور، وفي معارض الماركات داخل مولات الأثاث. شوف الجودة في المعارض، واشترِ من السوق أو المصنع.</p><h4>قريب من الفندق</h4><div class="tw"><table><thead><tr><th>المكان</th><th>المسافة</th><th>الاسم الصيني · ملاحظة</th></tr></thead><tbody><tr><td class="k">سوق تونغده للديكور<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%90%8C%E5%BE%B7%E8%A3%85%E9%A5%B0%E5%9F%8E&city=%E5%B9%BF%E5%B7%9E" target="_blank" rel="noopener" aria-label="سوق تونغده على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>مشي من الفندق، شارع شيتشا 225</td><td><span class="cn">同德装饰城</span><br>مواد ديكور وأدوات كهربائية: ابدأ منه للمقارنة</td></tr><tr><td class="k">معرض ليلين في مول إيزي هوم<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%B1%85%E7%84%B6%E4%B9%8B%E5%AE%B6%20%E7%9F%B3%E6%BD%AD&city=%E5%B9%BF%E5%B7%9E" target="_blank" rel="noopener" aria-label="إيزي هوم على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>محطتا مترو (الخط 8، محطة شيتان)</td><td><span class="cn">居然之家 · 立林智能家居</span><br>ألواح ذكية وشاشات تحكم من ماركة ليلين</td></tr><tr><td class="k">مول ريد ستار، جينشاتشو<a class="pin a" href="https://uri.amap.com/search?keyword=%E7%BA%A2%E6%98%9F%E7%BE%8E%E5%87%AF%E9%BE%99%20%E9%87%91%E6%B2%99%E6%B4%B2&city=%E4%BD%9B%E5%B1%B1" target="_blank" rel="noopener" aria-label="ريد ستار على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>15 دقيقة بالسيارة</td><td><span class="cn">红星美凯龙金沙洲商场</span><br>مول أثاث فيه معرض هواوي للمنزل الذكي</td></tr></tbody></table></div><h4>داخل قوانغتشو</h4><div class="tw"><table><thead><tr><th>المكان</th><th>المسافة</th><th>الاسم الصيني · ملاحظة</th></tr></thead><tbody><tr><td class="k">شارع هوانغشي للإنارة<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%AE%89%E5%8D%8E%E7%81%AF%E9%A5%B0%E5%9F%8E&city=%E5%B9%BF%E5%B7%9E" target="_blank" rel="noopener" aria-label="هوانغشي على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>25 دقيقة، قرب مدينة ميبو</td><td><span class="cn">安华灯饰城 · 十全十美装饰材料城</span><br>إنارة ومفاتيح بالجملة</td></tr><tr><td class="k">مركز Aqara، تايكوو تسانغ<a class="pin a" href="https://uri.amap.com/search?keyword=Aqara%20%E5%A4%AA%E5%8F%A4%E4%BB%93&city=%E5%B9%BF%E5%B7%9E" target="_blank" rel="noopener" aria-label="مركز Aqara على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>35 دقيقة، على نهر اللؤلؤ</td><td><span class="cn">Aqara 城市体验中心 · 太古仓</span><br>معرض كامل، وتطبيقهم يشتغل خارج الصين</td></tr><tr><td class="k">مجمع بايناوهوي، طريق تيانخه<a class="pin a" href="https://uri.amap.com/search?keyword=%E7%99%BE%E8%84%91%E6%B1%87%20%E5%A4%A9%E6%B2%B3%E8%B7%AF598%E5%8F%B7&city=%E5%B9%BF%E5%B7%9E" target="_blank" rel="noopener" aria-label="بايناوهوي على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>40 دقيقة</td><td><span class="cn">百脑汇 · 岗顶电脑城</span><br>متجر هواوي معتمد (من 9:30 الصبح لين 10 الليل) ومحلات إلكترونيات</td></tr></tbody></table></div><h4>الأرخص، خارج قوانغتشو</h4><div class="tw"><table><thead><tr><th>المكان</th><th>المسافة</th><th>الاسم الصيني · ملاحظة</th></tr></thead><tbody><tr><td class="k">مدينة هوايي، فوشان<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%8D%8E%E8%89%BA%E5%9B%BD%E9%99%85%E8%A3%85%E9%A5%B0%E5%8D%9A%E8%A7%88%E5%9F%8E&city=%E4%BD%9B%E5%B1%B1" target="_blank" rel="noopener" aria-label="هوايي على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>ضمن زيارة 4 نوفمبر</td><td><span class="cn">智能家居 · 智能开关 · 中控屏</span><br>قسم الإنارة والمفاتيح</td></tr><tr><td class="k">بلدة قوتشن، تشونغشان<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%8F%A4%E9%95%87%E7%81%AF%E9%A5%B0%E5%9F%8E&city=%E4%B8%AD%E5%B1%B1" target="_blank" rel="noopener" aria-label="قوتشن على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>ساعة ونص بالسيارة</td><td><span class="cn">中山古镇灯饰城</span><br>عاصمة الإنارة: ألواح ومفاتيح بسعر المصنع</td></tr><tr><td class="k">هواتشيانغبي، شنتشن<a class="pin a" href="https://uri.amap.com/search?keyword=%E5%8D%8E%E5%BC%BA%E5%8C%97&city=%E6%B7%B1%E5%9C%B3" target="_blank" rel="noopener" aria-label="هواتشيانغبي على أماب" title="أماب"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a></td><td>ساعة بالقطار السريع</td><td><span class="cn">深圳华强北</span><br>أكبر سوق إلكترونيات، والأرخص للكميات</td></tr></tbody></table></div><div class="note"><b>قبل الشراء:</b> اختر مقاس <span class="cn">86型</span>، لأنه يركب في علب المفاتيح المربعة المستخدمة في عُمان. وتأكد إن التطبيق عالمي مثل Aqara أو Tuya أو Smart Life؛ أنظمة هواوي وشاومي المحلية غالباً مقفولة على الصين. واسأل الكهربائي إذا علبة المفتاح فيها سلك نيوترال، وإذا ما فيها اطلب نوع <span class="cn">单火</span>. وخذ عينة وجرّبها قبل الكمية، واشحنها مع شحنة الألمنيوم. معلومات بعض الأسواق قديمة، فاتصل أو اسأل السائق قبل المشوار.</div>
 </article>
 <article id="c10" data-title="دليل التفاوض مع المصانع" data-run="قوانغتشو · دليل التفاوض مع المصانع">
 <div class="chead p-gz"><span class="bign">10</span><h2>دليل التفاوض مع المصانع</h2><div class="orn"><span></span><i></i><span></span></div></div>
@@ -1472,6 +1697,7 @@ function show(v){
   curView=v; const ap=document.querySelector('.app'); if(ap) ap.dataset.v=v;
   document.querySelectorAll('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
   document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.v===v));
+  const tb=document.querySelector('.tabs'); if(tb) tb.style.setProperty('--ti',Math.max(0,['today','book','driver','cur','exp'].indexOf(v)));
   if(v==='book' && window.TB) window.TB.show();
   const el=document.getElementById('v-'+v); if(el&&v!=='book') el.scrollTop=0;
   try{localStorage.setItem('tripapp-view',v);}catch(e){}
@@ -1488,7 +1714,7 @@ const FLIGHTS=[
  {no:'الصين الجنوبية',air:'طيران الصين الجنوبية',from:'قوانغتشو',to:'بانكوك',dep:'2026-11-09T09:05:00Z',arr:'2026-11-09T12:00:00Z',dl:'17:05',al:'19:00',ref:'••••'},
  {no:'WY 816',air:'الطيران العماني',from:'بانكوك',to:'مسقط',dep:'2026-11-13T12:10:00Z',arr:'2026-11-13T18:20:00Z',dl:'19:10',al:'22:20',ref:'••••'}];
 const T=(t,x,o)=>Object.assign({t,x},o||{});
-const DAYS=[{"d": "2026-10-30", "c": "tr", "city": "مسقط", "ch": "c4", "items": [{"t": "النهار", "x": "مراجعة قائمة التجهيز: TDAC، بطاقة الوصول الصينية، الشريحة، Alipay", "tag": ["s", "تجهيز"]}, {"t": "19:00", "x": "التوجه إلى مطار مسقط"}, {"t": "22:00", "x": "إقلاع WY 817 إلى بانكوك", "small": "رقم الحجز ••••"}]}, {"d": "2026-10-31", "c": "tr", "city": "بانكوك ← قوانغتشو", "ch": "c7", "items": [{"t": "06:45", "x": "الوصول إلى مطار سوفارنابومي، ثم الجوازات ببطاقة TDAC", "m": [["المطار", "Suvarnabhumi Airport", "g"]]}, {"t": "07:30", "x": "استلام الحقائب والصعود لصالة المغادرين (الطابق 4)"}, {"t": "09:25", "x": "كاونتر الصين الجنوبية لوزن الحقائب وبطاقة الصعود"}, {"t": "12:25", "x": "إقلاع إلى قوانغتشو", "small": "رقم الحجز ••••"}, {"t": "16:20", "x": "الوصول إلى قوانغتشو والجمارك", "m": [["مطار بايون", "广州白云国际机场", "广州"]]}, {"t": "المساء", "x": "الفندق وراحة استعداداً لأيام المصانع"}]}, {"d": "2026-11-01", "c": "gz", "city": "فوشان", "ch": "c9", "items": [{"t": "الصبح", "x": "بلدة دالي: جولة في سوق بومي لجمع الأسعار ومعرفة المصانع", "tag": ["w", "مواد خام"], "m": [["سوق بومي", "博美五金装饰城", "佛山"]], "small": "الأسواق مفتوحة الأحد، وبعض المصانع تعطّل، فهو يوم مناسب لجمع الأسعار"}, {"t": "المساء", "x": "ترتيب مواعيد المصانع وتسجيل العروض في أداة المقارنة", "tool": "cmp"}]}, {"d": "2026-11-02", "c": "gz", "city": "فوشان", "ch": "c9", "items": [{"t": "اليوم", "x": "زيارة مصانع قطاعات الألمنيوم في دالي ونانهاي (موعدان أو ثلاثة)", "tag": ["w", "مصانع"], "m": [["دالي", "佛山南海大沥镇", "佛山"]]}, {"t": "المساء", "x": "مقارنة العروض", "tool": "cmp"}]}, {"d": "2026-11-03", "c": "gz", "city": "جاوتشينغ", "ch": "c9", "items": [{"t": "اليوم", "x": "بلدة جينلي: مصانع الإكسسوارات (حوالي ساعة ونصف بالسيارة)", "tag": ["w", "مصانع"], "m": [["جينلي", "肇庆高要金利镇", "肇庆"]]}, {"t": "المساء", "x": "العودة وراحة"}]}, {"d": "2026-11-04", "c": "gz", "city": "فوشان وقوانغتشو", "ch": "c9", "items": [{"t": "الصبح", "x": "مدينة هوايي: أبواب جاهزة، زجاج، ربل وسيليكون، وقسم المنزل الذكي", "tag": ["w", "مواد خام"], "m": [["هوايي", "华艺国际装饰博览城", "佛山"]]}, {"t": "العصر", "x": "شارع يِيدِه: الإكسسوارات والأقلام والهدايا بالجملة", "tag": ["w", "جملة"], "m": [["يِيدِه", "一德路", "广州"]]}]}, {"d": "2026-11-05", "c": "gz", "city": "قوانغتشو", "ch": "c10", "items": [{"t": "الصبح", "x": "زيارة ثانية للمصنع المختار: العينات والسعر النهائي والعقد", "tag": ["f", "تفاوض"], "tool": "cmp"}, {"t": "العصر", "x": "شياوبي: وكلاء الشحن إلى عُمان", "tag": ["w", "شحن"], "m": [["شياوبي", "小北", "广州"]]}]}, {"d": "2026-11-06", "c": "gz", "city": "قوانغتشو", "ch": "c15", "items": [{"t": "الصبح", "x": "سوق تشانغانغ للستوك، ثم سوق الساعات في تشانشي", "tag": ["w", "جملة"], "m": [["تشانغانغ", "昌岗尾货批发市场", "广州"], ["تشانشي", "站西钟表城", "广州"]]}, {"t": "الظهر", "x": "صلاة الجمعة في مسجد هوايشنغ", "m": [["المسجد", "怀圣寺", "广州"]]}, {"t": "العصر", "x": "مدينة التجميل ميبو للعطور والعناية", "tag": ["w", "جملة"], "m": [["ميبو", "美博城", "广州"]]}]}, {"d": "2026-11-07", "c": "gz", "city": "قوانغتشو", "ch": "c16", "items": [{"t": "09:00", "x": "مركز تصدير السيارات في نانشا (GAC Business)", "small": "ساعة وربع إلى ساعة ونص من الفندق · اتصل قبلها", "tag": ["s", "سيارات"], "m": [["مركز التصدير", "广汽商贸南沙国际汽车产业园", "广州"]]}, {"t": "14:00", "x": "تسوق شخصي: سوق بايما للملابس ومركز بايون للحقائب", "tag": ["s", "تسوق"], "m": [["بايما", "白马服装市场", "广州"], ["بايون", "白云世界皮具贸易中心", "广州"]]}, {"t": "17:30", "x": "سوق داشاتو للجوالات (اختياري)", "m": [["داشاتو", "盛贤大沙头旧货交易市场", "广州"]]}, {"t": "المساء", "x": "رحلة نهرية في نهر اللؤلؤ وبرج كانتون مضاءً", "tag": ["t", "ترفيه"], "m": [["المرسى", "珠江夜游 码头", "广州"], ["البرج", "广州塔", "广州"]]}]}, {"d": "2026-11-08", "c": "gz", "city": "قوانغتشو", "ch": "c8", "items": [{"t": "09:30", "x": "معرض BYD في شيجينغ (10 دقائق من الفندق)", "small": "قارن الأسعار في تطبيق 懂车帝 قبلها", "tag": ["s", "سيارات"], "m": [["معرض BYD", "比亚迪汽车王朝网 广州华溢昊城4S店", "广州"]]}, {"t": "11:30", "x": "حديقة تشيمولونغ سفاري لين المساء", "tag": ["t", "سياحة"], "m": [["السفاري", "长隆野生动物世界", "广州"]]}, {"t": "المساء", "x": "ترتيب الحقائب، وشارع بكين إذا عندكم طاقة", "m": [["شارع بكين", "北京路步行街", "广州"]]}]}, {"d": "2026-11-09", "c": "tr", "city": "قوانغتشو ← بانكوك", "ch": "c8", "items": [{"t": "الصبح", "x": "راحة · اختياري: معبد عائلة تشن وشاميان (20 إلى 30 دقيقة من الفندق)", "tag": ["t", "سياحة"], "m": [["المعبد", "陈家祠", "广州"], ["شاميان", "沙面", "广州"]]}, {"t": "12:00", "x": "الخروج من الفندق"}, {"t": "14:05", "x": "الوصول إلى المطار", "m": [["مطار بايون", "广州白云国际机场", "广州"]]}, {"t": "17:05", "x": "إقلاع إلى بانكوك", "small": "رقم الحجز ••••"}, {"t": "19:00", "x": "الوصول إلى بانكوك والانتقال للفندق"}]}, {"d": "2026-11-10", "c": "bk", "city": "بانكوك", "ch": "c19", "items": [{"t": "الصبح", "x": "سوق سامبينغ وأقمشة القطن في باهورات (بلبو)", "tag": ["w", "جملة"], "m": [["سامبينغ", "Sampeng Lane Bangkok", "g"], ["بلبو", "Belleboo fabric Bangkok", "g"]]}, {"t": "الظهر", "x": "بلاتينيوم مول، ثم توفو سكين كير (مشي 5 دقائق، طريق بيتشابوري)", "tag": ["w", "جملة"], "m": [["بلاتينيوم", "The Platinum Fashion Mall Bangkok", "g"], ["توفو", "Tofu Skincare Phetchaburi Road Bangkok", "g"]]}, {"t": "المساء", "x": "سنترال وورلد وسيام باراغون", "tag": ["s", "تسوق"], "m": [["سيام باراغون", "Siam Paragon", "g"]]}]}, {"d": "2026-11-11", "c": "bk", "city": "بانكوك", "ch": "c20", "items": [{"t": "الصبح", "x": "ماكرو ساتون: التجميل والعناية بالجملة", "tag": ["w", "جملة"], "m": [["ماكرو", "Makro Sathon", "g"]]}, {"t": "الظهر", "x": "MBK سنتر: الجوالات والإكسسوارات", "tag": ["s", "تسوق"], "m": [["MBK", "MBK Center Bangkok", "g"]]}, {"t": "المساء", "x": "آيكون سيام على النهر", "tag": ["s", "تسوق"], "m": [["آيكون سيام", "ICONSIAM", "g"]]}]}, {"d": "2026-11-12", "c": "bk", "city": "بانكوك", "ch": "c17", "items": [{"t": "الصبح", "x": "القصر الكبير ووات فو", "tag": ["t", "سياحة"], "m": [["القصر", "Grand Palace Bangkok", "g"], ["وات فو", "Wat Pho", "g"]]}, {"t": "الظهر", "x": "قارب إلى وات أرون", "tag": ["t", "سياحة"], "m": [["وات أرون", "Wat Arun", "g"]]}, {"t": "المساء", "x": "سوق آسياتيك على النهر", "tag": ["t", "ترفيه"], "m": [["آسياتيك", "Asiatique The Riverfront", "g"]]}]}, {"d": "2026-11-13", "c": "bk", "city": "بانكوك ← مسقط", "ch": "c17", "items": [{"t": "الصبح", "x": "هدايا الأهل من بيغ سي راتشادامري", "tag": ["s", "تسوق"], "m": [["بيغ سي", "Big C Ratchadamri", "g"]]}, {"t": "الظهر", "x": "صلاة الجمعة"}, {"t": "15:30", "x": "المغادرة للمطار بقطار Airport Rail Link من فايا ثاي", "m": [["فايا ثاي", "Phaya Thai Airport Rail Link Station", "g"]]}, {"t": "19:10", "x": "إقلاع WY 816 إلى مسقط", "small": "الوصول 22:20"}]}];
+const DAYS=[{"d": "2026-10-30", "c": "tr", "city": "مسقط", "ch": "c4", "items": [{"t": "النهار", "x": "مراجعة قائمة التجهيز: TDAC، بطاقة الوصول الصينية، الشريحة، Alipay", "tag": ["s", "تجهيز"]}, {"t": "19:00", "x": "التوجه إلى مطار مسقط"}, {"t": "22:00", "x": "إقلاع WY 817 إلى بانكوك", "small": "رقم الحجز ••••"}]}, {"d": "2026-10-31", "c": "tr", "city": "بانكوك ← قوانغتشو", "ch": "c7", "items": [{"t": "06:45", "x": "الوصول إلى مطار سوفارنابومي، ثم الجوازات ببطاقة TDAC", "m": [["المطار", "Suvarnabhumi Airport", "g"]]}, {"t": "07:30", "x": "استلام الحقائب والصعود لصالة المغادرين (الطابق 4)"}, {"t": "09:25", "x": "كاونتر الصين الجنوبية لوزن الحقائب وبطاقة الصعود"}, {"t": "12:25", "x": "إقلاع إلى قوانغتشو", "small": "رقم الحجز ••••"}, {"t": "16:20", "x": "الوصول إلى قوانغتشو والجمارك", "m": [["مطار بايون", "广州白云国际机场", "广州"]]}, {"t": "المساء", "x": "الفندق وراحة استعداداً لأيام المصانع"}]}, {"d": "2026-11-01", "c": "gz", "city": "فوشان", "ch": "c9", "items": [{"t": "الصبح", "x": "بلدة دالي: جولة في سوق بومي لجمع الأسعار ومعرفة المصانع", "tag": ["w", "مواد خام"], "m": [["سوق بومي", "博美五金装饰城", "佛山"]], "small": "الأسواق مفتوحة الأحد، وبعض المصانع تعطّل، فهو يوم مناسب لجمع الأسعار"}, {"t": "المساء", "x": "ترتيب مواعيد المصانع وتسجيل العروض في أداة المقارنة", "tool": "cmp"}]}, {"d": "2026-11-02", "c": "gz", "city": "فوشان", "ch": "c9", "items": [{"t": "اليوم", "x": "زيارة مصانع قطاعات الألمنيوم في دالي ونانهاي (موعدان أو ثلاثة)", "tag": ["w", "مصانع"], "m": [["دالي", "佛山南海大沥镇", "佛山"]]}, {"t": "المساء", "x": "مقارنة العروض", "tool": "cmp"}, {"t": "الليل", "x": "جولة في سوق تونغده للديكور جنب الفندق: مفاتيح وشاشات ذكية (اختياري)", "tag": ["w", "منزل ذكي"], "m": [["سوق تونغده", "同德装饰城", "广州"]]}]}, {"d": "2026-11-03", "c": "gz", "city": "جاوتشينغ", "ch": "c9", "items": [{"t": "اليوم", "x": "بلدة جينلي: مصانع الإكسسوارات (حوالي ساعة ونصف بالسيارة)", "tag": ["w", "مصانع"], "m": [["جينلي", "肇庆高要金利镇", "肇庆"]]}, {"t": "المساء", "x": "العودة وراحة"}]}, {"d": "2026-11-04", "c": "gz", "city": "فوشان وقوانغتشو", "ch": "c9", "items": [{"t": "الصبح", "x": "مدينة هوايي: أبواب جاهزة، زجاج، ربل وسيليكون، وقسم المنزل الذكي", "tag": ["w", "مواد خام"], "m": [["هوايي", "华艺国际装饰博览城", "佛山"]]}, {"t": "العصر", "x": "شارع يِيدِه: الإكسسوارات والأقلام والهدايا بالجملة", "tag": ["w", "جملة"], "m": [["يِيدِه", "一德路", "广州"]]}]}, {"d": "2026-11-05", "c": "gz", "city": "قوانغتشو", "ch": "c10", "items": [{"t": "الصبح", "x": "زيارة ثانية للمصنع المختار: العينات والسعر النهائي والعقد", "tag": ["f", "تفاوض"], "tool": "cmp"}, {"t": "العصر", "x": "شياوبي: وكلاء الشحن إلى عُمان", "tag": ["w", "شحن"], "m": [["شياوبي", "小北", "广州"]]}]}, {"d": "2026-11-06", "c": "gz", "city": "قوانغتشو", "ch": "c15", "items": [{"t": "الصبح", "x": "سوق تشانغانغ للستوك، ثم سوق الساعات في تشانشي", "tag": ["w", "جملة"], "m": [["تشانغانغ", "昌岗尾货批发市场", "广州"], ["تشانشي", "站西钟表城", "广州"]]}, {"t": "الظهر", "x": "صلاة الجمعة في مسجد هوايشنغ", "m": [["المسجد", "怀圣寺", "广州"]]}, {"t": "العصر", "x": "مدينة التجميل ميبو للعطور والعناية", "tag": ["w", "جملة"], "m": [["ميبو", "美博城", "广州"]]}]}, {"d": "2026-11-07", "c": "gz", "city": "قوانغتشو", "ch": "c16", "items": [{"t": "09:00", "x": "مركز تصدير السيارات في نانشا (GAC Business)", "small": "ساعة وربع إلى ساعة ونص من الفندق · اتصل قبلها", "tag": ["s", "سيارات"], "m": [["مركز التصدير", "广汽商贸南沙国际汽车产业园", "广州"]]}, {"t": "14:00", "x": "تسوق شخصي: سوق بايما للملابس ومركز بايون للحقائب", "tag": ["s", "تسوق"], "m": [["بايما", "白马服装市场", "广州"], ["بايون", "白云世界皮具贸易中心", "广州"]]}, {"t": "17:30", "x": "سوق داشاتو للجوالات (اختياري)", "m": [["داشاتو", "盛贤大沙头旧货交易市场", "广州"]]}, {"t": "المساء", "x": "رحلة نهرية في نهر اللؤلؤ وبرج كانتون مضاءً", "tag": ["t", "ترفيه"], "m": [["المرسى", "珠江夜游 码头", "广州"], ["البرج", "广州塔", "广州"]]}]}, {"d": "2026-11-08", "c": "gz", "city": "قوانغتشو", "ch": "c8", "items": [{"t": "09:30", "x": "معرض BYD في شيجينغ (10 دقائق من الفندق)", "small": "قارن الأسعار في تطبيق 懂车帝 قبلها", "tag": ["s", "سيارات"], "m": [["معرض BYD", "比亚迪汽车王朝网 广州华溢昊城4S店", "广州"]]}, {"t": "10:30", "x": "مول إيزي هوم: معرض ليلين للمنزل الذكي (نفس الطريق)", "tag": ["w", "منزل ذكي"], "m": [["إيزي هوم", "居然之家 石潭", "广州"]]}, {"t": "12:00", "x": "حديقة تشيمولونغ سفاري لين المساء", "tag": ["t", "سياحة"], "m": [["السفاري", "长隆野生动物世界", "广州"]]}, {"t": "المساء", "x": "ترتيب الحقائب، وشارع بكين إذا عندكم طاقة", "m": [["شارع بكين", "北京路步行街", "广州"]]}]}, {"d": "2026-11-09", "c": "tr", "city": "قوانغتشو ← بانكوك", "ch": "c8", "items": [{"t": "الصبح", "x": "راحة · اختياري: معبد عائلة تشن وشاميان (20 إلى 30 دقيقة من الفندق)", "tag": ["t", "سياحة"], "m": [["المعبد", "陈家祠", "广州"], ["شاميان", "沙面", "广州"]]}, {"t": "12:00", "x": "الخروج من الفندق"}, {"t": "14:05", "x": "الوصول إلى المطار", "m": [["مطار بايون", "广州白云国际机场", "广州"]]}, {"t": "17:05", "x": "إقلاع إلى بانكوك", "small": "رقم الحجز ••••"}, {"t": "19:00", "x": "الوصول إلى بانكوك والانتقال للفندق"}]}, {"d": "2026-11-10", "c": "bk", "city": "بانكوك", "ch": "c19", "items": [{"t": "الصبح", "x": "سوق سامبينغ وأقمشة القطن في باهورات (بلبو)", "tag": ["w", "جملة"], "m": [["سامبينغ", "Sampeng Lane Bangkok", "g"], ["بلبو", "Belleboo fabric Bangkok", "g"]]}, {"t": "الظهر", "x": "بلاتينيوم مول، ثم توفو سكين كير (مشي 5 دقائق، طريق بيتشابوري)", "tag": ["w", "جملة"], "m": [["بلاتينيوم", "The Platinum Fashion Mall Bangkok", "g"], ["توفو", "Tofu Skincare Phetchaburi Road Bangkok", "g"]]}, {"t": "المساء", "x": "سنترال وورلد وسيام باراغون", "tag": ["s", "تسوق"], "m": [["سيام باراغون", "Siam Paragon", "g"]]}]}, {"d": "2026-11-11", "c": "bk", "city": "بانكوك", "ch": "c20", "items": [{"t": "الصبح", "x": "ماكرو ساتون: التجميل والعناية بالجملة", "tag": ["w", "جملة"], "m": [["ماكرو", "Makro Sathon", "g"]]}, {"t": "الظهر", "x": "MBK سنتر: الجوالات والإكسسوارات", "tag": ["s", "تسوق"], "m": [["MBK", "MBK Center Bangkok", "g"]]}, {"t": "المساء", "x": "آيكون سيام على النهر", "tag": ["s", "تسوق"], "m": [["آيكون سيام", "ICONSIAM", "g"]]}]}, {"d": "2026-11-12", "c": "bk", "city": "بانكوك", "ch": "c17", "items": [{"t": "الصبح", "x": "القصر الكبير ووات فو", "tag": ["t", "سياحة"], "m": [["القصر", "Grand Palace Bangkok", "g"], ["وات فو", "Wat Pho", "g"]]}, {"t": "الظهر", "x": "قارب إلى وات أرون", "tag": ["t", "سياحة"], "m": [["وات أرون", "Wat Arun", "g"]]}, {"t": "المساء", "x": "سوق آسياتيك على النهر", "tag": ["t", "ترفيه"], "m": [["آسياتيك", "Asiatique The Riverfront", "g"]]}]}, {"d": "2026-11-13", "c": "bk", "city": "بانكوك ← مسقط", "ch": "c17", "items": [{"t": "الصبح", "x": "هدايا الأهل من بيغ سي راتشادامري", "tag": ["s", "تسوق"], "m": [["بيغ سي", "Big C Ratchadamri", "g"]]}, {"t": "الظهر", "x": "صلاة الجمعة"}, {"t": "15:30", "x": "المغادرة للمطار بقطار Airport Rail Link من فايا ثاي", "m": [["فايا ثاي", "Phaya Thai Airport Rail Link Station", "g"]]}, {"t": "19:10", "x": "إقلاع WY 816 إلى مسقط", "small": "الوصول 22:20"}]}];
 const WD=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 const MON={10:'أكتوبر',11:'نوفمبر'};
 const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -1503,57 +1729,84 @@ let visited={}; try{visited=JSON.parse(localStorage.getItem('tripapp-visited')||
 const vKey=(d,it)=>d+'|'+it.x, vCountable=it=>!!(it.tag||it.m);
 function vStats(day){const c=day.items.filter(vCountable);return [c.filter(it=>visited[vKey(day.d,it)]).length,c.length];}
 const CHK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>';
+const ICONS={"search": "<circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M20 20l-4.2-4.2\"/>", "plane": "<path d=\"M2 16l20-7-3-2-6 2-6-5-2 1 4 6-4 1-2-1-1 1 3 3z\"/>", "land": "<path d=\"M3 20h18\"/><path d=\"M4.5 12.5l14.6 3.9.8-2.4-5.5-2.3-2.6-6.2-1.9-.6.3 5.5-3.7-1.4-1-2.2-1.4-.3.4 3.6z\"/>", "factory": "<path d=\"M3 20V11l5 3v-3l5 3V8l8 4v8z\"/><path d=\"M7 17h2M12 17h2M17 17h1.5\"/>", "boxes": "<path d=\"M3.5 8L12 4l8.5 4L12 12z\"/><path d=\"M3.5 8v8.5L12 20.5l8.5-4V8\"/><path d=\"M12 12v8.5\"/>", "deal": "<path d=\"M7 3h7l4 4v14H7z\"/><path d=\"M14 3v4h4\"/><path d=\"M9.5 15.5c1.2-1.7 2.2-1.7 3 0s1.8 1.7 3 0\"/>", "ship": "<path d=\"M3 15l2 5h14l2-5z\"/><path d=\"M6 15V9h12v6\"/><path d=\"M12 9V4M9 6h6\"/>", "bag": "<path d=\"M5 8h14l-1 12H6z\"/><path d=\"M9 8V6.5a3 3 0 0 1 6 0V8\"/>", "camera": "<path d=\"M4 8h3l2-2.5h6L17 8h3v11H4z\"/><circle cx=\"12\" cy=\"13.5\" r=\"3.4\"/>", "spark": "<path d=\"M12 3l2.4 5.6L20 9.5l-4.3 3.9L17 19l-5-3-5 3 1.3-5.6L4 9.5l5.6-.9z\"/>", "car": "<path d=\"M4 16v-4l2-5h12l2 5v4z\"/><path d=\"M4 16v2.5M20 16v2.5\"/><circle cx=\"7.5\" cy=\"13\" r=\"1\"/><circle cx=\"16.5\" cy=\"13\" r=\"1\"/>", "home": "<path d=\"M4 11l8-6.5 8 6.5\"/><path d=\"M6 9.5V20h12V9.5\"/><rect x=\"9.5\" y=\"12.5\" width=\"5\" height=\"4.5\" rx=\"1\"/>", "list": "<path d=\"M10 6h10M10 12h10M10 18h10\"/><path d=\"M4 6l1.2 1.2L7.5 5M4 12l1.2 1.2L7.5 11M4 18l1.2 1.2L7.5 17\"/>", "mosque": "<path d=\"M6 20v-6a6 6 0 0 1 12 0v6z\"/><path d=\"M12 8V4.5M3 20V10M21 20V10M2 20h20\"/>", "bed": "<path d=\"M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5\"/><circle cx=\"7\" cy=\"11\" r=\"1.6\"/>", "scale": "<path d=\"M12 4v16M6 20h12M5 7h14\"/><path d=\"M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z\"/>", "dot": "<circle cx=\"12\" cy=\"12\" r=\"2.6\"/>", "card": "<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2.5\"/><path d=\"M7 10h10M7 14h6\"/>", "coins": "<circle cx=\"9\" cy=\"9\" r=\"5.5\"/><path d=\"M14.6 9.7a5.5 5.5 0 1 1-5 5\"/>", "wallet": "<rect x=\"3\" y=\"6\" width=\"18\" height=\"13\" rx=\"2.5\"/><path d=\"M3 10h18M16 14.5h2\"/>", "ticket": "<path d=\"M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z\"/><path d=\"M14 7v10\" stroke-dasharray=\"2 2\"/>", "globe": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18\"/>", "pencil": "<path d=\"M4 20l1-5L15.5 4.5a2.1 2.1 0 0 1 3 3L8 18z\"/><path d=\"M13.5 6.5l3 3\"/>", "book": "<path d=\"M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5z\"/><path d=\"M12 6v14\"/>"};
+const ico=k=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[k]||ICONS.dot)+'</svg>';
+const SKYLINE={"gz": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V110h360V120zM150 120V94h40V120zM196 120V100h30V120zM232 120V90h46V120zM286 120V98h26V120zM318 120V92h42V120z\"/><path d=\"M60 120C64 100 70 80 72 66C73 54 70 38 68 26H80C78 38 75 54 76 66C78 80 84 100 88 120Z M73.2 26L73.7 4H74.3L74.8 26ZM112 120V30l8.0 -8 8.0 8V120zM132 120V42l7.0 -8 7.0 8V120zM28 120V52l7.0 -8 7.0 8V120zM0 120V76h26V120zM44 120V62h14V120zM92 120V68h18V120zM148 120V80h20V120zM170 120V90h16V120zM188 120V98h22V120zM214 120V104h18V120zM236 120V108h30V120zM270 120V102h22V120zM296 120V106h24V120zM324 120V100h36V120z\"/></svg>", "bk": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V112h360V120zM220 120V98h34V120zM262 120V90h22V120zM290 120V102h40V120zM334 120V94h26V120z\"/><path d=\"M74.0 120.0 L78.0 99.3 L84.0 99.3 L86.0 80.8 L91.0 80.8 L93.0 60.1 L96.0 60.1 L97.0 44.0 L99.0 32.4 L100.0 14.0 L101.0 32.4 L103.0 44.0 L104.0 60.1 L107.0 60.1 L109.0 80.8 L114.0 80.8 L116.0 99.3 L122.0 99.3 L126.0 120.0Z M37.7 120.0 L39.9 113.3 L43.2 113.3 L44.3 107.4 L47.0 107.4 L48.1 100.7 L49.8 100.7 L50.4 95.5 L51.5 91.8 L52.0 85.9 L52.5 91.8 L53.6 95.5 L54.2 100.7 L55.9 100.7 L57.0 107.4 L59.7 107.4 L60.8 113.3 L64.1 113.3 L66.3 120.0Z M133.7 120.0 L135.9 113.3 L139.2 113.3 L140.3 107.4 L143.1 107.4 L144.2 100.7 L145.8 100.7 L146.3 95.5 L147.4 91.8 L148.0 85.9 L148.6 91.8 L149.7 95.5 L150.2 100.7 L151.8 100.7 L152.9 107.4 L155.7 107.4 L156.8 113.3 L160.1 113.3 L162.3 120.0Z M190 120V102h8l14-18 10-10 10 10 14 18h8v18z M204 92l18-24 18 24z M222 68l-1-6h2zM0 120V90h26V120zM270 120V80h18V120zM292 120V64h14V120zM310 120V90h22V120zM336 120V102h24V120z\"/></svg>", "mct": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V82l24-14 22 10 30-22 34 18 26-10 30 14 36-26 34 20 28-12 30 14 30-16 36 18v48z\"/><path d=\"M54 120V38l2.0-6 2.0-4 2.0 4 2.0 6V120z M52 56h12v3h-12z M154 120V38l2.0-6 2.0-4 2.0 4 2.0 6V120z M152 56h12v3h-12z M37 120V62l1.5-6 1.5-4 1.5 4 1.5 6V120z M35 80h10v3h-10z M173 120V62l1.5-6 1.5-4 1.5 4 1.5 6V120z M171 80h10v3h-10z M76 120V98h8c0-19 11-31 24-33 13 2 24 14 24 33h8v22z M107 65v-9h2v9zM196 120V104h30V120zM228 120V98h22V120zM252 120V108h40V120zM294 120V102h28V120zM324 120V106h36V120z\"/></svg>", "tr": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V104c10-8 24-8 32 0c8-12 28-12 36 0c10-6 22-6 30 2c12-10 30-10 40 0c10-6 22-6 30 0c10-10 28-10 38 0c10-6 24-6 32 2c10-8 24-8 34 0c8-6 20-6 28 2c8-4 18-4 24 2v14z\"/><path class=\"arc\" d=\"M340 100C270 30 160 18 96 46\"/><g transform=\"translate(64 30) scale(2.1) scale(-1 1) translate(-24 0)\"><path d=\"M2 16l20-7-3-2-6 2-6-5-2 1 4 6-4 1-2-1-1 1 3 3z\"/></g></svg>"};
+const TZC={mct:'Asia/Muscat',gz:'Asia/Shanghai',bk:'Asia/Bangkok',tr:'Asia/Shanghai'};
+const TZN={mct:'مسقط',gz:'قوانغتشو',bk:'بانكوك',tr:'قوانغتشو'};
+const APC={'مسقط':'MCT','بانكوك':'BKK','قوانغتشو':'CAN'}, CTZ={'مسقط':'Asia/Muscat','بانكوك':'Asia/Bangkok','قوانغتشو':'Asia/Shanghai'};
+function hourIn(tz){try{return parseInt(new Intl.DateTimeFormat('en-GB',{hour:'2-digit',hourCycle:'h23',timeZone:tz}).format(new Date()),10)%24;}catch(e){return new Date().getHours();}}
+const skyOf=hr=>(hr>=20||hr<5)?'night':(hr<7?'dawn':(hr<17?'day':'dusk'));
+const arDays=n=>n===1?'يوم واحد':n===2?'يومان':(n<=10?n+' أيام':n+' يوماً');
+const arHrs=n=>n===1?'ساعة':n===2?'ساعتان':(n<=10?n+' ساعات':n+' ساعة');
+const arMin=n=>n===1?'دقيقة':n===2?'دقيقتان':(n<=10?n+' دقائق':n+' دقيقة');
+function itemIcon(it){const t=it.tag?it.tag[1]:'', x=it.x||'';
+  if(/منزل ذكي/.test(t))return 'home'; if(/مواد خام|مصانع/.test(t))return 'factory'; if(/جملة/.test(t))return 'boxes'; if(/تفاوض/.test(t))return 'deal'; if(/شحن/.test(t))return 'ship';
+  if(/تسوق/.test(t))return 'bag'; if(/سياحة/.test(t))return 'camera'; if(/ترفيه/.test(t))return 'spark'; if(/سيارات/.test(t))return 'car'; if(/تجهيز/.test(t))return 'list';
+  if(/إقلاع/.test(x))return 'plane'; if(/الوصول/.test(x))return 'land'; if(/صلاة|مسجد/.test(x))return 'mosque'; if(/الفندق|راحة/.test(x))return 'bed'; if(/مقارنة/.test(x))return 'scale'; return 'dot';}
+const ICAT={home:'b',factory:'b',boxes:'b',deal:'b',ship:'b',scale:'b',bag:'r',car:'r',camera:'j',spark:'j',plane:'s',land:'s',list:'s',mosque:'s',bed:'s',dot:'s'};
+let heroAnim=true;
 function renderToday(){
   const now=new Date(), today=ymd(now);
   const start=new Date(FLIGHTS[0].dep), end=new Date(FLIGHTS[3].arr);
   if(!selDay){ selDay = DAYS.some(x=>x.d===today)?today:(now<start?DAYS[0].d:DAYS[DAYS.length-1].d); }
-  let heroK, heroH, heroS, big='';
-  if(now<start){const c=cdParts(start-now);heroK='رحلة قوانغتشو وبانكوك';heroH='باقي على الإقلاع';heroS='الجمعة 30 أكتوبر · 22:00 من مسقط';
-    big='<div class="count-big"><div><b>'+c.d+'</b><span>يوم</span></div><div><b>'+c.h+'</b><span>ساعة</span></div><div><b>'+c.m+'</b><span>دقيقة</span></div></div>';}
-  else if(now<=end){const idx=DAYS.findIndex(x=>x.d===today);const dd=DAYS[idx]||DAYS[0];heroK='اليوم '+(idx+1)+' من '+DAYS.length;heroH=dd.city;heroS=WD[now.getDay()]+' '+now.getDate()+' '+(MON[now.getMonth()+1]||'');
-    big='<div class="tripbar"><div class="tb"><i style="width:'+Math.round((idx+1)/DAYS.length*100)+'%"></i></div><small><span>مسقط</span><span>'+(idx+1)+' / '+DAYS.length+'</span><span>العودة</span></small></div>';}
-  else{heroK='انتهت الرحلة';heroH='الحمد لله على السلامة';heroS='بيانات المصاريف والمقارنات محفوظة في جوالك';}
-  // next flight
+  let ctx='mct', kick='', title='', sub='', pct=0;
+  if(now<start){const c=cdParts(start-now); const parts=[]; if(c.d)parts.push(arDays(c.d)); if(c.h)parts.push(arHrs(c.h)); parts.push(arMin(c.m));
+    kick='باقي على الإقلاع'; title=parts[0]; sub=(parts.length>1?'و'+parts.slice(1).join(' و')+'<br>':'')+'الجمعة 30 أكتوبر، 22:00 من مطار مسقط';}
+  else if(now<=end){const idx=Math.max(0,DAYS.findIndex(x=>x.d===today)); const dd=DAYS[idx]; ctx=dd.c==='gz'?'gz':(dd.c==='bk'?'bk':'tr');
+    kick='اليوم '+(idx+1)+' من '+DAYS.length; title=dd.city; sub=WD[now.getDay()]+' '+now.getDate()+' '+(MON[now.getMonth()+1]||''); pct=Math.round((idx+1)/DAYS.length*100);}
+  else{kick='انتهت الرحلة'; title='الحمد لله على السلامة'; sub='كل بياناتك محفوظة في التطبيق'; pct=100;}
+  const tz=TZC[ctx], sk=skyOf(hourIn(tz));
+  const tzs=[['mct','مسقط','Asia/Muscat',null],['gz','قوانغتشو','Asia/Shanghai','+4 ساعات'],['bk','بانكوك','Asia/Bangkok','+3 ساعات']];
+  const tzrow=tzs.map(([k,n,z,o])=>'<div class="tz'+(k===ctx||(ctx==='tr'&&k==='gz')?' on':'')+'"><span>'+n+'</span><b>'+clockStr(z)+'</b><small>'+(o||dayStr(z))+'</small></div>').join('');
+  const syS=window.SYNC?window.SYNC.state():'off';
+  const hero='<header class="hero2"><div class="htop"><span class="brand"><i id="syDot" class="sy-dot '+syS+'"></i>رحلتي</span>'+
+    '<button class="hsrch" type="button" onclick="APP.search()" aria-label="بحث في الكتاب">'+ico('search')+'</button></div>'+
+    '<div class="win'+(heroAnim?' anim':'')+'"><div class="glass sky-'+sk+'">'+(sk==='night'?'<div class="stars"></div>':'')+
+    '<div class="pane-top"><span class="kick">'+kick+'</span><span class="lt">الآن '+clockStr(tz)+' في '+TZN[ctx]+'</span></div><div class="transom"></div>'+
+    '<div class="pane-main"><h1>'+esc(title)+'</h1><p>'+sub+'</p></div><div class="skyline">'+SKYLINE[ctx]+'</div><div class="refl"></div></div>'+
+    '<div class="sill" role="img" aria-label="تقدم الرحلة '+pct+'%"><i style="width:'+pct+'%"></i></div></div>'+
+    '<div class="tzrow">'+tzrow+'</div></header>';
+  heroAnim=false;
+  // boarding pass for the next flight
   const nf=FLIGHTS.find(f=>new Date(f.dep)>now);
   let fl='';
-  if(nf){const c=cdParts(new Date(nf.dep)-now);const dd=new Date(nf.dep);
-    fl='<div class="card2"><h3>الرحلة القادمة</h3><div class="flight"><div class="ic"><svg viewBox="0 0 24 24"><path d="M2 16l20-7-3-2-6 2-6-5-2 1 4 6-4 1-2-1-1 1 3 3z"/></svg></div><div class="tx"><b>'+esc(nf.from)+' ← '+esc(nf.to)+'</b>'+esc(nf.air)+(nf.no.startsWith('WY')?' · '+nf.no:'')+'<br>إقلاع '+nf.dl+' بالتوقيت المحلي · حجز '+nf.ref+'</div><div class="cd">'+(c.d?c.d+' ي ':'')+c.h+' س '+c.m+' د<small>متبقي</small></div></div></div>';}
-  // date strip
+  if(nf){const c=cdParts(new Date(nf.dep)-now); let ds='';
+    try{ds=new Intl.DateTimeFormat('ar-u-nu-latn',{weekday:'long',day:'numeric',month:'long',timeZone:CTZ[nf.from]}).format(new Date(nf.dep));}catch(x){}
+    fl='<section class="bpass" aria-label="الرحلة القادمة"><div class="bp-head"><span>رحلتك القادمة</span><b>'+esc(nf.air)+(nf.no.startsWith('WY')?' '+nf.no:'')+'</b></div>'+
+      '<div class="bp-route"><div class="bp-pt"><b>'+APC[nf.from]+'</b><span>'+esc(nf.from)+'</span><em>'+nf.dl+'</em></div>'+
+      '<div class="bp-mid"><i></i>'+ico('plane')+'<i></i></div>'+
+      '<div class="bp-pt to"><b>'+APC[nf.to]+'</b><span>'+esc(nf.to)+'</span><em>'+nf.al+'</em></div></div>'+
+      '<div class="bp-perf"></div>'+
+      '<div class="bp-foot"><div><small>التاريخ</small><b>'+ds+'</b></div><div><small>رقم الحجز</small><b class="ltr">'+nf.ref+'</b></div>'+
+      '<div class="bp-cd"><small>متبقي</small><b>'+(c.d?c.d+' ي ':'')+c.h+' س '+c.m+' د</b></div></div></section>';}
+  // day planner
   const strip=DAYS.map(x=>{const dt=parseD(x.d);const [vd,vt]=vStats(x);const all=vt&&vd===vt;return '<button type="button" class="dchip '+x.c+(x.d===selDay?' on':'')+(x.d===today?' today':'')+(all?' alldone':'')+'" data-d="'+x.d+'"><span>'+WD[dt.getDay()].replace('ال','')+'</span><b>'+dt.getDate()+'</b>'+(all?'<em>'+CHK+'</em>':'<i></i>')+'</button>';}).join('');
   const day=DAYS.find(x=>x.d===selDay)||DAYS[0]; const dt=parseD(day.d);
   const items=day.items.map(it=>{
-    const k=vKey(day.d,it), cnt=vCountable(it), on=cnt&&visited[k];
-    let x='<li class="'+(on?'done':'')+'"><span class="tm">'+esc(it.t)+'</span>'+(cnt?'<button type="button" class="vchk'+(on?' on':'')+'" data-vk="'+esc(k)+'" aria-pressed="'+(on?'true':'false')+'" aria-label="تمت الزيارة">'+CHK+'</button>':'')+'<div class="tx">'+esc(it.x)+(it.tag?'<span class="tag '+it.tag[0]+'">'+esc(it.tag[1])+'</span>':'');
-    if(it.small) x+='<small>'+esc(it.small)+'</small>';
-    if(it.m) x+='<div>'+it.m.map(m=>mlink(m[0],m[1],m[2])).join('')+'</div>';
-    if(it.tool==='cmp') x+='<div><a class="mlink" href="#" data-open="cmp">⚖ مقارنة المصانع</a></div>';
-    return x+'</div></li>';}).join('');
-  const cityCls=day.c; const dv=vStats(day);
+    const k=vKey(day.d,it), cnt=vCountable(it), on=cnt&&visited[k], ik=itemIcon(it), cc=ICAT[ik];
+    let x='<li class="'+(on?'done':'')+'"><span class="tm">'+esc(it.t)+'</span><span class="ib c-'+cc+'">'+ico(ik)+'</span><div class="tx"><span class="tt">'+esc(it.x)+'</span>';
+    const meta=[]; if(it.tag) meta.push('<span class="tg c-'+cc+'">'+esc(it.tag[1])+'</span>'); if(it.small) meta.push('<span>'+esc(it.small)+'</span>');
+    if(meta.length) x+='<small>'+meta.join('')+'</small>';
+    if(it.m) x+='<div class="ml">'+it.m.map(m=>mlink(m[0],m[1],m[2])).join('')+'</div>';
+    if(it.tool==='cmp') x+='<div class="ml"><a class="mlink" href="#" data-open="cmp">⚖ مقارنة المصانع</a></div>';
+    x+='</div>';
+    if(cnt) x+='<button type="button" class="vchk'+(on?' on':'')+'" data-vk="'+esc(k)+'" aria-pressed="'+(on?'true':'false')+'" aria-label="تمت الزيارة">'+CHK+'</button>';
+    return x+'</li>';}).join('');
+  const dv=vStats(day);
   const tv=DAYS.reduce((a,x)=>{const s=vStats(x);return [a[0]+s[0],a[1]+s[1]];},[0,0]);
-  $('#v-today').innerHTML=
-   '<div class="hero"><button class="hsrch" type="button" onclick="APP.search()" aria-label="بحث في الكتاب"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button><div class="hsky"><svg class="sky" viewBox="0 0 320 90" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 86H316"/><path d="M54 86C58 64 52 44 59 18L61 6L63 18C70 44 64 64 68 86"/><path d="M61 6V0"/><path d="M56 40H66M55 58H67M57 24H65"/><path d="M80 86V52H96V86M100 86V40H114V86M118 86V60H128V86M20 86V58H34V86M38 86V46H48V86"/><path d="M150 30C175 12 205 12 228 26" stroke-dasharray="3 4"/><path d="M228 26l7 1-4 5" /><path d="M246 86L249 66L254 64L256 46L261 44L262 28L264 16L266 28L267 44L272 46L274 64L279 66L282 86"/><path d="M264 16V8"/><path d="M286 86V64L294 56L302 64V86M196 86V70L204 62L212 70V86M222 86V74H236V86"/></svg></div><div class="in"><div class="k">'+heroK+'</div><h1>'+esc(heroH)+'</h1><div class="s">'+esc(heroS)+'</div>'+big+'</div></div>'+
-   '<div class="wrap lift">'+
-   '<div class="card2"><div class="clocks">'+
-     '<div class="clk m"><span>مسقط</span><b>'+clockStr('Asia/Muscat')+'</b><small>'+dayStr('Asia/Muscat')+'</small></div>'+
-     '<div class="clk c"><span>قوانغتشو</span><b>'+clockStr('Asia/Shanghai')+'</b><small>+4 ساعات</small></div>'+
-     '<div class="clk b"><span>بانكوك</span><b>'+clockStr('Asia/Bangkok')+'</b><small>+3 ساعات</small></div>'+
-   '</div></div>'+ fl +
-   '<div class="card2"><div class="dstrip" id="dstrip">'+strip+'</div>'+
-     '<div class="dayhead"><h3>'+WD[dt.getDay()]+' '+dt.getDate()+' '+MON[dt.getMonth()+1]+'</h3><span class="city '+cityCls+'">'+esc(day.city)+'</span>'+(dv[1]?'<span class="vprog'+(dv[0]===dv[1]?' vfull':'')+'">'+CHK+dv[0]+'/'+dv[1]+'</span>':'')+'</div>'+
+  const plan='<section class="card2 plan"><div class="dstrip" id="dstrip">'+strip+'</div>'+
+     '<div class="dayhead"><h3>'+WD[dt.getDay()]+' '+dt.getDate()+' '+MON[dt.getMonth()+1]+'</h3><span class="city '+day.c+'">'+esc(day.city)+'</span>'+(dv[1]?'<span class="vprog'+(dv[0]===dv[1]?' vfull':'')+'">'+CHK+dv[0]+'/'+dv[1]+'</span>':'')+'</div>'+
      '<ul class="tl">'+items+'</ul>'+
-     '<div class="vtrip"><div class="vbar"><i style="width:'+(tv[1]?Math.round(tv[0]/tv[1]*100):0)+'%"></i></div><span>زرت '+tv[0]+' من '+tv[1]+' محطة في الرحلة · اضغط ✓ عند كل مكان تزوره</span></div>'+
-     '<div class="btnrow"><button class="pbtn l" type="button" data-open="'+day.ch+'">التفاصيل في الكتاب</button></div></div>'+
-   '<div class="sec-t">اختصارات</div><div class="quick">'+
-     '<button class="qa a" type="button" data-go="driver"><b>اعرضها للسائق</b><span>الأماكن والعبارات بالصيني</span></button>'+
-     '<button class="qa b" type="button" data-go="cur"><b>محوّل العملات</b><span>يوان · بات · ريال · دولار</span></button>'+
-     '<button class="qa c" type="button" data-go="exp"><b>المصاريف</b><span>سجّل واعرف الميزانية</span></button>'+
-     '<button class="qa d" type="button" data-open="cmp"><b>مقارنة المصانع</b><span>السعر مقابل الجودة</span></button>'+
-     '<button class="qa d" type="button" data-open="c2"><b>الحجوزات والتذاكر</b><span>أرقام الحجز والتذاكر</span></button>'+
-     '<button class="qa a" type="button" data-open="c3"><b>روابط التسجيل</b><span>TDAC وبطاقة الصين</span></button>'+
-     '<button class="qa c" type="button" data-open="notes"><b>ملاحظاتي</b><span>اكتب وارجع لها بأي وقت</span></button>'+
-     '<button class="qa b" type="button" data-go="book"><b>الكتاب كاملاً</b><span>كل التفاصيل والخرائط</span></button>'+
-   '</div></div>';
-  const ds=$('#dstrip .on'); if(ds) ds.scrollIntoView({inline:'center',block:'nearest'});
+     '<div class="vtrip"><div class="vbar"><i style="width:'+(tv[1]?Math.round(tv[0]/tv[1]*100):0)+'%"></i></div><span>زرت '+tv[0]+' من '+tv[1]+' محطة في الرحلة. اضغط الدائرة عند كل مكان تزوره.</span></div>'+
+     '<div class="btnrow"><button class="pbtn l" type="button" data-open="'+day.ch+'">'+ico('book')+'التفاصيل في الكتاب</button></div></section>';
+  const QA=[['driver','go','اعرضها للسائق','الأماكن والعبارات بالصيني','card','r'],['cur','go','محوّل العملات','يوان وبات وريال ودولار','coins','j'],
+    ['exp','go','المصاريف','سجّل واعرف الميزانية','wallet','b'],['cmp','open','مقارنة المصانع','السعر مقابل الجودة','scale','s'],
+    ['c2','open','الحجوزات والتذاكر','أرقام الحجز والتذاكر','ticket','s'],['c3','open','روابط التسجيل','TDAC وبطاقة الصين','globe','j'],
+    ['notes','open','ملاحظاتي','اكتب وارجع لها بأي وقت','pencil','b'],['book','go','الكتاب كاملاً','كل التفاصيل والخرائط','book','r']];
+  const quick='<div class="sec-t">اختصارات</div><div class="quick">'+QA.map(([k,a,t,s2,i,c])=>'<button class="qa" type="button" data-'+a+'="'+k+'"><span class="qi c-'+c+'">'+ico(i)+'</span><b>'+t+'</b><span class="qs">'+s2+'</span></button>').join('')+'</div>';
+  $('#v-today').innerHTML=hero+'<div class="wrap w2">'+fl+plan+quick+'</div>';
+  const ds=$('#dstrip .on'); if(ds){const st=$('#dstrip'); st.scrollLeft=ds.offsetLeft-(st.clientWidth-ds.clientWidth)/2;}
 }
 $('#v-today').addEventListener('click',e=>{
   const vk=e.target.closest('[data-vk]'); if(vk){const k=vk.dataset.vk; if(visited[k]) delete visited[k]; else visited[k]=Date.now(); try{localStorage.setItem('tripapp-visited',JSON.stringify(visited));}catch(x){}
@@ -1568,7 +1821,8 @@ setInterval(()=>{ if(curView==='today' && !document.hidden){ const st=$('#dstrip
 const PLACES=[
  ['الفندق',[['فندقنا في قوانغتشو – فيينا الدولي','白云区西槎路 凯升国际广场 维也纳国际酒店（同德围上步地铁站）','zh']]],
  ['المطارات والمواصلات',[['مطار قوانغتشو بايون','广州白云国际机场','zh'],['محطة قطار قوانغتشو','广州火车站','zh'],['محطة قطار قوانغتشو الجنوبية (للقطار السريع)','广州南站','zh'],['مطار بانكوك سوفارنابومي','Suvarnabhumi Airport','en']]],
- ['المصانع والمواد الخام',[['بلدة دالي – فوشان','佛山市南海区大沥镇','zh'],['معرض BYD – شيجينغ','白云区石井街石槎路343号 比亚迪4S店','zh'],['مركز تصدير السيارات – نانشا','南沙区 广汽商贸南沙国际汽车产业园（中国（广州）汽车出口基地）','zh'],['سوق بومي للمعادن والديكور','博美五金装饰城','zh'],['قوتشن – عاصمة الإنارة والمفاتيح الذكية','中山市古镇镇 古镇灯饰城','zh'],['هواتشيانغبي – سوق الإلكترونيات','深圳市福田区 华强北','zh'],['قانغدينغ – مجمعات الإلكترونيات','天河区 岗顶 电脑城','zh'],['مدينة هوايي للديكور','华艺国际装饰博览城','zh'],['بلدة جينلي – جاوتشينغ','肇庆市高要区金利镇','zh']]],
+ ['المصانع والمواد الخام',[['بلدة دالي – فوشان','佛山市南海区大沥镇','zh'],['معرض BYD – شيجينغ','白云区石井街石槎路343号 比亚迪4S店','zh'],['مركز تصدير السيارات – نانشا','南沙区 广汽商贸南沙国际汽车产业园（中国（广州）汽车出口基地）','zh'],['سوق بومي للمعادن والديكور','博美五金装饰城','zh'],['مدينة هوايي للديكور','华艺国际装饰博览城','zh'],['بلدة جينلي – جاوتشينغ','肇庆市高要区金利镇','zh']]],
+ ['المنزل الذكي',[['سوق تونغده للديكور (جنب الفندق)','白云区西槎路 同德装饰城','zh'],['مول إيزي هوم – معرض ليلين','白云区 居然之家（石潭地铁站旁）立林智能家居','zh'],['مول ريد ستار – جينشاتشو','南海区建设大道 红星美凯龙金沙洲商场','zh'],['شارع هوانغشي للإنارة','白云区黄石东路 安华灯饰城','zh'],['مركز Aqara – تايكوو تسانغ','海珠区 太古仓 Aqara 城市体验中心','zh'],['مجمع بايناوهوي','天河区天河路598号 百脑汇','zh'],['قوتشن – عاصمة الإنارة','中山市古镇镇 古镇灯饰城','zh'],['هواتشيانغبي – شنتشن','深圳市福田区 华强北','zh']]],
  ['أسواق الجملة في قوانغتشو',[['سوق تشانغانغ للستوك','昌岗尾货批发市场','zh'],['مدينة جينتونغ للملابس','锦东国际服装城','zh'],['مركز بايون للجلود والحقائب','白云世界皮具贸易中心','zh'],['شارع يِيدِه','一德路','zh'],['سوق ساعات تشانشي','站西钟表城','zh'],['مدينة التجميل ميبو','美博城','zh'],['ساحة شينغفا','兴发广场','zh'],['سوق بايما للملابس','白马服装市场','zh'],['سوق داشاتو للمستعمل','盛贤大沙头旧货交易市场','zh'],['منطقة شياوبي','小北','zh']]],
  ['معالم قوانغتشو',[['مسجد هوايشنغ','怀圣寺','zh'],['معبد عائلة تشن','陈家祠','zh'],['جزيرة شاميان','沙面','zh'],['برج كانتون','广州塔','zh'],['حديقة تشيمولونغ سفاري','长隆野生动物世界','zh'],['شارع بكين للمشاة','北京路步行街','zh']]],
  ['بانكوك',[['سوق سامبينغ','Sampeng Lane','en'],['سوق باهورات للأقمشة','Phahurat Market','en'],['بلاتينيوم مول','The Platinum Fashion Mall','en'],['سوق براتونام','Pratunam Market','en'],['MBK سنتر','MBK Center','en'],['سيام باراغون','Siam Paragon','en'],['ماكرو ساتون','Makro Sathon','en'],['آيكون سيام','ICONSIAM','en'],['القصر الكبير','Grand Palace','en']]]];
@@ -1608,7 +1862,7 @@ $('#full').addEventListener('click',()=>$('#full').classList.remove('on'));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#full').classList.remove('on');});
 
 // ===================== CURRENCY =====================
-const CUR=[['OMR','ريال عماني','ر.ع','var(--sun-l)','#8a5a00'],['CNY','يوان صيني','¥','var(--coral-l)','#9b3517'],['THB','بات تايلاندي','฿','var(--teal-l)','#0b6a60'],['USD','دولار','$','var(--sky-l)','#1d4f8a']];
+const CUR=[['OMR','ريال عماني','ر.ع','#F1E9D8','#7A6136'],['CNY','يوان صيني','¥','var(--verm-l)','var(--verm)'],['THB','بات تايلاندي','฿','var(--jade-l)','var(--jade)'],['USD','دولار','$','var(--sky-l)','var(--sky)']];
 let rates=Object.assign({OMR:0.3845,CNY:7.1,THB:32.5,USD:1},load('tripapp-rates',{}));
 let curAmt=load('tripapp-curamt',{c:'CNY',v:100});
 const toOMR=(v,c)=>v/rates[c]*rates.OMR;
@@ -1662,7 +1916,7 @@ $('#v-cur').addEventListener('click',e=>{
 $('#v-cur').addEventListener('change',e=>{if(e.target.dataset.rate) renderCur();});
 
 // ===================== EXPENSES & SHOPPING =====================
-const CATS=[['طيران','#2f74c0'],['فندق','#7b5cc4'],['أكل','#e8603f'],['مواصلات','#0f9d8f'],['تسوق','#f0a92e'],['بضاعة','#123a6b'],['أخرى','#8a8f98']];
+const CATS=[['طيران','#4C6884'],['فندق','#7A5C8E'],['أكل','#B0402E'],['مواصلات','#2A7768'],['تسوق','#C29A4A'],['بضاعة','#5A4636'],['أخرى','#8D9196']];
 const WHO=['خالد','يونس','مشترك'];
 let exp=load('tripapp-exp',{items:[],budget:1500}), shop=load('tripapp-shop',[]);
 const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
@@ -1679,8 +1933,12 @@ function renderExp(){
        '<div class="pbar'+(b&&tot>b?' over':'')+'"><i style="width:'+pct+'%"></i></div><small style="color:var(--muted)">'+(b?(tot>b?'تجاوزت الميزانية بـ '+fmt(tot-b,1)+' ر.ع':'متبقي '+fmt(b-tot,1)+' ر.ع ('+fmt(100-pct,0)+'%)'):'')+'</small>';
     if(exp.items.length){
       const byCat=CATS.map(([c,col])=>[c,col,exp.items.filter(i=>i.cat===c).reduce((s,i)=>s+toOMR(i.a,i.c),0)]).filter(x=>x[2]>0).sort((a,b)=>b[2]-a[2]);
-      const mx=byCat[0]?byCat[0][2]:1;
-      h+='<div class="catbars">'+byCat.map(([c,col,v])=>'<div class="cb"><span>'+c+'</span><div class="b"><i style="width:'+(v/mx*100)+'%;background:'+col+'"></i></div><em>'+fmt(v,1)+'</em></div>').join('')+'</div>';
+      const tc=byCat.reduce((s,x)=>s+x[2],0)||1, R=42, C=2*Math.PI*R; let off=0;
+      const segs=byCat.map(([c,col,v])=>{const len=v/tc*C; const sg='<circle r="'+R+'" cx="60" cy="60" fill="none" stroke="'+col+'" stroke-width="15" stroke-dasharray="'+Math.max(0,len-1.2).toFixed(2)+' '+(C-Math.max(0,len-1.2)).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'"/>'; off+=len; return sg;}).join('');
+      const top=byCat[0];
+      h+='<div class="donut"><div class="dc"><svg viewBox="0 0 120 120" aria-hidden="true"><circle r="42" cx="60" cy="60" fill="none" stroke="var(--app2)" stroke-width="15"/><g transform="rotate(-90 60 60)">'+segs+'</g></svg>'+
+         '<div class="ctr"><b>'+Math.round(top[2]/tc*100)+'%</b><small>'+top[0]+'</small></div></div>'+
+         '<div class="dleg">'+byCat.map(([c,col,v])=>'<div><i style="background:'+col+'"></i><span>'+c+'</span><em>'+fmt(v,1)+' ر.ع</em></div>').join('')+'</div></div>';
       const paid={خالد:0,يونس:0}; let shared=0;
       exp.items.forEach(i=>{const v=toOMR(i.a,i.c); if(i.who==='مشترك'){shared+=v;} else paid[i.who]+=v;});
       // shared items are assumed paid half-half already; personal items are each person's own
