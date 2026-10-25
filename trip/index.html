@@ -852,6 +852,109 @@ body,.view{background:var(--app)}
 .dcard .zh{font-size:17px}
 .sy-dot.denied,.sy-dot.error,.sy-dot.off{display:none}
 .tl .tx .tt{font-size:13.5px}
+/* ===== v5: prayer, weather, sync presence, qibla, speech, calculator ===== */
+.brand{border:0;background:none;padding:0;cursor:pointer;font-family:var(--f-body)}
+.brand small{font-size:11.5px;font-weight:700;color:rgba(243,230,197,.62);margin-inline-start:2px}
+.brand small:empty{display:none}
+.sy-dot.denied,.sy-dot.error{display:inline-block;background:#E0705C}
+.sy-dot.off{display:none}
+.wx{display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:3px 10px 3px 9px;border-radius:20px;background:rgba(255,255,255,.14);color:var(--txt);font-size:12.5px;font-weight:700;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.sky-day .wx{background:rgba(255,255,255,.45)}
+.wx svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.wx em{font-style:normal;font-weight:400;opacity:.8;margin-inline-start:4px}
+/* prayer */
+.pray{padding:14px 14px 12px}
+.pr-top{display:flex;align-items:center;gap:12px}
+.pr-ic{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--bronze);color:var(--champ)}
+.pr-ic svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.pr-next{flex:1;min-width:0;color:var(--ink)}
+.pr-next small{display:block;font-size:11.5px;color:var(--muted)}
+.pr-next b{display:block;font-size:18px;font-weight:800;line-height:1.3}
+.pr-next b em{font-style:normal;color:var(--gold-d);font-variant-numeric:tabular-nums}
+.pr-next span{font-size:12px;color:var(--muted)}
+.pr-qb{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--hair);background:var(--satin);border-radius:14px;padding:7px 10px;font-family:var(--f-body);font-weight:800;font-size:11.5px;color:var(--ink);cursor:pointer}
+.pr-qb svg{width:20px;height:20px;fill:none;stroke:var(--jade);stroke-width:1.8;stroke-linejoin:round}
+.pr-row{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:12px}
+.pcell{text-align:center;border-radius:12px;padding:6px 0 5px;background:var(--satin);color:var(--ink)}
+.pcell span{display:block;font-size:10.5px;color:var(--muted);font-weight:700}
+.pcell b{display:block;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}
+.pcell.sr{background:transparent}
+.pcell.past{opacity:.45}
+.pcell.nx{background:var(--bronze);color:var(--champ-hi);box-shadow:0 8px 16px -10px rgba(42,36,32,.8)}
+.pcell.nx span{color:rgba(243,230,197,.7)}
+/* now marker in the timeline */
+.tl .tm em{display:block;margin:3px auto 0;width:max-content;font-style:normal;font-size:10px;font-weight:800;color:#fff;background:var(--verm);border-radius:8px;padding:0 6px;line-height:1.6}
+.tl li.now .ib{box-shadow:0 0 0 4px var(--surf),0 0 0 6px rgba(176,64,46,.25)}
+/* sync card */
+.card2.sy .sy-h h3{margin:0}
+.sy-me{background:var(--gold-l);border-radius:14px;padding:10px 12px;margin:8px 0 4px;color:var(--ink)}
+.sy-me b{display:block;font-size:14px}
+.sy-me span{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+.sy-devs{display:flex;flex-direction:column;gap:6px;margin:10px 0 2px}
+.dv{display:flex;align-items:center;gap:9px;background:var(--satin);border:1px solid var(--hair);border-radius:12px;padding:8px 11px;color:var(--ink)}
+.dv i{flex:none;width:9px;height:9px;border-radius:50%;background:#C9CDC5}
+.dv i.on{background:var(--jade);box-shadow:0 0 0 3px var(--jade-l)}
+.dv b{font-size:13.5px}
+.dv span{margin-inline-start:auto;font-size:11.5px;color:var(--muted)}
+.dv.me.named b::after{content:" (هذا الجوال)";font-weight:400;color:var(--muted);font-size:11.5px}
+.dv.none{border-style:dashed;background:transparent}
+.sy-help{margin-top:10px;background:var(--verm-l);border-radius:14px;padding:10px 12px;color:var(--ink)}
+.sy-help.warn{background:var(--gold-l)}
+.sy-help b{display:block;font-size:13.5px;color:var(--verm)}
+.sy-help.warn b{color:var(--gold-d)}
+.sy-help p{font-size:12.5px;line-height:1.7;margin:4px 0 6px}
+.sy-help pre{margin:0;background:#fff;border:1px solid var(--hair);border-radius:10px;padding:8px 10px;font-size:11px;line-height:1.5;overflow-x:auto;white-space:pre;text-align:left}
+.sy-help small{display:block;font-size:11px;color:var(--muted);overflow-wrap:anywhere}
+a.pbtn{text-decoration:none}
+/* driver search + speak */
+.dsearch{display:flex;align-items:center;gap:8px;background:var(--surf);border:1px solid var(--hair);border-radius:14px;padding:4px 12px;margin:0 0 4px;color:var(--muted)}
+.dsearch svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.dsearch input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-family:var(--f-body);font-size:16px;padding:8px 0;color:var(--ink)}
+.dgrp[hidden],.dcard[hidden]{display:none!important}
+.full .say{margin-top:22px;display:inline-flex;align-items:center;gap:8px;border:0;border-radius:24px;padding:12px 22px;background:var(--bronze);color:var(--champ-hi);font-family:var(--f-body);font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 12px 24px -12px rgba(42,36,32,.8)}
+.full .say svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.full .say[hidden]{display:none}
+/* qibla sheet */
+.sheet{position:fixed;inset:0;z-index:60;background:rgba(20,17,15,.55);display:none;align-items:flex-end;justify-content:center;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.sheet.on{display:flex}
+.sh-card{position:relative;width:100%;max-width:520px;background:var(--surf);border-radius:26px 26px 0 0;padding:20px 20px calc(22px + env(safe-area-inset-bottom,0px));text-align:center;animation:shup .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes shup{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.sh-card h3{margin:0;font-size:19px;color:var(--ink)}
+.sh-card .x{position:absolute;top:14px;left:14px;width:36px;height:36px;border-radius:50%;border:0;background:var(--satin);font-size:20px;cursor:pointer;color:var(--ink)}
+.qinfo{font-size:13.5px;color:var(--muted);margin:6px 0 14px}
+.dial{position:relative;width:250px;height:250px;margin:0 auto;border-radius:50%;background:radial-gradient(circle,#fff 0 58%,var(--satin) 59% 100%);box-shadow:inset 0 0 0 1px var(--hair),0 14px 30px -18px rgba(42,36,32,.5)}
+.rose{position:absolute;inset:0;border-radius:50%;transition:transform .25s linear}
+.rose span{position:absolute;font-weight:800;font-size:14px;color:var(--muted)}
+.rose .nN{top:8px;left:50%;transform:translateX(-50%);color:var(--verm)}.rose .nS{bottom:8px;left:50%;transform:translateX(-50%)}
+.rose .nE{right:12px;top:50%;transform:translateY(-50%)}.rose .nW{left:12px;top:50%;transform:translateY(-50%)}
+.kaaba{position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:10px;background:var(--bronze);color:var(--champ);display:grid;place-items:center}
+.kaaba svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.needle{position:absolute;left:50%;top:22px;width:0;height:0;margin-left:-11px;border-left:11px solid transparent;border-right:11px solid transparent;border-bottom:26px solid var(--gold-d)}
+.dial::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--gold-d)}
+.dial.ok{box-shadow:inset 0 0 0 3px var(--jade),0 0 0 6px var(--jade-l)}
+.dial.ok .needle{border-bottom-color:var(--jade)}
+.qhint{font-size:13.5px;color:var(--ink);margin:14px 0 12px;min-height:1.4em}
+.qhint+.pbtn[hidden]{display:none}
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:70;max-width:86%;background:rgba(34,29,26,.95);color:var(--champ-hi);font-size:13.5px;font-weight:700;border-radius:16px;padding:10px 16px;text-align:center;transition:opacity .25s,transform .25s;box-shadow:0 14px 30px -14px rgba(0,0,0,.6)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+/* quantity calculator */
+.qcalc .f2{margin-top:4px}
+.qc-out{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.qc-out>div{background:var(--satin);border:1px solid var(--hair);border-radius:12px;padding:8px 10px;color:var(--ink)}
+.qc-out .om{background:var(--bronze);border-color:var(--bronze);color:var(--champ-hi)}
+.qc-out .pu{grid-column:1/-1}
+.qc-out small{display:block;font-size:11px;color:var(--muted)}
+.qc-out .om small{color:rgba(243,230,197,.7)}
+.qc-out b{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
+.qc-out .muted{grid-column:1/-1;font-size:12.5px;color:var(--muted)}
+/* spending by day */
+.dbars{display:flex;align-items:flex-end;gap:8px;height:92px;margin:16px 2px 4px;padding-top:4px;border-bottom:1px solid var(--hair)}
+.db{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;color:var(--ink);min-width:0}
+.db i{display:block;width:100%;max-width:30px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#C9AE78,#8E7240)}
+.db b{font-size:10.5px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.db span{font-size:10.5px;color:var(--muted);transform:translateY(16px)}
+.dbars{margin-bottom:22px}
 @media (max-width:370px){.pane-main h1{font-size:28px}.glass{height:200px}.bp-pt b{font-size:26px}.tz b{font-size:18px}.tl li{grid-template-columns:42px 28px minmax(0,1fr) auto;column-gap:6px}.tl::before{right:62px}}
 </style>
 </head>
@@ -893,8 +996,20 @@ body,.view{background:var(--app)}
   <button class="x" type="button" id="fullX" aria-label="إغلاق">×</button>
   <div class="big" id="fullBig"></div>
   <div class="sub" id="fullSub"></div>
-  <div class="hint">اعرض الشاشة على السائق أو البائع · اضغط في أي مكان للإغلاق</div>
+  <button class="say" type="button" id="fullSay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>اسمعها بالصوت</button>
+  <div class="hint">اعرض الشاشة على السائق أو البائع، واضغط في أي مكان للإغلاق</div>
 </div>
+<div class="sheet" id="qSheet" role="dialog" aria-modal="true" aria-label="اتجاه القبلة">
+  <div class="sh-card">
+    <button class="x" type="button" id="qX" aria-label="إغلاق">×</button>
+    <h3>اتجاه القبلة</h3>
+    <p class="qinfo" id="qInfo"></p>
+    <div class="dial" id="qDial"><div class="rose" id="qRose"><span class="nN">ش</span><span class="nE">ق</span><span class="nS">ج</span><span class="nW">غ</span><i class="kaaba" id="qK"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8l7-3 7 3v10l-7 3-7-3z"/><path d="M5 11l7 3 7-3"/></svg></i></div><div class="needle"></div></div>
+    <p class="qhint" id="qHint">اضغط تشغيل البوصلة، وحط الجوال مسطح، ولفّ لين يصير رمز الكعبة فوق السهم.</p>
+    <button class="pbtn sun" type="button" id="qStart">تشغيل البوصلة</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 
 <div id="src">
@@ -1729,7 +1844,55 @@ let visited={}; try{visited=JSON.parse(localStorage.getItem('tripapp-visited')||
 const vKey=(d,it)=>d+'|'+it.x, vCountable=it=>!!(it.tag||it.m);
 function vStats(day){const c=day.items.filter(vCountable);return [c.filter(it=>visited[vKey(day.d,it)]).length,c.length];}
 const CHK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>';
-const ICONS={"search": "<circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M20 20l-4.2-4.2\"/>", "plane": "<path d=\"M2 16l20-7-3-2-6 2-6-5-2 1 4 6-4 1-2-1-1 1 3 3z\"/>", "land": "<path d=\"M3 20h18\"/><path d=\"M4.5 12.5l14.6 3.9.8-2.4-5.5-2.3-2.6-6.2-1.9-.6.3 5.5-3.7-1.4-1-2.2-1.4-.3.4 3.6z\"/>", "factory": "<path d=\"M3 20V11l5 3v-3l5 3V8l8 4v8z\"/><path d=\"M7 17h2M12 17h2M17 17h1.5\"/>", "boxes": "<path d=\"M3.5 8L12 4l8.5 4L12 12z\"/><path d=\"M3.5 8v8.5L12 20.5l8.5-4V8\"/><path d=\"M12 12v8.5\"/>", "deal": "<path d=\"M7 3h7l4 4v14H7z\"/><path d=\"M14 3v4h4\"/><path d=\"M9.5 15.5c1.2-1.7 2.2-1.7 3 0s1.8 1.7 3 0\"/>", "ship": "<path d=\"M3 15l2 5h14l2-5z\"/><path d=\"M6 15V9h12v6\"/><path d=\"M12 9V4M9 6h6\"/>", "bag": "<path d=\"M5 8h14l-1 12H6z\"/><path d=\"M9 8V6.5a3 3 0 0 1 6 0V8\"/>", "camera": "<path d=\"M4 8h3l2-2.5h6L17 8h3v11H4z\"/><circle cx=\"12\" cy=\"13.5\" r=\"3.4\"/>", "spark": "<path d=\"M12 3l2.4 5.6L20 9.5l-4.3 3.9L17 19l-5-3-5 3 1.3-5.6L4 9.5l5.6-.9z\"/>", "car": "<path d=\"M4 16v-4l2-5h12l2 5v4z\"/><path d=\"M4 16v2.5M20 16v2.5\"/><circle cx=\"7.5\" cy=\"13\" r=\"1\"/><circle cx=\"16.5\" cy=\"13\" r=\"1\"/>", "home": "<path d=\"M4 11l8-6.5 8 6.5\"/><path d=\"M6 9.5V20h12V9.5\"/><rect x=\"9.5\" y=\"12.5\" width=\"5\" height=\"4.5\" rx=\"1\"/>", "list": "<path d=\"M10 6h10M10 12h10M10 18h10\"/><path d=\"M4 6l1.2 1.2L7.5 5M4 12l1.2 1.2L7.5 11M4 18l1.2 1.2L7.5 17\"/>", "mosque": "<path d=\"M6 20v-6a6 6 0 0 1 12 0v6z\"/><path d=\"M12 8V4.5M3 20V10M21 20V10M2 20h20\"/>", "bed": "<path d=\"M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5\"/><circle cx=\"7\" cy=\"11\" r=\"1.6\"/>", "scale": "<path d=\"M12 4v16M6 20h12M5 7h14\"/><path d=\"M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z\"/>", "dot": "<circle cx=\"12\" cy=\"12\" r=\"2.6\"/>", "card": "<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2.5\"/><path d=\"M7 10h10M7 14h6\"/>", "coins": "<circle cx=\"9\" cy=\"9\" r=\"5.5\"/><path d=\"M14.6 9.7a5.5 5.5 0 1 1-5 5\"/>", "wallet": "<rect x=\"3\" y=\"6\" width=\"18\" height=\"13\" rx=\"2.5\"/><path d=\"M3 10h18M16 14.5h2\"/>", "ticket": "<path d=\"M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z\"/><path d=\"M14 7v10\" stroke-dasharray=\"2 2\"/>", "globe": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18\"/>", "pencil": "<path d=\"M4 20l1-5L15.5 4.5a2.1 2.1 0 0 1 3 3L8 18z\"/><path d=\"M13.5 6.5l3 3\"/>", "book": "<path d=\"M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5z\"/><path d=\"M12 6v14\"/>"};
+const CITY={mct:{n:'مسقط',lat:23.5880,lng:58.3829,tz:4,z:'Asia/Muscat'},gz:{n:'قوانغتشو',lat:23.1291,lng:113.2644,tz:8,z:'Asia/Shanghai'},bk:{n:'بانكوك',lat:13.7563,lng:100.5018,tz:7,z:'Asia/Bangkok'}};
+CITY.tr=CITY.gz;
+// Prayer times (Muslim World League: Fajr 18°, Isha 17°, Asr shadow 1) — after PrayTimes.org
+function prayTimes(y,m,d,lat,lng,tz){
+  const R=Math.PI/180, sin=x=>Math.sin(x*R), cos=x=>Math.cos(x*R), tan=x=>Math.tan(x*R),
+    acos=x=>Math.acos(Math.max(-1,Math.min(1,x)))/R, asin=x=>Math.asin(x)/R, atan2=(a,b)=>Math.atan2(a,b)/R, acot=x=>Math.atan(1/x)/R,
+    fixA=a=>{a=a-360*Math.floor(a/360);return a<0?a+360:a;}, fixH=a=>{a=a-24*Math.floor(a/24);return a<0?a+24:a;};
+  let Y=y,M=m; if(M<=2){Y-=1;M+=12;} const A=Math.floor(Y/100),B=2-A+Math.floor(A/4);
+  const jd=Math.floor(365.25*(Y+4716))+Math.floor(30.6001*(M+1))+d+B-1524.5-lng/(15*24);
+  const sun=j=>{const D=j-2451545,g=fixA(357.529+0.98560028*D),q=fixA(280.459+0.98564736*D),L=fixA(q+1.915*sin(g)+0.020*sin(2*g)),e=23.439-0.00000036*D,
+    RA=atan2(cos(e)*sin(L),cos(L))/15; return {decl:asin(sin(e)*sin(L)),eqt:q/15-fixH(RA)};};
+  const mid=t=>fixH(12-sun(jd+t).eqt);
+  const ang=(a,t,ccw)=>{const dc=sun(jd+t).decl,n=mid(t),v=acos((-sin(a)-sin(dc)*sin(lat))/(cos(dc)*cos(lat)))/15;return n+(ccw?-v:v);};
+  const asr=(f,t)=>{const dc=sun(jd+t).decl;return ang(-acot(f+tan(Math.abs(lat-dc))),t);};
+  const p={fajr:5/24,sunrise:6/24,dhuhr:12/24,asr:13/24,maghrib:18/24,isha:18/24};
+  const r={fajr:ang(18,p.fajr,1),sunrise:ang(0.833,p.sunrise,1),dhuhr:mid(p.dhuhr),asr:asr(1,p.asr),maghrib:ang(0.833,p.maghrib),isha:ang(17,p.isha)};
+  for(const k in r) r[k]=r[k]+tz-lng/15;
+  return r; // hours (decimal, local)
+}
+const fmtH=h=>{h=h+0.5/60;h=h-24*Math.floor(h/24);const H=Math.floor(h),Mi=Math.floor((h-H)*60);return String(H).padStart(2,'0')+':'+String(Mi).padStart(2,'0');};
+function qibla(lat,lng){const R=Math.PI/180,kl=21.4225*R,kg=39.8262*R,la=lat*R,dl=kg-lng*R;let q=Math.atan2(Math.sin(dl),Math.cos(la)*Math.tan(kl)-Math.sin(la)*Math.cos(dl))/R;return (q+360)%360;}
+
+function cityNow(c){ // y,m,d and decimal hour in the city's own clock
+  const t=new Date(Date.now()+CITY[c].tz*3600e3); return {y:t.getUTCFullYear(),m:t.getUTCMonth()+1,d:t.getUTCDate(),h:t.getUTCHours()+t.getUTCMinutes()/60};}
+const PR_N={fajr:'الفجر',sunrise:'الشروق',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء'};
+function prayerInfo(c){const C=CITY[c],n=cityNow(c),r=prayTimes(n.y,n.m,n.d,C.lat,C.lng,C.tz);
+  const order=['fajr','sunrise','dhuhr','asr','maghrib','isha']; let next=order.find(k=>k!=='sunrise'&&r[k]>n.h), tomorrow=false;
+  if(!next){next='fajr';tomorrow=true;} const left=(tomorrow?r.fajr+24:r[next])-n.h;
+  return {r,order,next,tomorrow,left,now:n.h};}
+function curCtx(){const now=new Date(),t=ymd(now);if(now<new Date(FLIGHTS[0].dep))return 'mct';if(now>new Date(FLIGHTS[3].arr))return 'mct';const d=DAYS.find(x=>x.d===t);return d?(d.c==='bk'?'bk':'gz'):'gz';}
+const WXK='tripapp-wx';
+function wxGet(c){try{const a=JSON.parse(localStorage.getItem(WXK)||'{}');return a[c]||null;}catch(e){return null;}}
+let wxBusy={};
+function wxFetch(c){const C=CITY[c]; if(!C||wxBusy[c]||!navigator.onLine) return; const o=wxGet(c); if(o&&Date.now()-o.t<45*60e3) return; wxBusy[c]=1;
+  fetch('https://api.open-meteo.com/v1/forecast?latitude='+C.lat+'&longitude='+C.lng+'&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1',{cache:'no-store'})
+  .then(r=>r.json()).then(j=>{if(!j||!j.current)throw 0; let a={};try{a=JSON.parse(localStorage.getItem(WXK)||'{}');}catch(e){}
+    a[c]={t:Date.now(),temp:j.current.temperature_2m,code:j.current.weather_code,max:j.daily&&j.daily.temperature_2m_max[0],min:j.daily&&j.daily.temperature_2m_min[0]};
+    try{localStorage.setItem(WXK,JSON.stringify(a));}catch(e){} if(curView==='today'){const st=$('#dstrip')?$('#dstrip').scrollLeft:0;renderToday();if($('#dstrip'))$('#dstrip').scrollLeft=st;}})
+  .catch(()=>{}).finally(()=>{wxBusy[c]=0;});}
+function wxText(code){return code===0?'صحو':code<=2?'غائم جزئياً':code===3?'غائم':code<=48?'ضباب':code<=57?'رذاذ':code<=67?'مطر':code<=77?'ثلج':code<=82?'زخات مطر':'عواصف رعدية';}
+function wxIco(code){return code<=1?'sun':code<=3?'cloud':code<=48?'fog':code<=82?'rain':'storm';}
+function toast(m){const t=$('#toast');if(!t)return;t.textContent=m;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),2600);}
+window.toast=toast;
+function speak(text,kind){
+  if(!('speechSynthesis' in window)){toast('القراءة بالصوت غير متوفرة في هذا الجوال');return;}
+  const u=new SpeechSynthesisUtterance(text); u.lang=kind==='th'?'th-TH':kind==='en'?'en-US':'zh-CN'; u.rate=.8;
+  const vs=speechSynthesis.getVoices()||[]; const v=vs.find(x=>(x.lang||'').replace('_','-').toLowerCase().indexOf(u.lang.slice(0,2).toLowerCase())===0); if(v) u.voice=v;
+  speechSynthesis.cancel(); speechSynthesis.speak(u);}
+const ICONS={"search": "<circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M20 20l-4.2-4.2\"/>", "plane": "<path d=\"M2 16l20-7-3-2-6 2-6-5-2 1 4 6-4 1-2-1-1 1 3 3z\"/>", "land": "<path d=\"M3 20h18\"/><path d=\"M4.5 12.5l14.6 3.9.8-2.4-5.5-2.3-2.6-6.2-1.9-.6.3 5.5-3.7-1.4-1-2.2-1.4-.3.4 3.6z\"/>", "factory": "<path d=\"M3 20V11l5 3v-3l5 3V8l8 4v8z\"/><path d=\"M7 17h2M12 17h2M17 17h1.5\"/>", "boxes": "<path d=\"M3.5 8L12 4l8.5 4L12 12z\"/><path d=\"M3.5 8v8.5L12 20.5l8.5-4V8\"/><path d=\"M12 12v8.5\"/>", "deal": "<path d=\"M7 3h7l4 4v14H7z\"/><path d=\"M14 3v4h4\"/><path d=\"M9.5 15.5c1.2-1.7 2.2-1.7 3 0s1.8 1.7 3 0\"/>", "ship": "<path d=\"M3 15l2 5h14l2-5z\"/><path d=\"M6 15V9h12v6\"/><path d=\"M12 9V4M9 6h6\"/>", "bag": "<path d=\"M5 8h14l-1 12H6z\"/><path d=\"M9 8V6.5a3 3 0 0 1 6 0V8\"/>", "camera": "<path d=\"M4 8h3l2-2.5h6L17 8h3v11H4z\"/><circle cx=\"12\" cy=\"13.5\" r=\"3.4\"/>", "spark": "<path d=\"M12 3l2.4 5.6L20 9.5l-4.3 3.9L17 19l-5-3-5 3 1.3-5.6L4 9.5l5.6-.9z\"/>", "car": "<path d=\"M4 16v-4l2-5h12l2 5v4z\"/><path d=\"M4 16v2.5M20 16v2.5\"/><circle cx=\"7.5\" cy=\"13\" r=\"1\"/><circle cx=\"16.5\" cy=\"13\" r=\"1\"/>", "home": "<path d=\"M4 11l8-6.5 8 6.5\"/><path d=\"M6 9.5V20h12V9.5\"/><rect x=\"9.5\" y=\"12.5\" width=\"5\" height=\"4.5\" rx=\"1\"/>", "list": "<path d=\"M10 6h10M10 12h10M10 18h10\"/><path d=\"M4 6l1.2 1.2L7.5 5M4 12l1.2 1.2L7.5 11M4 18l1.2 1.2L7.5 17\"/>", "mosque": "<path d=\"M6 20v-6a6 6 0 0 1 12 0v6z\"/><path d=\"M12 8V4.5M3 20V10M21 20V10M2 20h20\"/>", "bed": "<path d=\"M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5\"/><circle cx=\"7\" cy=\"11\" r=\"1.6\"/>", "scale": "<path d=\"M12 4v16M6 20h12M5 7h14\"/><path d=\"M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z\"/>", "dot": "<circle cx=\"12\" cy=\"12\" r=\"2.6\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2.5v2M12 19.5v2M4.6 4.6L6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4\"/>", "cloud": "<path d=\"M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 10.5 3.8 3.8 0 0 0 7 18z\"/>", "fog": "<path d=\"M4 9h16M3 13h18M5 17h14\"/>", "rain": "<path d=\"M7 14h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 6.5 3.8 3.8 0 0 0 7 14z\"/><path d=\"M8 17l-1 3M12 17l-1 3M16 17l-1 3\"/>", "storm": "<path d=\"M7 14h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 6.5 3.8 3.8 0 0 0 7 14z\"/><path d=\"M12 14l-2 4h3l-2 4\"/>", "moon": "<path d=\"M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z\"/>", "compass": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M15.5 8.5l-2 5-5 2 2-5z\"/>", "speaker": "<path d=\"M4 9.5h3.5L12 5.5v13l-4.5-4H4z\"/><path d=\"M15.5 9a4 4 0 0 1 0 6\"/>", "send": "<path d=\"M21 3L10 14\"/><path d=\"M21 3l-7 18-4-7-7-4z\"/>", "calc": "<rect x=\"5\" y=\"3\" width=\"14\" height=\"18\" rx=\"2.5\"/><path d=\"M8 7h8M8.5 11h1M11.5 11h1M14.5 11h1M8.5 14h1M11.5 14h1M14.5 14h1M8.5 17h1M11.5 17h4\"/>", "card": "<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2.5\"/><path d=\"M7 10h10M7 14h6\"/>", "coins": "<circle cx=\"9\" cy=\"9\" r=\"5.5\"/><path d=\"M14.6 9.7a5.5 5.5 0 1 1-5 5\"/>", "wallet": "<rect x=\"3\" y=\"6\" width=\"18\" height=\"13\" rx=\"2.5\"/><path d=\"M3 10h18M16 14.5h2\"/>", "ticket": "<path d=\"M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z\"/><path d=\"M14 7v10\" stroke-dasharray=\"2 2\"/>", "globe": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18\"/>", "pencil": "<path d=\"M4 20l1-5L15.5 4.5a2.1 2.1 0 0 1 3 3L8 18z\"/><path d=\"M13.5 6.5l3 3\"/>", "book": "<path d=\"M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5z\"/><path d=\"M12 6v14\"/>"};
 const ico=k=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[k]||ICONS.dot)+'</svg>';
 const SKYLINE={"gz": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V110h360V120zM150 120V94h40V120zM196 120V100h30V120zM232 120V90h46V120zM286 120V98h26V120zM318 120V92h42V120z\"/><path d=\"M60 120C64 100 70 80 72 66C73 54 70 38 68 26H80C78 38 75 54 76 66C78 80 84 100 88 120Z M73.2 26L73.7 4H74.3L74.8 26ZM112 120V30l8.0 -8 8.0 8V120zM132 120V42l7.0 -8 7.0 8V120zM28 120V52l7.0 -8 7.0 8V120zM0 120V76h26V120zM44 120V62h14V120zM92 120V68h18V120zM148 120V80h20V120zM170 120V90h16V120zM188 120V98h22V120zM214 120V104h18V120zM236 120V108h30V120zM270 120V102h22V120zM296 120V106h24V120zM324 120V100h36V120z\"/></svg>", "bk": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V112h360V120zM220 120V98h34V120zM262 120V90h22V120zM290 120V102h40V120zM334 120V94h26V120z\"/><path d=\"M74.0 120.0 L78.0 99.3 L84.0 99.3 L86.0 80.8 L91.0 80.8 L93.0 60.1 L96.0 60.1 L97.0 44.0 L99.0 32.4 L100.0 14.0 L101.0 32.4 L103.0 44.0 L104.0 60.1 L107.0 60.1 L109.0 80.8 L114.0 80.8 L116.0 99.3 L122.0 99.3 L126.0 120.0Z M37.7 120.0 L39.9 113.3 L43.2 113.3 L44.3 107.4 L47.0 107.4 L48.1 100.7 L49.8 100.7 L50.4 95.5 L51.5 91.8 L52.0 85.9 L52.5 91.8 L53.6 95.5 L54.2 100.7 L55.9 100.7 L57.0 107.4 L59.7 107.4 L60.8 113.3 L64.1 113.3 L66.3 120.0Z M133.7 120.0 L135.9 113.3 L139.2 113.3 L140.3 107.4 L143.1 107.4 L144.2 100.7 L145.8 100.7 L146.3 95.5 L147.4 91.8 L148.0 85.9 L148.6 91.8 L149.7 95.5 L150.2 100.7 L151.8 100.7 L152.9 107.4 L155.7 107.4 L156.8 113.3 L160.1 113.3 L162.3 120.0Z M190 120V102h8l14-18 10-10 10 10 14 18h8v18z M204 92l18-24 18 24z M222 68l-1-6h2zM0 120V90h26V120zM270 120V80h18V120zM292 120V64h14V120zM310 120V90h22V120zM336 120V102h24V120z\"/></svg>", "mct": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V82l24-14 22 10 30-22 34 18 26-10 30 14 36-26 34 20 28-12 30 14 30-16 36 18v48z\"/><path d=\"M54 120V38l2.0-6 2.0-4 2.0 4 2.0 6V120z M52 56h12v3h-12z M154 120V38l2.0-6 2.0-4 2.0 4 2.0 6V120z M152 56h12v3h-12z M37 120V62l1.5-6 1.5-4 1.5 4 1.5 6V120z M35 80h10v3h-10z M173 120V62l1.5-6 1.5-4 1.5 4 1.5 6V120z M171 80h10v3h-10z M76 120V98h8c0-19 11-31 24-33 13 2 24 14 24 33h8v22z M107 65v-9h2v9zM196 120V104h30V120zM228 120V98h22V120zM252 120V108h40V120zM294 120V102h28V120zM324 120V106h36V120z\"/></svg>", "tr": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V104c10-8 24-8 32 0c8-12 28-12 36 0c10-6 22-6 30 2c12-10 30-10 40 0c10-6 22-6 30 0c10-10 28-10 38 0c10-6 24-6 32 2c10-8 24-8 34 0c8-6 20-6 28 2c8-4 18-4 24 2v14z\"/><path class=\"arc\" d=\"M340 100C270 30 160 18 96 46\"/><g transform=\"translate(64 30) scale(2.1) scale(-1 1) translate(-24 0)\"><path d=\"M2 16l20-7-3-2-6 2-6-5-2 1 4 6-4 1-2-1-1 1 3 3z\"/></g></svg>"};
 const TZC={mct:'Asia/Muscat',gz:'Asia/Shanghai',bk:'Asia/Bangkok',tr:'Asia/Shanghai'};
@@ -1759,12 +1922,14 @@ function renderToday(){
   const tz=TZC[ctx], sk=skyOf(hourIn(tz));
   const tzs=[['mct','مسقط','Asia/Muscat',null],['gz','قوانغتشو','Asia/Shanghai','+4 ساعات'],['bk','بانكوك','Asia/Bangkok','+3 ساعات']];
   const tzrow=tzs.map(([k,n,z,o])=>'<div class="tz'+(k===ctx||(ctx==='tr'&&k==='gz')?' on':'')+'"><span>'+n+'</span><b>'+clockStr(z)+'</b><small>'+(o||dayStr(z))+'</small></div>').join('');
-  const syS=window.SYNC?window.SYNC.state():'off';
-  const hero='<header class="hero2"><div class="htop"><span class="brand"><i id="syDot" class="sy-dot '+syS+'"></i>رحلتي</span>'+
+  const syS=window.SYNC?window.SYNC.state():'off', syL=window.SYNC?window.SYNC.label():'';
+  const wc=ctx==='tr'?'gz':ctx, wx=wxGet(wc); wxFetch(wc);
+  const wxl=wx?'<span class="wx">'+ico(wxIco(wx.code))+Math.round(wx.temp)+'° '+wxText(wx.code)+(wx.max!=null?'<em>'+Math.round(wx.min)+'° إلى '+Math.round(wx.max)+'°</em>':'')+'</span>':'';
+  const hero='<header class="hero2"><div class="htop"><button class="brand" type="button" data-sync aria-label="حالة المزامنة"><i id="syDot" class="sy-dot '+syS+'"></i><span>رحلتي</span><small id="syLbl">'+syL+'</small></button>'+
     '<button class="hsrch" type="button" onclick="APP.search()" aria-label="بحث في الكتاب">'+ico('search')+'</button></div>'+
     '<div class="win'+(heroAnim?' anim':'')+'"><div class="glass sky-'+sk+'">'+(sk==='night'?'<div class="stars"></div>':'')+
     '<div class="pane-top"><span class="kick">'+kick+'</span><span class="lt">الآن '+clockStr(tz)+' في '+TZN[ctx]+'</span></div><div class="transom"></div>'+
-    '<div class="pane-main"><h1>'+esc(title)+'</h1><p>'+sub+'</p></div><div class="skyline">'+SKYLINE[ctx]+'</div><div class="refl"></div></div>'+
+    '<div class="pane-main"><h1>'+esc(title)+'</h1><p>'+sub+'</p>'+wxl+'</div><div class="skyline">'+SKYLINE[ctx]+'</div><div class="refl"></div></div>'+
     '<div class="sill" role="img" aria-label="تقدم الرحلة '+pct+'%"><i style="width:'+pct+'%"></i></div></div>'+
     '<div class="tzrow">'+tzrow+'</div></header>';
   heroAnim=false;
@@ -1780,12 +1945,20 @@ function renderToday(){
       '<div class="bp-perf"></div>'+
       '<div class="bp-foot"><div><small>التاريخ</small><b>'+ds+'</b></div><div><small>رقم الحجز</small><b class="ltr">'+nf.ref+'</b></div>'+
       '<div class="bp-cd"><small>متبقي</small><b>'+(c.d?c.d+' ي ':'')+c.h+' س '+c.m+' د</b></div></div></section>';}
+  // prayer times for the city you are in
+  const pc=ctx==='tr'?'gz':ctx, pi=prayerInfo(pc), lh=Math.floor(pi.left), lm=Math.round((pi.left-lh)*60);
+  const pray='<section class="card2 pray" aria-label="مواقيت الصلاة"><div class="pr-top"><span class="pr-ic">'+ico('moon')+'</span><div class="pr-next"><small>الصلاة القادمة في '+CITY[pc].n+'</small>'+
+    '<b>'+PR_N[pi.next]+' <em>'+fmtH(pi.tomorrow?pi.r.fajr:pi.r[pi.next])+'</em></b><span>'+(pi.tomorrow?'فجر بكرة، ':'')+'بعد '+(lh?lh+' س ':'')+lm+' د</span></div>'+
+    '<button class="pr-qb" type="button" data-qibla="'+pc+'">'+ico('compass')+'<span>القبلة</span></button></div>'+
+    '<div class="pr-row">'+pi.order.map(k=>'<div class="pcell'+(k===pi.next&&!pi.tomorrow?' nx':'')+(pi.r[k]<=pi.now&&!pi.tomorrow?' past':'')+(k==='sunrise'?' sr':'')+'"><span>'+PR_N[k]+'</span><b>'+fmtH(pi.r[k])+'</b></div>').join('')+'</div></section>';
   // day planner
   const strip=DAYS.map(x=>{const dt=parseD(x.d);const [vd,vt]=vStats(x);const all=vt&&vd===vt;return '<button type="button" class="dchip '+x.c+(x.d===selDay?' on':'')+(x.d===today?' today':'')+(all?' alldone':'')+'" data-d="'+x.d+'"><span>'+WD[dt.getDay()].replace('ال','')+'</span><b>'+dt.getDate()+'</b>'+(all?'<em>'+CHK+'</em>':'<i></i>')+'</button>';}).join('');
   const day=DAYS.find(x=>x.d===selDay)||DAYS[0]; const dt=parseD(day.d);
-  const items=day.items.map(it=>{
+  const SLOT={'الصبح':9,'النهار':9,'اليوم':9,'الظهر':12,'العصر':15,'المساء':18,'الليل':20};
+  let nowI=-1; if(day.d===today){const hn=now.getHours()+now.getMinutes()/60; day.items.forEach((it,i)=>{const m=/^(\d{1,2}):(\d{2})$/.exec(it.t); const st=m?(+m[1]+m[2]/60):(SLOT[it.t]!=null?SLOT[it.t]:null); if(st!=null&&st<=hn) nowI=i;});}
+  const items=day.items.map((it,ii)=>{
     const k=vKey(day.d,it), cnt=vCountable(it), on=cnt&&visited[k], ik=itemIcon(it), cc=ICAT[ik];
-    let x='<li class="'+(on?'done':'')+'"><span class="tm">'+esc(it.t)+'</span><span class="ib c-'+cc+'">'+ico(ik)+'</span><div class="tx"><span class="tt">'+esc(it.x)+'</span>';
+    let x='<li class="'+(on?'done':'')+(ii===nowI?' now':'')+'"><span class="tm">'+esc(it.t)+(ii===nowI?'<em>الآن</em>':'')+'</span><span class="ib c-'+cc+'">'+ico(ik)+'</span><div class="tx"><span class="tt">'+esc(it.x)+'</span>';
     const meta=[]; if(it.tag) meta.push('<span class="tg c-'+cc+'">'+esc(it.tag[1])+'</span>'); if(it.small) meta.push('<span>'+esc(it.small)+'</span>');
     if(meta.length) x+='<small>'+meta.join('')+'</small>';
     if(it.m) x+='<div class="ml">'+it.m.map(m=>mlink(m[0],m[1],m[2])).join('')+'</div>';
@@ -1799,16 +1972,21 @@ function renderToday(){
      '<div class="dayhead"><h3>'+WD[dt.getDay()]+' '+dt.getDate()+' '+MON[dt.getMonth()+1]+'</h3><span class="city '+day.c+'">'+esc(day.city)+'</span>'+(dv[1]?'<span class="vprog'+(dv[0]===dv[1]?' vfull':'')+'">'+CHK+dv[0]+'/'+dv[1]+'</span>':'')+'</div>'+
      '<ul class="tl">'+items+'</ul>'+
      '<div class="vtrip"><div class="vbar"><i style="width:'+(tv[1]?Math.round(tv[0]/tv[1]*100):0)+'%"></i></div><span>زرت '+tv[0]+' من '+tv[1]+' محطة في الرحلة. اضغط الدائرة عند كل مكان تزوره.</span></div>'+
-     '<div class="btnrow"><button class="pbtn l" type="button" data-open="'+day.ch+'">'+ico('book')+'التفاصيل في الكتاب</button></div></section>';
+     '<div class="btnrow"><button class="pbtn l" type="button" data-open="'+day.ch+'">'+ico('book')+'التفاصيل في الكتاب</button><button class="pbtn l" type="button" data-shareday="'+day.d+'">'+ico('send')+'أرسل البرنامج</button></div></section>';
   const QA=[['driver','go','اعرضها للسائق','الأماكن والعبارات بالصيني','card','r'],['cur','go','محوّل العملات','يوان وبات وريال ودولار','coins','j'],
     ['exp','go','المصاريف','سجّل واعرف الميزانية','wallet','b'],['cmp','open','مقارنة المصانع','السعر مقابل الجودة','scale','s'],
     ['c2','open','الحجوزات والتذاكر','أرقام الحجز والتذاكر','ticket','s'],['c3','open','روابط التسجيل','TDAC وبطاقة الصين','globe','j'],
     ['notes','open','ملاحظاتي','اكتب وارجع لها بأي وقت','pencil','b'],['book','go','الكتاب كاملاً','كل التفاصيل والخرائط','book','r']];
   const quick='<div class="sec-t">اختصارات</div><div class="quick">'+QA.map(([k,a,t,s2,i,c])=>'<button class="qa" type="button" data-'+a+'="'+k+'"><span class="qi c-'+c+'">'+ico(i)+'</span><b>'+t+'</b><span class="qs">'+s2+'</span></button>').join('')+'</div>';
-  $('#v-today').innerHTML=hero+'<div class="wrap w2">'+fl+plan+quick+'</div>';
+  $('#v-today').innerHTML=hero+'<div class="wrap w2">'+fl+pray+plan+quick+'</div>';
   const ds=$('#dstrip .on'); if(ds){const st=$('#dstrip'); st.scrollLeft=ds.offsetLeft-(st.clientWidth-ds.clientWidth)/2;}
 }
 $('#v-today').addEventListener('click',e=>{
+  const sb=e.target.closest('[data-sync]'); if(sb){show('exp'); setTimeout(()=>{const c=document.getElementById('syCard'); if(c) c.scrollIntoView({behavior:'smooth',block:'center'});},120); return;}
+  const qb=e.target.closest('[data-qibla]'); if(qb){openQibla(qb.dataset.qibla); return;}
+  const sd=e.target.closest('[data-shareday]'); if(sd){const dd=DAYS.find(x=>x.d===sd.dataset.shareday); if(!dd) return; const dt=parseD(dd.d);
+    const txt='برنامج '+WD[dt.getDay()]+' '+dt.getDate()+' '+MON[dt.getMonth()+1]+' في '+dd.city+':\n'+dd.items.map(it=>'• '+it.t+': '+it.x+(it.m?' ('+it.m.map(m=>m[0]).join('، ')+')':'')).join('\n');
+    if(navigator.share) navigator.share({title:'برنامج اليوم',text:txt}).catch(()=>{}); else (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast('تم نسخ برنامج اليوم'),()=>toast('النسخ غير متاح هنا')); return;}
   const vk=e.target.closest('[data-vk]'); if(vk){const k=vk.dataset.vk; if(visited[k]) delete visited[k]; else visited[k]=Date.now(); try{localStorage.setItem('tripapp-visited',JSON.stringify(visited));}catch(x){}
     const st=$('#dstrip').scrollLeft, sy=$('#v-today').scrollTop; renderToday(); $('#dstrip').scrollLeft=st; $('#v-today').scrollTop=sy; if(navigator.vibrate) try{navigator.vibrate(12);}catch(x){} return;}
   const d=e.target.closest('[data-d]'); if(d){selDay=d.dataset.d; const st=$('#dstrip').scrollLeft; renderToday(); $('#dstrip').scrollLeft=st; return;}
@@ -1817,6 +1995,24 @@ $('#v-today').addEventListener('click',e=>{
 });
 setInterval(()=>{ if(curView==='today' && !document.hidden){ const st=$('#dstrip')?$('#dstrip').scrollLeft:0; renderToday(); if($('#dstrip')) $('#dstrip').scrollLeft=st; } },30000);
 
+// ===================== QIBLA =====================
+let qState={on:false,q:0,h:null};
+function qHandler(ev){let hd=null; if(typeof ev.webkitCompassHeading==='number') hd=ev.webkitCompassHeading; else if(ev.absolute&&ev.alpha!=null) hd=360-ev.alpha; if(hd==null) return;
+  qState.h=hd; $('#qRose').style.transform='rotate('+(-hd)+'deg)'; const diff=((qState.q-hd+540)%360)-180, ok=Math.abs(diff)<6;
+  $('#qDial').classList.toggle('ok',ok); $('#qHint').textContent=ok?'أنت باتجاه القبلة ✓':(diff>0?'لفّ يمين '+Math.round(diff)+'°':'لفّ يسار '+Math.round(-diff)+'°');}
+function qStop(){window.removeEventListener('deviceorientation',qHandler);window.removeEventListener('deviceorientationabsolute',qHandler);qState.on=false;}
+function openQibla(c){const C=CITY[c]||CITY.gz, q=qibla(C.lat,C.lng); qState.q=q;
+  const dir=q>=247&&q<293?'غرب':q>=293&&q<337?'شمال غرب':q>=202&&q<247?'جنوب غرب':'';
+  $('#qInfo').textContent='من '+C.n+': '+Math.round(q)+'° من الشمال'+(dir?' باتجاه ال'+dir:'');
+  $('#qK').style.transform='rotate('+q+'deg) translateY(-104px) rotate('+(-q)+'deg)'; $('#qRose').style.transform='rotate(0deg)'; $('#qDial').classList.remove('ok');
+  $('#qHint').textContent='اضغط تشغيل البوصلة، وحط الجوال مسطح، ولفّ لين يصير رمز الكعبة فوق السهم.'; $('#qStart').hidden=false; $('#qSheet').classList.add('on');}
+$('#qStart').addEventListener('click',async()=>{
+  try{ if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){const r=await DeviceOrientationEvent.requestPermission(); if(r!=='granted'){$('#qHint').textContent='ما سمحت للبوصلة. استخدم الرقم المكتوب فوق مع بوصلة الجوال.';return;}} }catch(e){}
+  if(!('ondeviceorientation' in window)&&!('ondeviceorientationabsolute' in window)){$('#qHint').textContent='الجهاز هذا ما فيه بوصلة. استخدم الرقم المكتوب فوق.';return;}
+  qStop(); window.addEventListener('deviceorientationabsolute',qHandler); window.addEventListener('deviceorientation',qHandler); qState.on=true; $('#qStart').hidden=true; $('#qHint').textContent='حرّك الجوال ببطء…';
+  setTimeout(()=>{if(qState.on&&qState.h==null) $('#qHint').textContent='ما وصلت قراءة من البوصلة. استخدم الرقم المكتوب فوق مع تطبيق البوصلة.';},2500);});
+$('#qX').addEventListener('click',()=>{qStop();$('#qSheet').classList.remove('on');});
+$('#qSheet').addEventListener('click',e=>{if(e.target.id==='qSheet'){qStop();$('#qSheet').classList.remove('on');}});
 // ===================== DRIVER =====================
 const PLACES=[
  ['الفندق',[['فندقنا في قوانغتشو – فيينا الدولي','白云区西槎路 凯升国际广场 维也纳国际酒店（同德围上步地铁站）','zh']]],
@@ -1831,14 +2027,19 @@ const PHR={
      ['مع البائع والمصنع',[['كم السعر؟','多少钱？'],['غالي جداً','太贵了'],['ما هو آخر سعر؟','最低多少钱？'],['أبغى بالجملة','我要批发'],['كم الحد الأدنى للطلب؟','最少起订量是多少？'],['عندك عينة؟','有样品吗？'],['كم حبة في الكرتون؟','一箱多少个？'],['أبغى فاتورة','我要发票'],['أبغى بدون علامة تجارية','我要不带品牌的'],['أقدر أدفع بـ Alipay؟','可以用支付宝吗？']]],
      ['الأكل والضروريات',[['هل هو حلال؟','这是清真的吗？'],['بدون لحم خنزير','不要猪肉'],['أين الحمام؟','洗手间在哪里？'],['شكراً','谢谢']]]],
  th:[['في تايلاند',[['كم السعر؟','ราคาเท่าไหร่'],['ممكن تخفيض؟','ลดได้ไหม'],['خذني إلى هنا','ไปที่นี่'],['هل هو حلال؟','ฮาลาลไหม'],['بدون حار','ไม่เผ็ด'],['شكراً','ขอบคุณครับ']]]]};
-let drvSeg='places', phrLang='zh';
+let drvSeg='places', phrLang=(()=>{const n=new Date(),t=ymd(n),d=DAYS.find(x=>x.d===t);return d&&d.c==='bk'?'th':'zh';})();
 const customKey='tripapp-cards';
 function renderDriver(){
   const cust=load(customKey,[]);
-  let h='<div class="phead coral"><div class="in"><h2>اعرضها للسائق</h2><p>اضغط على أي بطاقة لتظهر بخط كبير على كامل الشاشة</p></div></div><div class="wrap">';
+  const cc=curCtx();
+  const hint=cc==='bk'?'في بانكوك اعرض الاسم بالإنجليزي على السائق أو في تطبيق Grab':(cc==='gz'?'في الصين اعرض النص الصيني على السائق، واضغط اسمعها بالصوت':'اضغط أي بطاقة لتظهر بخط كبير، وتقدر تسمعها بالصوت');
+  let h='<div class="phead coral"><div class="in"><h2>اعرضها للسائق</h2><p>'+hint+'</p></div></div><div class="wrap">';
   h+='<div class="seg"><button type="button" data-seg="places" class="'+(drvSeg==='places'?'on':'')+'">الأماكن</button><button type="button" data-seg="phr" class="'+(drvSeg==='phr'?'on':'')+'">عبارات جاهزة</button><button type="button" data-seg="mine" class="'+(drvSeg==='mine'?'on':'')+'">بطاقاتي</button></div>';
   if(drvSeg==='places'){
-    PLACES.forEach(([g,list])=>{h+='<div class="sec-t">'+g+'</div><div class="dgrid">'+list.map(p=>'<button type="button" class="dcard" data-big="'+esc(p[1])+'" data-sub="'+esc(p[0])+'" data-kind="'+p[2]+'"><div class="t"><b>'+esc(p[0])+'</b><span>'+(p[2]==='zh'?'بالصيني للسائق':'بالإنجليزي للسائق أو Grab')+'</span></div><span class="'+(p[2]==='zh'?'zh':'en')+'">'+esc(p[1])+'</span></button>').join('')+'</div>';});
+    h+='<label class="dsearch">'+ico('search')+'<input id="dq" type="search" enterkeyhint="search" autocomplete="off" placeholder="ابحث عن مكان: سوق، فندق، مطار…"></label>';
+    const groups=cc==='bk'?[...PLACES.filter(g=>g[0]==='بانكوك'),...PLACES.filter(g=>g[0]!=='بانكوك')]:PLACES;
+    groups.forEach(([g,list])=>{h+='<div class="dgrp"><div class="sec-t">'+g+'</div><div class="dgrid">'+list.map(p=>'<button type="button" class="dcard" data-q="'+esc((p[0]+' '+p[1]).toLowerCase())+'" data-big="'+esc(p[1])+'" data-sub="'+esc(p[0])+'" data-kind="'+p[2]+'"><div class="t"><b>'+esc(p[0])+'</b><span>'+(p[2]==='zh'?'بالصيني للسائق':'بالإنجليزي للسائق أو Grab')+'</span></div><span class="'+(p[2]==='zh'?'zh':'en')+'">'+esc(p[1])+'</span></button>').join('')+'</div></div>';});
+    h+='<div class="empty2" id="dqNone" hidden>ما لقيت مكان بهذا الاسم. جرّب كلمة ثانية، أو أضفه في بطاقاتي.</div>';
   } else if(drvSeg==='phr'){
     h+='<div class="seg" style="margin-top:-4px"><button type="button" data-lang="zh" class="'+(phrLang==='zh'?'on':'')+'">الصين</button><button type="button" data-lang="th" class="'+(phrLang==='th'?'on':'')+'">تايلاند</button></div>';
     PHR[phrLang].forEach(([g,list])=>{h+='<div class="sec-t">'+g+'</div>'+list.map(p=>'<button type="button" class="phr" data-big="'+esc(p[1])+'" data-sub="'+esc(p[0])+'" data-kind="'+phrLang+'"><span class="ar">'+esc(p[0])+'</span><span class="zh'+(phrLang==='th'?' th':'')+'">'+esc(p[1])+'</span></button>').join('');});
@@ -1857,8 +2058,11 @@ $('#v-driver').addEventListener('click',e=>{
   const dc=e.target.closest('[data-delc]'); if(dc){if(dc.dataset.armed){const c=load(customKey,[]);c.splice(+dc.dataset.delc,1);save(customKey,c);renderDriver();}else{dc.dataset.armed='1';dc.textContent='تأكيد الحذف؟';setTimeout(()=>{if(dc.isConnected){delete dc.dataset.armed;dc.textContent='حذف';}},3000);}return;}
   const b=e.target.closest('[data-big]'); if(b){openFull(b.dataset.big,b.dataset.sub,b.dataset.kind);}
 });
-function openFull(big,sub,kind){const f=$('#full');$('#fullBig').textContent=big;$('#fullBig').className='big'+(kind==='th'?' th':kind==='en'?' en':'');$('#fullSub').textContent=sub;f.classList.add('on');}
-$('#full').addEventListener('click',()=>$('#full').classList.remove('on'));
+function openFull(big,sub,kind){const f=$('#full'); f.dataset.t=big; f.dataset.k=kind||'zh'; $('#fullSay').hidden=!('speechSynthesis' in window);$('#fullBig').textContent=big;$('#fullBig').className='big'+(kind==='th'?' th':kind==='en'?' en':'');$('#fullSub').textContent=sub;f.classList.add('on');}
+$('#full').addEventListener('click',e=>{ if(e.target.closest('#fullSay')){const f=$('#full'); speak(f.dataset.t||'',f.dataset.k||'zh'); return;} if('speechSynthesis' in window) speechSynthesis.cancel(); $('#full').classList.remove('on');});
+$('#v-driver').addEventListener('input',e=>{ if(e.target.id!=='dq') return; const q=e.target.value.trim().toLowerCase(); let any=false;
+  document.querySelectorAll('#v-driver .dgrp').forEach(g=>{let vis=0; g.querySelectorAll('.dcard').forEach(c=>{const on=!q||c.dataset.q.indexOf(q)>=0; c.hidden=!on; if(on)vis++;}); g.hidden=!vis; if(vis)any=true;});
+  const n=$('#dqNone'); if(n) n.hidden=any; });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#full').classList.remove('on');});
 
 // ===================== CURRENCY =====================
@@ -1867,16 +2071,22 @@ let rates=Object.assign({OMR:0.3845,CNY:7.1,THB:32.5,USD:1},load('tripapp-rates'
 let curAmt=load('tripapp-curamt',{c:'CNY',v:100});
 const toOMR=(v,c)=>v/rates[c]*rates.OMR;
 function renderCur(){
-  let h='<div class="phead teal"><div class="in"><h2>محوّل العملات</h2><p>أسعار مباشرة مع الإنترنت، وبدونه يشتغل بآخر سعر محفوظ</p></div></div><div class="wrap"><div class="cur">';
+  let h='<div class="phead teal"><div class="in"><h2>محوّل العملات</h2><p>1 ريال = '+fmt(rates.CNY/rates.OMR,2)+' يوان = '+fmt(rates.THB/rates.OMR,1)+' بات</p></div></div><div class="wrap"><div class="cur">';
   CUR.forEach(([c,n,sym,bg,fg])=>{h+='<div class="row"><div class="fl" style="background:'+bg+';color:'+fg+'">'+sym+'</div><div class="nm">'+n+'<small>'+c+'</small></div><input id="cv-'+c+'" inputmode="decimal" type="text" aria-label="'+n+'"></div>';});
   h+='</div><div class="rstat" id="rstat"></div><div class="qamt">'+[10,50,100,500,1000,5000].map(v=>'<button type="button" data-q="'+v+'">'+v.toLocaleString('en-US')+'</button>').join('')+'</div>';
+  const qc=load('tripapp-qcalc',{p:'',c:'CNY',q:'',u:''});
+  h+='<div class="sec-t">حاسبة الكمية</div><div class="card2 qcalc"><p class="bkp">للمصانع والجملة: اكتب سعر الوحدة والكمية، ويطلع لك الإجمالي بالريال.</p><div class="f2">'+
+    '<label>سعر الوحدة<input id="qc-p" type="text" inputmode="decimal" placeholder="مثال: 23.5" value="'+esc(qc.p)+'"></label>'+
+    '<label>العملة<select id="qc-c">'+CUR.map(c=>'<option value="'+c[0]+'"'+(qc.c===c[0]?' selected':'')+'>'+c[1]+'</option>').join('')+'</select></label>'+
+    '<label>الكمية<input id="qc-q" type="text" inputmode="decimal" placeholder="مثال: 500" value="'+esc(qc.q)+'"></label>'+
+    '<label>الوحدة<input id="qc-u" type="text" placeholder="كيلو، متر، قطعة" value="'+esc(qc.u)+'"></label></div><div class="qc-out" id="qcOut"></div></div>';
   h+='<div class="sec-t">جدول سريع</div><div class="card2"><table class="ref"><tbody>'+
     [['100 يوان',100,'CNY'],['1,000 يوان',1000,'CNY'],['1,000 بات',1000,'THB'],['5,000 بات',5000,'THB'],['100 دولار',100,'USD']].map(r=>'<tr><td>'+r[0]+'</td><td>'+fmt(toOMR(r[1],r[2]),2)+' ر.ع</td></tr>').join('')+
   '</tbody></table></div>';
   h+='<div class="sec-t">أسعار الصرف (مقابل 1 دولار) · تقدر تعدّلها يدوياً</div><div class="card2"><div class="rates">'+
     ['OMR','CNY','THB'].map(c=>'<label>'+c+'<input type="text" inputmode="decimal" data-rate="'+c+'" value="'+rates[c]+'"></label>').join('')+
     '<button class="pbtn" type="button" id="rateNow" style="justify-self:start">تحديث الآن</button><button class="pbtn l" type="button" id="rateReset" style="justify-self:start">الأسعار الافتراضية</button></div><div class="msg ok" id="rateMsg"></div></div></div>';
-  $('#v-cur').innerHTML=h; fillCur(); showRstat(); liveRates(false);
+  $('#v-cur').innerHTML=h; fillCur(); showRstat(); liveRates(false); qcCalc();
 }
 let rinfo=load('tripapp-rateinfo',{t:0,src:'default'}), rBusy=false;
 const MONS=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
@@ -1903,6 +2113,12 @@ function liveRates(force){
 }
 window.addEventListener('online',()=>liveRates(false));
 function fillCur(skip){const usd=curAmt.v/rates[curAmt.c];CUR.forEach(([c])=>{if(c===skip)return;const el=$('#cv-'+c);if(el)el.value=curAmt.v===''?'':fmt(usd*rates[c],c==='OMR'?3:2);});}
+function qcCalc(){const g=id=>$('#'+id); if(!g('qc-p')) return; const p=parseFloat(g('qc-p').value.replace(/,/g,'')), q=parseFloat(g('qc-q').value.replace(/,/g,'')), c=g('qc-c').value, u=g('qc-u').value.trim();
+  save('tripapp-qcalc',{p:g('qc-p').value,c,q:g('qc-q').value,u}); const o=g('qcOut'); const nm=(CUR.find(x=>x[0]===c)||CUR[0])[1];
+  if(!(p>0&&q>0)){o.innerHTML='<span class="muted">اكتب السعر والكمية</span>';return;} const tot=p*q;
+  o.innerHTML='<div><small>الإجمالي</small><b>'+fmt(tot,2)+' '+nm+'</b></div><div class="om"><small>بالريال العماني</small><b>'+fmt(toOMR(tot,c),2)+' ر.ع</b></div>'+(c!=='OMR'?'<div class="pu"><small>سعر '+(u||'الوحدة')+' بالريال</small><b>'+fmt(toOMR(p,c),3)+'</b></div>':'');}
+$('#v-cur').addEventListener('input',e=>{ if(e.target.id&&e.target.id.indexOf('qc-')===0) qcCalc(); });
+$('#v-cur').addEventListener('change',e=>{ if(e.target.id==='qc-c') qcCalc(); });
 $('#v-cur').addEventListener('input',e=>{
   const t=e.target;
   if(t.id&&t.id.startsWith('cv-')){const c=t.id.slice(3);const v=parseFloat(t.value.replace(/,/g,''));curAmt={c,v:isNaN(v)?'':v};save('tripapp-curamt',curAmt);fillCur(c);}
@@ -1925,7 +2141,7 @@ if(shop.some(s=>!s.id)){shop.forEach(s=>{if(!s.id)s.id=newId();});save('tripapp-
 let expSeg='exp', xd={cat:'أكل',who:'مشترك',cur:'CNY'};
 const saveExp=()=>save('tripapp-exp',exp), saveShop=()=>save('tripapp-shop',shop);
 function renderExp(){
-  let h='<div class="phead sun"><div class="in"><h2>المصاريف والمشتريات</h2><p>كل شيء يُحفظ في جوالك ويعمل بدون إنترنت</p></div></div><div class="wrap">';
+  let h='<div class="phead sun"><div class="in"><h2>المصاريف والمشتريات</h2><p>'+(exp.items.length?'صرفتوا '+fmt(exp.items.reduce((s,i)=>s+toOMR(i.a,i.c),0),1)+' ر.ع من ميزانية '+fmt(+exp.budget||0,0)+' ر.ع':'سجّل مصاريفكم، وتتزامن مع جوال زميلك')+'</p></div></div><div class="wrap">';
   h+='<div class="seg"><button type="button" data-es="exp" class="'+(expSeg==='exp'?'on':'')+'">المصاريف</button><button type="button" data-es="shop" class="'+(expSeg==='shop'?'on':'')+'">قائمة المشتريات</button></div>';
   if(expSeg==='exp'){
     const tot=exp.items.reduce((s,i)=>s+toOMR(i.a,i.c),0), b=+exp.budget||0, pct=b?Math.min(100,tot/b*100):0;
@@ -1939,6 +2155,9 @@ function renderExp(){
       h+='<div class="donut"><div class="dc"><svg viewBox="0 0 120 120" aria-hidden="true"><circle r="42" cx="60" cy="60" fill="none" stroke="var(--app2)" stroke-width="15"/><g transform="rotate(-90 60 60)">'+segs+'</g></svg>'+
          '<div class="ctr"><b>'+Math.round(top[2]/tc*100)+'%</b><small>'+top[0]+'</small></div></div>'+
          '<div class="dleg">'+byCat.map(([c,col,v])=>'<div><i style="background:'+col+'"></i><span>'+c+'</span><em>'+fmt(v,1)+' ر.ع</em></div>').join('')+'</div></div>';
+      const byDay=[]; exp.items.forEach(i=>{let g=byDay.find(x=>x.d===i.d); if(!g){g={d:i.d,v:0};byDay.push(g);} g.v+=toOMR(i.a,i.c);});
+      const lastD=byDay.slice(-7), mxd=Math.max.apply(null,lastD.map(x=>x.v))||1;
+      if(lastD.length>1) h+='<div class="dbars" aria-label="المصروف حسب اليوم">'+lastD.map(x=>'<div class="db"><b>'+fmt(x.v,0)+'</b><i style="height:'+Math.max(4,Math.round(x.v/mxd*54))+'px"></i><span>'+esc(String(x.d||'').split(' ')[0])+'</span></div>').join('')+'</div>';
       const paid={خالد:0,يونس:0}; let shared=0;
       exp.items.forEach(i=>{const v=toOMR(i.a,i.c); if(i.who==='مشترك'){shared+=v;} else paid[i.who]+=v;});
       // shared items are assumed paid half-half already; personal items are each person's own
@@ -2034,6 +2253,7 @@ const clean=o=>JSON.parse(JSON.stringify(o));
 const stable=o=>JSON.stringify(o,Object.keys(o||{}).sort());
 const byId=(a,b)=>String(a.id).localeCompare(String(b.id),'en',{numeric:true});
 const hash=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return (h>>>0).toString(36);};
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const arr=(def)=>({toMap:v=>{const m={};(Array.isArray(v)?v:[]).forEach(i=>{if(i&&i.id)m['i'+i.id]=i;});return m;},fromMap:m=>Object.values(m).sort(byId),def});
 const A={
  'tripapp-exp':{col:'exp',toMap:v=>{const m={};((v&&v.items)||[]).forEach(i=>{if(i&&i.id)m['i'+i.id]=i;});m._budget={b:v&&v.budget!=null?v.budget:1500};return m;},
@@ -2046,73 +2266,126 @@ const A={
  'tripapp-visited':{col:'visited',toMap:v=>{const m={};Object.keys(v||{}).forEach(k=>{m['v'+hash(k)]={k,t:v[k]};});return m;},
    fromMap:m=>{const o={};Object.values(m).forEach(x=>{if(x&&x.k)o[x.k]=x.t||1;});return o;},def:{}}
 };
-const SHARED='EYNKS7UT72JH';
-const S={code:SHARED,state:'off',fs:null,store:null,base:{},unsub:[],applying:false,timers:{},first:{}};
-
-const baseKey=k=>'tripsync-base:'+S.code+':'+k;
-const colName=k=>'trip_'+S.code+'_'+A[k].col;
-function setState(s){S.state=s;const el=document.getElementById('syState');if(el){el.className='sy-st '+s;el.innerHTML=stTxt();}const d=document.getElementById('syDot');if(d)d.className='sy-dot '+s;}
-function stTxt(){return {off:'غير مفعّلة',connecting:'جاري الاتصال…',live:'<i></i>متزامن مع زميلك',offline:'بدون إنترنت · يتزامن تلقائياً لما يرجع النت',denied:'المزامنة غير متاحة حالياً · البيانات محفوظة في جوالك',error:'تعذّر الاتصال · البيانات محفوظة في جوالك'}[S.state]||'';}
+// collections start with the villa app's prefix so the same database rules cover both apps
+const SHARED='EYNKS7UT72JH', PFX='villa6_trip_'+SHARED+'_';
+const S={state:'off',fs:null,store:null,base:{},unsub:[],applying:false,timers:{},first:{},err:'',last:0,devs:{},me:LS.getItem('tripsync-me')||'',dev:LS.getItem('tripsync-dev')||'',beatT:null};
+if(!S.dev){S.dev='d'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);try{origSet.call(LS,'tripsync-dev',S.dev);}catch(e){}}
+const baseKey=k=>'tripsync2-base:'+k;
+const colName=k=>PFX+A[k].col;
+const RULES="rules_version = '2';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /{col}/{doc=**} {\n      allow read, write: if col.matches('villa6_.*');\n    }\n  }\n}";
+let nT=null; function notify(){clearTimeout(nT);nT=setTimeout(updateDom,150);}
+function setState(s,err){ if(err!==undefined) S.err=err; S.state=s; notify(); }
+function others(){return Object.entries(S.devs).filter(([id])=>id!==S.dev).map(([id,d])=>({id,n:d.n||'جوال بدون اسم',t:d.t||0})).filter(o=>Date.now()-o.t<30*864e5).sort((a,b)=>b.t-a.t);}
+function ago(t){const m=Math.round((Date.now()-t)/60000);if(m<3)return 'متصل الآن';if(m<60)return 'آخر ظهور قبل '+m+' دقيقة';const h=Math.round(m/60);if(h<24)return 'آخر ظهور قبل '+h+' ساعة';return 'آخر ظهور قبل '+Math.round(h/24)+' يوم';}
+const hm=t=>{const d=new Date(t);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');};
+function label(){ if(S.state==='live'){const o=others()[0]; return o&&Date.now()-o.t<3*60000? o.n+' متصل الآن':'متزامن';} if(S.state==='offline')return 'بدون نت'; if(S.state==='connecting')return ''; if(S.state==='denied'||S.state==='error')return 'المزامنة متوقفة'; return '';}
+function stTxt(){return {off:'غير مفعّلة',connecting:'جاري الاتصال…',live:'<i></i>متزامن',offline:'بدون إنترنت',denied:'محتاجة إذن',error:'تعذّر الاتصال'}[S.state]||'';}
+function updateDom(){
+  const d=document.getElementById('syDot'); if(d) d.className='sy-dot '+S.state;
+  const l=document.getElementById('syLbl'); if(l) l.textContent=label();
+  const c=document.getElementById('syCard'); if(c){const ae=document.activeElement; if(!(ae&&c.contains(ae)&&ae.tagName==='INPUT')) c.outerHTML=card();}
+}
 Storage.prototype.setItem=function(k,v){origSet.call(this,k,v);if(this===LS&&A[k]&&S.store&&!S.applying)schedule(k);};
 function schedule(k){clearTimeout(S.timers[k]);S.timers[k]=setTimeout(()=>push(k),350);}
+function ack(){S.last=Date.now(); if(S.state!=='live') S.state='live'; S.err=''; notify();}
 function push(k){
   if(!S.store||!S.first[k]) return;
   const fs=S.fs, ad=A[k], local=ad.toMap(rd(k,ad.def)), base=S.base[k]||(S.base[k]={});
-  Object.keys(local).forEach(id=>{const s=stable(local[id]);if(base[id]!==s){base[id]=s;fs.setDoc(fs.doc(S.store,colName(k),id),clean(local[id])).catch(fail);}});
-  Object.keys(base).forEach(id=>{if(!(id in local)){delete base[id];fs.deleteDoc(fs.doc(S.store,colName(k),id)).catch(fail);}});
+  Object.keys(local).forEach(id=>{const s=stable(local[id]);if(base[id]!==s){base[id]=s;fs.setDoc(fs.doc(S.store,colName(k),id),clean(local[id])).then(ack,fail);}});
+  Object.keys(base).forEach(id=>{if(!(id in local)){delete base[id];fs.deleteDoc(fs.doc(S.store,colName(k),id)).then(ack,fail);}});
   wr(baseKey(k),base);
 }
-function fail(e){const c=e&&e.code||'';if(c==='permission-denied')setState('denied');else if(c==='unavailable')setState('offline');else if(S.state!=='live')setState('error');}
+function fail(e){const c=(e&&e.code)||'';S.err=c+(e&&e.message?': '+String(e.message).slice(0,140):'');
+  if(c==='permission-denied')setState('denied'); else if(c==='unavailable')setState('offline'); else if(S.state!=='live')setState('error'); else notify();}
 let reT=null;function refresh(){clearTimeout(reT);reT=setTimeout(()=>{try{window.APP&&window.APP.reload&&window.APP.reload();}catch(e){}try{window.TB&&window.TB.reload&&window.TB.reload();}catch(e){}},120);}
 function onSnap(k,qs){
   const ad=A[k], local=ad.toMap(rd(k,ad.def)), base=S.base[k]||(S.base[k]={}); let changed=false;
+  if(!qs.metadata.fromCache) S.last=Date.now();
   if(!S.first[k]){
     const R={};qs.docs.forEach(d=>{R[d.id]=d.data();});
     Object.keys(R).forEach(id=>{const rs=stable(R[id]);
       if(!(id in local)){ if(id in base){ S.fs.deleteDoc(S.fs.doc(S.store,colName(k),id)).catch(fail); delete base[id]; } else { local[id]=R[id]; base[id]=rs; changed=true; } }
       else { const ls=stable(local[id]); if(ls===rs){base[id]=rs;} else if(base[id]!==undefined && base[id]!==ls){ /* edited here while offline: keep local, push later */ } else { local[id]=R[id]; base[id]=rs; changed=true; } } });
-    Object.keys(local).forEach(id=>{ if(!(id in R) && (id in base)){ delete local[id]; delete base[id]; changed=true; } });
+    if(!qs.metadata.fromCache) Object.keys(local).forEach(id=>{ if(!(id in R) && (id in base)){ delete local[id]; delete base[id]; changed=true; } });
     S.first[k]=true;
     if(changed){S.applying=true;wr(k,ad.fromMap(local));S.applying=false;}
     wr(baseKey(k),base); push(k); if(changed) refresh(); return;
   }
-  qs.docChanges().forEach(ch=>{ if(ch.doc.metadata.hasPendingWrites) return; const id=ch.doc.id;
+  qs.docChanges().forEach(ch=>{ if(ch.doc.metadata&&ch.doc.metadata.hasPendingWrites) return; const id=ch.doc.id;
     if(ch.type==='removed'){ if(id in local){delete local[id];changed=true;} delete base[id]; }
     else { const d=ch.doc.data(), rs=stable(d); if(base[id]!==rs || !(id in local) || stable(local[id])!==rs){ local[id]=d; base[id]=rs; changed=true; } } });
   if(changed){S.applying=true;wr(k,ad.fromMap(local));S.applying=false;wr(baseKey(k),base);refresh();}
+  notify();
 }
+function devRef(){return S.fs.doc(S.store,PFX+'dev',S.dev);}
+function beat(){ if(!S.store) return Promise.resolve(); return S.fs.setDoc(devRef(),{n:S.me||'جوال بدون اسم',t:Date.now()}).then(ack,e=>{fail(e);throw e;}); }
+let loading=null;
+const HOST_OK=/github\.io$/.test(location.hostname)||location.protocol==='file:'||/^(localhost|127\.)/.test(location.hostname);
 async function start(){
-  if(!S.code){setState('off');return;}
+  if(!HOST_OK){ S.state='off'; return; }
+  if(S.store||loading) return loading;
   setState(navigator.onLine?'connecting':'offline');
   Object.keys(A).forEach(k=>{S.base[k]=rd(baseKey(k),{});S.first[k]=false;});
-  try{
-    const V='10.12.2';
-    const appM=await import('https://www.gstatic.com/firebasejs/'+V+'/firebase-app.js');
-    const fs=await import('https://www.gstatic.com/firebasejs/'+V+'/firebase-firestore.js');
-    const app=appM.getApps().find(a=>a.name==='trip')||appM.initializeApp(FB_CFG,'trip');
-    let store; try{store=fs.initializeFirestore(app,{localCache:fs.persistentLocalCache({tabManager:fs.persistentMultipleTabManager()})});}catch(e){store=fs.getFirestore(app);}
-    S.fs=fs; S.store=store;
-    let got=0;
-    Object.keys(A).forEach(k=>{
-      S.unsub.push(fs.onSnapshot(fs.collection(store,colName(k)),{includeMetadataChanges:false},qs=>{
-        onSnap(k,qs); if(!qs.metadata.fromCache){ if(++got>=1) setState('live'); } else if(S.state==='connecting'&&!navigator.onLine) setState('offline');
-      },fail));
-    });
-  }catch(e){ setState(navigator.onLine?'error':'offline'); }
+  loading=(async()=>{
+    try{
+      const V='10.12.2';
+      const appM=await import('https://www.gstatic.com/firebasejs/'+V+'/firebase-app.js');
+      const fs=await import('https://www.gstatic.com/firebasejs/'+V+'/firebase-firestore.js');
+      const app=appM.getApps().find(a=>a.name==='trip')||appM.initializeApp(FB_CFG,'trip');
+      let store; try{store=fs.initializeFirestore(app,{localCache:fs.persistentLocalCache({tabManager:fs.persistentMultipleTabManager()})});}catch(e){try{store=fs.getFirestore(app);}catch(e2){store=fs.initializeFirestore(app,{});}}
+      S.fs=fs; S.store=store;
+      Object.keys(A).forEach(k=>{
+        S.unsub.push(fs.onSnapshot(fs.collection(store,colName(k)),{includeMetadataChanges:false},qs=>{
+          onSnap(k,qs); if(!qs.metadata.fromCache){ if(S.state!=='live'){S.state='live';S.err='';} notify(); }
+        },fail));
+      });
+      S.unsub.push(fs.onSnapshot(fs.collection(store,PFX+'dev'),qs=>{S.devs={};qs.docs.forEach(d=>{S.devs[d.id]=d.data();}); notify();},fail));
+      beat().catch(()=>{});
+      clearInterval(S.beatT); S.beatT=setInterval(()=>{ if(!document.hidden) beat().catch(()=>{}); },60000);
+    }catch(e){ S.err=String(e&&e.message||e).slice(0,140); setState(navigator.onLine?'error':'offline'); }
+    finally{ loading=null; }
+  })();
+  return loading;
 }
-function stop(){S.unsub.forEach(u=>{try{u();}catch(e){}});S.unsub=[];S.store=null;setState('off');}
-window.addEventListener('online',()=>{ if(S.code&&!S.store) start(); else if(S.state==='offline') setState('live'); });
-window.addEventListener('offline',()=>{ if(S.code) setState('offline'); });
-const genCode=()=>{const c='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let s='';const r=crypto.getRandomValues(new Uint32Array(8));for(let i=0;i<8;i++)s+=c[r[i]%c.length];return s;};
-const fmtCode=c=>c.slice(0,4)+'-'+c.slice(4);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ if(S.store) beat().catch(()=>{}); else start(); } });
+window.addEventListener('online',()=>{ if(!S.store) start(); else { setState('live'); beat().catch(()=>{}); } });
+window.addEventListener('offline',()=>{ setState('offline'); });
 function card(){
-  return '<div class="card2 sy on"><div class="sy-h"><h3>المزامنة مع زميلك</h3><span class="sy-st '+S.state+'" id="syState">'+stTxt()+'</span></div>'+
-    '<p class="bkp">تلقائية: كل من يفتح رابط التطبيق يشوف نفس المصاريف والمشتريات والملاحظات وعلامات الزيارة ومقارنة المصانع، وأي تعديل يوصل للثاني خلال ثواني.</p></div>';
+  if(!HOST_OK) return '<div class="card2 sy" id="syCard"><div class="sy-h"><h3>المزامنة مع زميلك</h3><span class="sy-st off" id="syState">في رابط التطبيق</span></div><p class="bkp">المزامنة تشتغل في التطبيق اللي على الشاشة الرئيسية (رابط GitHub)، مو في هذي النسخة.</p></div>';
+  const o=others(), st=S.state;
+  let h='<div class="card2 sy" id="syCard"><div class="sy-h"><h3>المزامنة مع زميلك</h3><span class="sy-st '+st+'" id="syState">'+stTxt()+'</span></div>';
+  if(!S.me){
+    h+='<div class="sy-me"><b>هذا جوال مين؟</b><span>عشان يعرف زميلك إنك متصل</span><div class="chips"><button type="button" data-syme="خالد">خالد</button><button type="button" data-syme="يونس">يونس</button></div></div>';
+  }
+  h+='<div class="sy-devs"><div class="dv me'+(S.me?' named':'')+'"><i class="'+(st==='live'?'on':'')+'"></i><b>'+esc(S.me||'هذا الجوال')+'</b><span>'+(S.last?'آخر مزامنة '+hm(S.last):(st==='live'?'متصل':'لم تتم مزامنة بعد'))+'</span></div>';
+  if(o.length) o.forEach(x=>{h+='<div class="dv"><i class="'+(Date.now()-x.t<3*60000?'on':'')+'"></i><b>'+esc(x.n)+'</b><span>'+ago(x.t)+'</span></div>';});
+  else h+='<div class="dv none"><i></i><b>زميلك</b><span>ما فتح التطبيق بعد. أرسل له الرابط.</span></div>';
+  h+='</div>';
+  h+='<p class="bkp">المصاريف والمشتريات والملاحظات وعلامات الزيارة ومقارنة المصانع وبطاقات السائق تتزامن تلقائياً بين كل من يفتح رابط التطبيق.</p>';
+  if(st==='denied') h+='<div class="sy-help"><b>قاعدة البيانات محتاجة إذن</b><p>افتح إعدادات Firebase حقك، وامسح القواعد الموجودة، والصق هذي القواعد، واضغط Publish. نفس القواعد تشغّل تطبيق الفيلا بعد.</p><pre dir="ltr">'+esc(RULES)+'</pre><div class="btnrow"><button class="pbtn sun" type="button" data-sycopy>نسخ القواعد</button><a class="pbtn l" href="https://console.firebase.google.com/project/villa-tracker-d6afd/firestore/rules" target="_blank" rel="noopener">فتح إعدادات Firebase</a></div></div>';
+  else if(st==='error') h+='<div class="sy-help warn"><b>ما قدر يتصل بالمزامنة</b><p>تأكد إن النت شغال، واضغط اختبار المزامنة. في الصين تحتاج شريحة تجوال.</p>'+(S.err?'<small dir="ltr">'+esc(S.err)+'</small>':'')+'</div>';
+  h+='<div class="btnrow"><button class="pbtn" type="button" data-sytest>اختبار المزامنة</button><button class="pbtn l" type="button" data-syshare>أرسل الرابط لزميلك</button>'+(S.me?'<button class="pbtn l" type="button" data-syme="">تغيير الاسم</button>':'')+'</div><div class="msg'+(S.msg&&S.msg.ok?' ok':'')+'" id="syMsg">'+(S.msg&&Date.now()-S.msg.at<20000?esc(S.msg.t):'')+'</div></div>';
+  return h;
 }
-function rerender(){try{window.APP&&window.APP.reload&&window.APP.reload();}catch(e){}}
-function click(e){return false;}
-window.SYNC={card,click,state:()=>S.state};
-rerender(); start();
+function tmsg(t,ok){S.msg={t,ok,at:Date.now()}; const m=document.getElementById('syMsg'); if(m){m.className='msg'+(ok?' ok':''); m.textContent=t;} if(window.toast) window.toast(t);}
+async function test(){
+  tmsg('جاري الاختبار…',true);
+  if(!S.store){ await start(); }
+  if(!S.store){ tmsg('ما قدر يحمّل المزامنة. تأكد من النت وجرّب مرة ثانية.',false); return; }
+  try{ await Promise.race([beat(),new Promise((_,j)=>setTimeout(()=>j({code:'timeout',message:'no reply in 10s'}),10000))]); setState('live',''); tmsg('✓ المزامنة شغالة، وأي تعديل يوصل لزميلك',true); }
+  catch(e){ if(e&&e.code==='timeout'){ setState(navigator.onLine?'error':'offline','timeout'); tmsg('ما وصل رد من قاعدة البيانات. جرّب بعد شوي.',false);} else tmsg(e&&e.code==='permission-denied'?'قاعدة البيانات رفضت الكتابة. شوف الخطوات تحت.':'تعذّر الاتصال: '+((e&&e.code)||''),false); }
+}
+function click(e){
+  const me=e.target.closest('[data-syme]'); if(me){ const v=me.dataset.syme; S.me=v; try{ if(v) origSet.call(LS,'tripsync-me',v); else LS.removeItem('tripsync-me'); }catch(x){} if(v) beat().catch(()=>{}); updateDom(); return true; }
+  if(e.target.closest('[data-sytest]')){ test(); return true; }
+  if(e.target.closest('[data-syshare]')){ const t='تطبيق رحلتنا لقوانغتشو وبانكوك، متزامن بيننا:\nhttps://lmkkld82-star.github.io/-/trip/\nافتحه في Safari وأضفه للشاشة الرئيسية.';
+    if(navigator.share) navigator.share({title:'رحلتي',text:t}).catch(()=>{}); else (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>tmsg('تم نسخ الرسالة، الصقها لزميلك',true),()=>tmsg(t,true)); return true; }
+  if(e.target.closest('[data-sycopy]')){ (navigator.clipboard?navigator.clipboard.writeText(RULES):Promise.reject()).then(()=>tmsg('تم نسخ القواعد',true),()=>tmsg('انسخ القواعد من المربع يدوياً',false)); return true; }
+  return false;
+}
+window.SYNC={card,click,state:()=>S.state,label,me:()=>S.me};
+try{window.APP&&window.APP.reload&&window.APP.reload();}catch(e){}
+start();
 })();
 </script>
 
