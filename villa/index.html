@@ -404,6 +404,37 @@ i.sl{background:rgba(255,255,255,.55)} i.sb{background:#f3c94e}
 .wsec .pay .d{font-size:.8rem;color:var(--mut);width:auto}
 .wsec .pay .a{font-weight:700}
 
+
+/* ===== v10 polish: motion, floating tabs, clearer hero ===== */
+main.enter>*{animation:enter .28s cubic-bezier(.2,.8,.2,1) both}
+main.enter>*:nth-child(2){animation-delay:.04s}
+@keyframes enter{from{opacity:0;transform:translateY(10px)}}
+body.on-summary .proj b{display:none}
+body.on-summary .proj .nm{font-size:1rem;color:var(--hero-ink);font-weight:700;white-space:normal;overflow:visible}
+.proj .nm{white-space:normal;overflow:visible}
+.dl{font-size:.95rem;font-weight:500}
+.dbig{margin-bottom:16px}
+.sbar{height:14px;border-radius:8px}
+.slg{gap:8px 20px;font-size:.86rem}
+.slg em{font-style:normal;font-size:.76rem;color:var(--hero-mut);margin-inline-start:2px}
+.mfact{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16)}
+.mf-l{display:inline-flex;align-items:center;gap:8px;font-size:.88rem;color:var(--hero-mut)}
+.mf-l svg{color:#f3c94e}
+.mf-v{display:flex;align-items:baseline;gap:8px}
+.mf-v b{font-size:1.35rem;font-weight:700}
+.mf-v small{font-size:.76rem;color:var(--hero-mut)}
+.brow{transition:background .15s}
+.brow:active,.wring:active,.stab:active{transform:scale(.985)}
+.wring{transition:transform .15s,box-shadow .15s}
+.cell,.inp,.btn{transition:border-color .15s,background .15s,box-shadow .15s,transform .1s}
+.btn:active{transform:scale(.98)}
+@media (max-width:860px){
+  .tabs{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));padding-bottom:0;border:1px solid var(--line);border-radius:24px;box-shadow:0 12px 32px rgba(13,60,48,.16);background:color-mix(in srgb,var(--surface) 94%,transparent)}
+  .tabs button{height:60px}
+  .snack{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){main.enter>*{animation:none}}
+
 /* Workers ledger */
 .ledger{margin-top:28px}
 .ledger h2{font-size:1.15rem;font-weight:700;margin-bottom:12px}
@@ -628,6 +659,7 @@ link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 
 check:'<path d="m5 12.5 4.5 4.5L19 7"/>',
 back:'<path d="m14 6-6 6 6 6"/>',
 grid:'<rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/>',
+ruler:'<path d="M3 15.5 15.5 3 21 8.5 8.5 21z"/><path d="m7 12 2 2M10 9l2 2M13 6l2 2"/>',
 tree:'<path d="M12 21v-5M7 16h10l-3-4h2l-4-8-4 8h2z"/>'
 };
 function ic(n,cls){return'<svg class="i'+(cls?" "+cls:"")+'" viewBox="0 0 24 24" aria-hidden="true">'+(IC[n]||IC.folder)+'</svg>';}
@@ -1026,13 +1058,21 @@ function vSearch(){
 function render(){
   applyTheme();document.body.classList.toggle("compact",!!S.settings.compact);
   var ch=document.querySelector(".strip"),chX=ch?ch.scrollLeft:null,sd=document.querySelector(".side"),sdY=sd?sd.scrollTop:0;
-  document.getElementById("root").innerHTML=vBar()+'<main id="content">'+vContent()+'</main>'+vTabs()+vModal();
+  document.body.classList.toggle("on-summary",S.view==="summary"&&!(S.sOpen&&S.q));
+  document.getElementById("root").innerHTML=vBar()+'<main id="content"'+(S.anim?' class="enter"':'')+'>'+vContent()+'</main>'+vTabs()+vModal();S.anim=false;
+  var dn=document.getElementById("dbigN");if(dn&&!S._counted&&SYNC.mode!=="loading"){S._counted=true;countUp(dn,+dn.dataset.v);}
   bind();setSync(SYNC.timer&&_flushing?"saving":"live");SYNC.pending=false;
   var ch2=document.querySelector(".strip");
   if(ch2){if(chX!==null)ch2.scrollLeft=chX;var on=ch2.querySelector('[aria-current="true"]');if(on){var a=on.getBoundingClientRect(),b=ch2.getBoundingClientRect();if(a.left<b.left+8||a.right>b.right-8)ch2.scrollLeft+=(a.left+a.width/2)-(b.left+b.width/2);}}
   var sd2=document.querySelector(".side");if(sd2)sd2.scrollTop=sdY;
   if(S.modal){document.getElementById("snack").classList.remove("show");}
   if(S.flash){var el=document.getElementById(S.flash);if(el){el.classList.add("flash");el.scrollIntoView({block:"center",behavior:"smooth"});}S.flash=null;}
+}
+function countUp(el,to){
+  if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  var t0=null,dur=900;el.textContent=f(0);
+  function step(t){if(!t0)t0=t;var k=Math.min((t-t0)/dur,1),e=1-Math.pow(1-k,3);el.textContent=f(to*e);if(k<1)requestAnimationFrame(step);else el.textContent=f(to);}
+  requestAnimationFrame(step);
 }
 function vContent(){
   if(SYNC.mode==="loading")return'<div class="page single"><div class="panel empty">'+ic("table")+'<h3>جارٍ تحميل بيانات المشروع</h3><p>نجلب آخر نسخة مشتركة بينك وبين شريكك.</p></div></div>';
@@ -1193,7 +1233,6 @@ function vSheet(){
    +'<div class="head" style="'+sc(sec)+'"><div class="hd-main">'+tile(sec,1)+'<div style="min-width:0"><h1>'+esc(sec.lb)+'</h1><p>'+sub+'</p></div></div>'
    +'<div class="hd-tot"><small>'+(sec.id==="workers"?"المستحق":"الإجمالي")+'</small><b class="num" id="hdTot">'+f(sec.id==="workers"?wDue():rowsT(sec))+'<small>ر.ع.</small></b></div></div>'
    +(sec.id==="workers"?vLedger():linkNote(sec)+vTable(sec))
-   +'<p class="tip">'+ic("gear","sm")+'لحذف سطر أو عمود، أو تغيير اسم القسم ولونه، افتح الإعدادات ثم «'+esc(sec.lb)+'».</p>'
    +'</div>';
 }
 function landTotal(){var t=0;S.secs.forEach(function(s){s.cols.forEach(function(c){if(c.n===1&&/الأرض/.test(c.k))t+=(S.data[s.id]||[]).reduce(function(a,r){return a+num(r[c.k]);},0);});});return t;}
@@ -1213,12 +1252,10 @@ function vSumm(){
   var idleTxt=idle.length?'<p class="idle">لا مصاريف بعد في: '+idle.map(function(x){return esc(x.s.lb);}).join("، ")+'</p>':'';
   return'<div class="dash"><div class="dash-in">'
    +'<p class="dl">إجمالي ما صُرف على المشروع</p>'
-   +'<div class="dbig num">'+f(gt)+'<small>ر.ع.</small></div>'
+   +'<div class="dbig num"><span id="dbigN" data-v="'+gt+'">'+f(gt)+'</span><small>ر.ع.</small></div>'
    +(land?'<div class="split"><div class="sbar"><i class="sl" style="width:'+lp+'%"></i><i class="sb" style="width:'+bp+'%"></i></div>'
-     +'<div class="slg"><span><i class="sl"></i>الأرض <b class="num">'+f(land)+'</b></span><span><i class="sb"></i>البناء والمصاريف <b class="num">'+f(build)+'</b></span></div></div>':'')
-   +'<div class="facts">'
-   +(m?'<div class="fact"><small>تكلفة المتر المربع حتى الآن</small><b class="num">'+f(build/m)+'</b><span>ر.ع. لكل م² من '+fq(m)+' م²</span></div>':'')
-   +'<div class="fact"><small>البنود المسجّلة</small><b class="num">'+S.secs.reduce(function(a,s){return a+(S.data[s.id]||[]).length;},0)+'</b><span>في '+plural(active.length,"قسم واحد","قسمين","أقسام","قسماً")+'</span></div>'
+     +'<div class="slg"><span><i class="sl"></i>الأرض <b class="num">'+f(land)+'</b><em class="num">'+Math.round(lp)+'%</em></span><span><i class="sb"></i>البناء والمصاريف <b class="num">'+f(build)+'</b><em class="num">'+Math.round(bp)+'%</em></span></div></div>':'')
+   +(m?'<div class="mfact"><span class="mf-l">'+ic("ruler","sm")+'تكلفة المتر المربع حتى الآن</span><span class="mf-v"><b class="num">'+f(build/m)+'</b><small>ر.ع. لكل م² · '+fq(m)+' م²</small></span></div>':'')
    +'</div></div></div>'
    +'<div class="page single dash-page">'
    +(w?'<button class="wring" data-act="goSec" data-sid="workers" style="'+sc(w)+'">'
@@ -1403,6 +1440,7 @@ document.addEventListener("click",function(e){
   var el=e.target.closest("[data-act],[data-view],[data-sec],[data-kind],[data-icon],[data-seg],[data-color]");
   if(S.menu&&!e.target.closest(".menu-wrap")){S.menu=false;render();if(!el)return;}
   if(!el)return;
+  if(el.dataset.view||el.dataset.sec||el.dataset.act==="goSec"||el.dataset.act==="manage"||el.dataset.act==="back")S.anim=true;
   if(el.dataset.view){var wasDeep=(S.view==="sheet"&&S.act)||S.view==="manage";S.view=el.dataset.view;S.msec=null;S.sOpen=false;S.q="";S.open={};render();window.scrollTo(0,0);return;}
   if(el.dataset.sec){S.act=el.dataset.sec;S.open={};render();return;}
   if(el.dataset.kind!==undefined){keepInputs();S.modal.n=+el.dataset.kind;render();return;}
