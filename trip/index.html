@@ -955,7 +955,101 @@ a.pbtn{text-decoration:none}
 .db b{font-size:10.5px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
 .db span{font-size:10.5px;color:var(--muted);transform:translateY(16px)}
 .dbars{margin-bottom:22px}
-@media (max-width:370px){.pane-main h1{font-size:28px}.glass{height:200px}.bp-pt b{font-size:26px}.tz b{font-size:18px}.tl li{grid-template-columns:42px 28px minmax(0,1fr) auto;column-gap:6px}.tl::before{right:62px}}
+
+/* ================= v6 · calm light shell ================= */
+:root{--app:#F3F3F0;--app2:#E8E8E3;--hair:#E5E5E0;--satin:#F7F7F4;--shadow:0 1px 2px rgba(20,20,20,.04),0 8px 22px -14px rgba(20,20,20,.18)}
+body,.view{background:var(--app)}
+.view{scroll-behavior:smooth;overscroll-behavior-y:contain}
+.view.on:not(#v-book){animation:vin6 .32s cubic-bezier(.2,.75,.25,1)}
+@keyframes vin6{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.view.on:not(#v-book){animation:none}.view{scroll-behavior:auto}}
+/* compact title bar that fades in on scroll (takes no space) */
+.mbar{position:sticky;top:0;height:0;z-index:20}
+.mbar b{position:absolute;top:0;left:0;right:0;height:calc(46px + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) 60px 0;box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(243,243,240,.96);-webkit-backdrop-filter:saturate(1.5) blur(16px);backdrop-filter:saturate(1.5) blur(16px);border-bottom:1px solid var(--hair);opacity:0;transform:translateY(-8px);transition:opacity .22s ease,transform .22s ease;pointer-events:none}
+.view.scrolled .mbar b{opacity:1;transform:none}
+/* today header: text only */
+.th{padding:calc(10px + env(safe-area-inset-top,0px)) 20px 6px;max-width:560px;margin:0 auto}
+.th-top{display:flex;align-items:center;gap:10px;height:40px}
+.brand2{font-size:14px;font-weight:800;color:var(--gold-d)}
+.sync-chip{display:inline-flex;align-items:center;gap:6px;border:0;background:var(--surf);border-radius:20px;padding:4px 10px 4px 9px;font-family:var(--f-body);font-size:11.5px;font-weight:700;color:var(--muted);cursor:pointer;box-shadow:inset 0 0 0 1px var(--hair)}
+.sync-chip:has(#syLbl:empty){display:none}
+.sync-chip .sy-dot{width:7px;height:7px}
+.sy-dot.live{background:var(--jade);box-shadow:0 0 0 3px var(--jade-l)}
+.hsrch2{margin-inline-start:auto;width:40px;height:40px;border-radius:50%;border:0;background:var(--surf);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:inset 0 0 0 1px var(--hair)}
+.hsrch2 svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.th h1{margin:8px 0 2px;font-size:31px;font-weight:800;line-height:1.2;color:var(--ink);letter-spacing:0}
+.th-sub{margin:0;font-size:13.5px;color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:2px 0}
+.th-sub>i{display:inline-block;width:3px;height:3px;border-radius:50%;background:#B9BCB6;margin:0 8px}
+.wxi{display:inline-flex;align-items:center;gap:4px;color:var(--ink);font-weight:700}
+.wxi svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.th-prog{height:3px;border-radius:3px;background:var(--app2);margin:12px 0 0;overflow:hidden;display:flex;justify-content:flex-start}
+.th-prog i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#8E7240,#C9AE78)}
+.th-tz{display:flex;gap:16px;margin-top:10px;font-size:12px;color:var(--muted);white-space:nowrap;overflow-x:auto;scrollbar-width:none}
+.th-tz::-webkit-scrollbar{display:none}
+.th-tz b{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;direction:ltr;display:inline-block}
+.th-tz .on{color:var(--gold-d);font-weight:700}
+.th-tz .on b{color:var(--gold-d)}
+.w2{padding-top:10px}
+/* summary card */
+.sum{padding:4px 14px}
+.sm-row{display:flex;align-items:center;gap:12px;padding:12px 0}
+.sm-row+.sm-row{border-top:1px solid var(--hair)}
+.prr{cursor:pointer}
+.sm-ic{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center}
+.sm-ic svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sm-tx{flex:1;min-width:0;color:var(--ink)}
+.sm-tx b{display:flex;align-items:baseline;gap:8px;font-size:15.5px;font-weight:800;line-height:1.35}
+.sm-tx b .ltr{direction:ltr;letter-spacing:.5px}
+.sm-tx b em{font-style:normal;color:var(--gold-d);font-variant-numeric:tabular-nums}
+.sm-tx small{display:block;font-size:12px;color:var(--muted);line-height:1.5;margin-top:1px}
+.sm-cd{flex:none;font-size:12px;font-weight:800;color:var(--gold-d);background:var(--gold-l);border-radius:20px;padding:4px 10px;white-space:nowrap}
+.sm-btn{flex:none;display:inline-flex;align-items:center;gap:5px;border:0;border-radius:20px;padding:6px 11px;background:var(--jade-l);color:var(--jade);font-family:var(--f-body);font-weight:800;font-size:12px;cursor:pointer}
+.sm-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.sum .pr-row{display:none;margin:0 0 12px}
+.sum .pr-row.open{display:grid;animation:vin6 .25s ease}
+.sum .pcell{background:var(--satin)}
+.sum .pcell.nx{background:var(--gold-l);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--gold)}
+.sum .pcell.nx span{color:var(--gold-d)}
+/* planner, lighter */
+.plan{padding:12px 14px 6px}
+.dchip{width:46px;padding:6px 0 5px;border-radius:13px;background:var(--satin)}
+.dchip b{font-size:17px}
+.dchip.on{box-shadow:0 6px 14px -8px rgba(42,36,32,.7)}
+.dayhead h3{font-size:16px}
+.tl li{grid-template-columns:46px 28px minmax(0,1fr) auto;padding:7px 0}
+.tl::before{right:68px}
+.tl .ib{width:28px;height:28px;box-shadow:0 0 0 4px var(--surf)}
+.tl .ib svg{width:15px;height:15px}
+.tl .tx{font-size:13.5px;padding-top:4px}
+.tl .tx .tt{font-weight:700}
+.vchk{width:28px;height:28px}
+.pl-foot{display:flex;align-items:center;gap:6px;border-top:1px solid var(--hair);margin-top:6px;padding:10px 0 6px;font-size:12px;color:var(--muted)}
+.pl-foot>span{margin-inline-end:auto}
+.lnk{display:inline-flex;align-items:center;gap:5px;border:0;background:var(--satin);border-radius:20px;padding:6px 11px;font-family:var(--f-body);font-weight:800;font-size:12px;color:var(--ink);cursor:pointer;box-shadow:inset 0 0 0 1px var(--hair)}
+.lnk svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* shortcuts: one compact grid */
+.qgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px 4px;padding:14px 8px}
+.qg{display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;font-family:var(--f-body);font-size:12px;font-weight:700;color:var(--ink);cursor:pointer;padding:4px 0;border-radius:14px}
+.qg .qi{width:46px;height:46px;border-radius:15px;display:grid;place-items:center}
+.qg .qi svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.qg:active .qi{transform:scale(.92)}
+.qg .qi{transition:transform .12s ease}
+/* other screens: light large titles instead of dark blocks */
+.phead,.phead.teal,.phead.coral,.phead.sun{background:transparent;color:var(--ink);border-radius:0;box-shadow:none;padding:calc(18px + env(safe-area-inset-top,0px)) 20px 6px;margin-bottom:8px;overflow:visible}
+.phead::after{display:none}
+.phead h2{color:var(--ink);font-size:30px;font-weight:800}
+.phead p{color:var(--muted);font-size:13.5px;margin-top:4px}
+/* tab bar: light frosted */
+.tabs{background:rgba(255,255,255,.9);border:1px solid var(--hair);box-shadow:0 12px 30px -14px rgba(20,20,20,.28)}
+.tab{color:#8E9297}
+.tab.on{color:var(--ink)}
+.tab.on svg{stroke:var(--gold-d)}
+.tab-ind{background:var(--gold-l);box-shadow:none}
+.app[data-v="book"] .tabs{background:rgba(255,255,255,.94)}
+/* calmer cards */
+.card2{border-radius:20px}
+.sec-t{margin:18px 6px 8px;font-size:14px}
+@media (max-width:370px){.th h1{font-size:27px}.qg{font-size:11px}.qg .qi{width:42px;height:42px}.pane-main h1{font-size:28px}.glass{height:200px}.bp-pt b{font-size:26px}.tz b{font-size:18px}.tl li{grid-template-columns:42px 28px minmax(0,1fr) auto;column-gap:6px}.tl::before{right:62px}}
 </style>
 </head>
 <body>
@@ -1817,6 +1911,7 @@ function show(v){
   const el=document.getElementById('v-'+v); if(el&&v!=='book') el.scrollTop=0;
   try{localStorage.setItem('tripapp-view',v);}catch(e){}
 }
+document.querySelectorAll('.view').forEach(v=>{ if(v.id==='v-book') return; v.addEventListener('scroll',()=>{ const on=v.scrollTop>70; if(on!==v.classList.contains('scrolled')) v.classList.toggle('scrolled',on); },{passive:true}); });
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{ if(t.dataset.v==='book'&&curView==='book'&&window.TB){window.TB.open('toc');return;} show(t.dataset.v);}));
 const appSearch=()=>{show('book'); if(window.TB) window.TB.search();};
 window.APP={show,search:appSearch};
@@ -1894,7 +1989,6 @@ function speak(text,kind){
   speechSynthesis.cancel(); speechSynthesis.speak(u);}
 const ICONS={"search": "<circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M20 20l-4.2-4.2\"/>", "plane": "<path d=\"M2 16l20-7-3-2-6 2-6-5-2 1 4 6-4 1-2-1-1 1 3 3z\"/>", "land": "<path d=\"M3 20h18\"/><path d=\"M4.5 12.5l14.6 3.9.8-2.4-5.5-2.3-2.6-6.2-1.9-.6.3 5.5-3.7-1.4-1-2.2-1.4-.3.4 3.6z\"/>", "factory": "<path d=\"M3 20V11l5 3v-3l5 3V8l8 4v8z\"/><path d=\"M7 17h2M12 17h2M17 17h1.5\"/>", "boxes": "<path d=\"M3.5 8L12 4l8.5 4L12 12z\"/><path d=\"M3.5 8v8.5L12 20.5l8.5-4V8\"/><path d=\"M12 12v8.5\"/>", "deal": "<path d=\"M7 3h7l4 4v14H7z\"/><path d=\"M14 3v4h4\"/><path d=\"M9.5 15.5c1.2-1.7 2.2-1.7 3 0s1.8 1.7 3 0\"/>", "ship": "<path d=\"M3 15l2 5h14l2-5z\"/><path d=\"M6 15V9h12v6\"/><path d=\"M12 9V4M9 6h6\"/>", "bag": "<path d=\"M5 8h14l-1 12H6z\"/><path d=\"M9 8V6.5a3 3 0 0 1 6 0V8\"/>", "camera": "<path d=\"M4 8h3l2-2.5h6L17 8h3v11H4z\"/><circle cx=\"12\" cy=\"13.5\" r=\"3.4\"/>", "spark": "<path d=\"M12 3l2.4 5.6L20 9.5l-4.3 3.9L17 19l-5-3-5 3 1.3-5.6L4 9.5l5.6-.9z\"/>", "car": "<path d=\"M4 16v-4l2-5h12l2 5v4z\"/><path d=\"M4 16v2.5M20 16v2.5\"/><circle cx=\"7.5\" cy=\"13\" r=\"1\"/><circle cx=\"16.5\" cy=\"13\" r=\"1\"/>", "home": "<path d=\"M4 11l8-6.5 8 6.5\"/><path d=\"M6 9.5V20h12V9.5\"/><rect x=\"9.5\" y=\"12.5\" width=\"5\" height=\"4.5\" rx=\"1\"/>", "list": "<path d=\"M10 6h10M10 12h10M10 18h10\"/><path d=\"M4 6l1.2 1.2L7.5 5M4 12l1.2 1.2L7.5 11M4 18l1.2 1.2L7.5 17\"/>", "mosque": "<path d=\"M6 20v-6a6 6 0 0 1 12 0v6z\"/><path d=\"M12 8V4.5M3 20V10M21 20V10M2 20h20\"/>", "bed": "<path d=\"M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5\"/><circle cx=\"7\" cy=\"11\" r=\"1.6\"/>", "scale": "<path d=\"M12 4v16M6 20h12M5 7h14\"/><path d=\"M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z\"/>", "dot": "<circle cx=\"12\" cy=\"12\" r=\"2.6\"/>", "sun": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2.5v2M12 19.5v2M4.6 4.6L6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4\"/>", "cloud": "<path d=\"M7 18h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 10.5 3.8 3.8 0 0 0 7 18z\"/>", "fog": "<path d=\"M4 9h16M3 13h18M5 17h14\"/>", "rain": "<path d=\"M7 14h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 6.5 3.8 3.8 0 0 0 7 14z\"/><path d=\"M8 17l-1 3M12 17l-1 3M16 17l-1 3\"/>", "storm": "<path d=\"M7 14h10a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.2 6.5 3.8 3.8 0 0 0 7 14z\"/><path d=\"M12 14l-2 4h3l-2 4\"/>", "moon": "<path d=\"M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z\"/>", "compass": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M15.5 8.5l-2 5-5 2 2-5z\"/>", "speaker": "<path d=\"M4 9.5h3.5L12 5.5v13l-4.5-4H4z\"/><path d=\"M15.5 9a4 4 0 0 1 0 6\"/>", "send": "<path d=\"M21 3L10 14\"/><path d=\"M21 3l-7 18-4-7-7-4z\"/>", "calc": "<rect x=\"5\" y=\"3\" width=\"14\" height=\"18\" rx=\"2.5\"/><path d=\"M8 7h8M8.5 11h1M11.5 11h1M14.5 11h1M8.5 14h1M11.5 14h1M14.5 14h1M8.5 17h1M11.5 17h4\"/>", "card": "<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2.5\"/><path d=\"M7 10h10M7 14h6\"/>", "coins": "<circle cx=\"9\" cy=\"9\" r=\"5.5\"/><path d=\"M14.6 9.7a5.5 5.5 0 1 1-5 5\"/>", "wallet": "<rect x=\"3\" y=\"6\" width=\"18\" height=\"13\" rx=\"2.5\"/><path d=\"M3 10h18M16 14.5h2\"/>", "ticket": "<path d=\"M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z\"/><path d=\"M14 7v10\" stroke-dasharray=\"2 2\"/>", "globe": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18\"/>", "pencil": "<path d=\"M4 20l1-5L15.5 4.5a2.1 2.1 0 0 1 3 3L8 18z\"/><path d=\"M13.5 6.5l3 3\"/>", "book": "<path d=\"M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5z\"/><path d=\"M12 6v14\"/>"};
 const ico=k=>'<svg viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[k]||ICONS.dot)+'</svg>';
-const SKYLINE={"gz": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V110h360V120zM150 120V94h40V120zM196 120V100h30V120zM232 120V90h46V120zM286 120V98h26V120zM318 120V92h42V120z\"/><path d=\"M60 120C64 100 70 80 72 66C73 54 70 38 68 26H80C78 38 75 54 76 66C78 80 84 100 88 120Z M73.2 26L73.7 4H74.3L74.8 26ZM112 120V30l8.0 -8 8.0 8V120zM132 120V42l7.0 -8 7.0 8V120zM28 120V52l7.0 -8 7.0 8V120zM0 120V76h26V120zM44 120V62h14V120zM92 120V68h18V120zM148 120V80h20V120zM170 120V90h16V120zM188 120V98h22V120zM214 120V104h18V120zM236 120V108h30V120zM270 120V102h22V120zM296 120V106h24V120zM324 120V100h36V120z\"/></svg>", "bk": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V112h360V120zM220 120V98h34V120zM262 120V90h22V120zM290 120V102h40V120zM334 120V94h26V120z\"/><path d=\"M74.0 120.0 L78.0 99.3 L84.0 99.3 L86.0 80.8 L91.0 80.8 L93.0 60.1 L96.0 60.1 L97.0 44.0 L99.0 32.4 L100.0 14.0 L101.0 32.4 L103.0 44.0 L104.0 60.1 L107.0 60.1 L109.0 80.8 L114.0 80.8 L116.0 99.3 L122.0 99.3 L126.0 120.0Z M37.7 120.0 L39.9 113.3 L43.2 113.3 L44.3 107.4 L47.0 107.4 L48.1 100.7 L49.8 100.7 L50.4 95.5 L51.5 91.8 L52.0 85.9 L52.5 91.8 L53.6 95.5 L54.2 100.7 L55.9 100.7 L57.0 107.4 L59.7 107.4 L60.8 113.3 L64.1 113.3 L66.3 120.0Z M133.7 120.0 L135.9 113.3 L139.2 113.3 L140.3 107.4 L143.1 107.4 L144.2 100.7 L145.8 100.7 L146.3 95.5 L147.4 91.8 L148.0 85.9 L148.6 91.8 L149.7 95.5 L150.2 100.7 L151.8 100.7 L152.9 107.4 L155.7 107.4 L156.8 113.3 L160.1 113.3 L162.3 120.0Z M190 120V102h8l14-18 10-10 10 10 14 18h8v18z M204 92l18-24 18 24z M222 68l-1-6h2zM0 120V90h26V120zM270 120V80h18V120zM292 120V64h14V120zM310 120V90h22V120zM336 120V102h24V120z\"/></svg>", "mct": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V82l24-14 22 10 30-22 34 18 26-10 30 14 36-26 34 20 28-12 30 14 30-16 36 18v48z\"/><path d=\"M54 120V38l2.0-6 2.0-4 2.0 4 2.0 6V120z M52 56h12v3h-12z M154 120V38l2.0-6 2.0-4 2.0 4 2.0 6V120z M152 56h12v3h-12z M37 120V62l1.5-6 1.5-4 1.5 4 1.5 6V120z M35 80h10v3h-10z M173 120V62l1.5-6 1.5-4 1.5 4 1.5 6V120z M171 80h10v3h-10z M76 120V98h8c0-19 11-31 24-33 13 2 24 14 24 33h8v22z M107 65v-9h2v9zM196 120V104h30V120zM228 120V98h22V120zM252 120V108h40V120zM294 120V102h28V120zM324 120V106h36V120z\"/></svg>", "tr": "<svg viewBox=\"0 0 360 120\" preserveAspectRatio=\"xMidYMax slice\" aria-hidden=\"true\"><path class=\"far\" d=\"M0 120V104c10-8 24-8 32 0c8-12 28-12 36 0c10-6 22-6 30 2c12-10 30-10 40 0c10-6 22-6 30 0c10-10 28-10 38 0c10-6 24-6 32 2c10-8 24-8 34 0c8-6 20-6 28 2c8-4 18-4 24 2v14z\"/><path class=\"arc\" d=\"M340 100C270 30 160 18 96 46\"/><g transform=\"translate(64 30) scale(2.1) scale(-1 1) translate(-24 0)\"><path d=\"M2 16l20-7-3-2-6 2-6-5-2 1 4 6-4 1-2-1-1 1 3 3z\"/></g></svg>"};
 const TZC={mct:'Asia/Muscat',gz:'Asia/Shanghai',bk:'Asia/Bangkok',tr:'Asia/Shanghai'};
 const TZN={mct:'مسقط',gz:'قوانغتشو',bk:'بانكوك',tr:'قوانغتشو'};
 const APC={'مسقط':'MCT','بانكوك':'BKK','قوانغتشو':'CAN'}, CTZ={'مسقط':'Asia/Muscat','بانكوك':'Asia/Bangkok','قوانغتشو':'Asia/Shanghai'};
@@ -1908,49 +2002,39 @@ function itemIcon(it){const t=it.tag?it.tag[1]:'', x=it.x||'';
   if(/تسوق/.test(t))return 'bag'; if(/سياحة/.test(t))return 'camera'; if(/ترفيه/.test(t))return 'spark'; if(/سيارات/.test(t))return 'car'; if(/تجهيز/.test(t))return 'list';
   if(/إقلاع/.test(x))return 'plane'; if(/الوصول/.test(x))return 'land'; if(/صلاة|مسجد/.test(x))return 'mosque'; if(/الفندق|راحة/.test(x))return 'bed'; if(/مقارنة/.test(x))return 'scale'; return 'dot';}
 const ICAT={home:'b',factory:'b',boxes:'b',deal:'b',ship:'b',scale:'b',bag:'r',car:'r',camera:'j',spark:'j',plane:'s',land:'s',list:'s',mosque:'s',bed:'s',dot:'s'};
-let heroAnim=true;
+let prOpen=false;
 function renderToday(){
   const now=new Date(), today=ymd(now);
   const start=new Date(FLIGHTS[0].dep), end=new Date(FLIGHTS[3].arr);
   if(!selDay){ selDay = DAYS.some(x=>x.d===today)?today:(now<start?DAYS[0].d:DAYS[DAYS.length-1].d); }
-  let ctx='mct', kick='', title='', sub='', pct=0;
+  let ctx='mct', title='', sub='', pct=0, dayN='';
   if(now<start){const c=cdParts(start-now); const parts=[]; if(c.d)parts.push(arDays(c.d)); if(c.h)parts.push(arHrs(c.h)); parts.push(arMin(c.m));
-    kick='باقي على الإقلاع'; title=parts[0]; sub=(parts.length>1?'و'+parts.slice(1).join(' و')+'<br>':'')+'الجمعة 30 أكتوبر، 22:00 من مطار مسقط';}
+    title='باقي '+parts[0]; sub=(parts.length>1?'و'+parts.slice(1).join(' و')+' ':'')+'على الإقلاع';}
   else if(now<=end){const idx=Math.max(0,DAYS.findIndex(x=>x.d===today)); const dd=DAYS[idx]; ctx=dd.c==='gz'?'gz':(dd.c==='bk'?'bk':'tr');
-    kick='اليوم '+(idx+1)+' من '+DAYS.length; title=dd.city; sub=WD[now.getDay()]+' '+now.getDate()+' '+(MON[now.getMonth()+1]||''); pct=Math.round((idx+1)/DAYS.length*100);}
-  else{kick='انتهت الرحلة'; title='الحمد لله على السلامة'; sub='كل بياناتك محفوظة في التطبيق'; pct=100;}
-  const tz=TZC[ctx], sk=skyOf(hourIn(tz));
-  const tzs=[['mct','مسقط','Asia/Muscat',null],['gz','قوانغتشو','Asia/Shanghai','+4 ساعات'],['bk','بانكوك','Asia/Bangkok','+3 ساعات']];
-  const tzrow=tzs.map(([k,n,z,o])=>'<div class="tz'+(k===ctx||(ctx==='tr'&&k==='gz')?' on':'')+'"><span>'+n+'</span><b>'+clockStr(z)+'</b><small>'+(o||dayStr(z))+'</small></div>').join('');
-  const syS=window.SYNC?window.SYNC.state():'off', syL=window.SYNC?window.SYNC.label():'';
+    title=dd.city; sub=WD[now.getDay()]+' '+now.getDate()+' '+(MON[now.getMonth()+1]||''); dayN='اليوم '+(idx+1)+' من '+DAYS.length; pct=Math.round((idx+1)/DAYS.length*100);}
+  else{title='الحمد لله على السلامة'; sub='انتهت الرحلة، وبياناتك محفوظة'; pct=100;}
   const wc=ctx==='tr'?'gz':ctx, wx=wxGet(wc); wxFetch(wc);
-  const wxl=wx?'<span class="wx">'+ico(wxIco(wx.code))+Math.round(wx.temp)+'° '+wxText(wx.code)+(wx.max!=null?'<em>'+Math.round(wx.min)+'° إلى '+Math.round(wx.max)+'°</em>':'')+'</span>':'';
-  const hero='<header class="hero2"><div class="htop"><button class="brand" type="button" data-sync aria-label="حالة المزامنة"><i id="syDot" class="sy-dot '+syS+'"></i><span>رحلتي</span><small id="syLbl">'+syL+'</small></button>'+
-    '<button class="hsrch" type="button" onclick="APP.search()" aria-label="بحث في الكتاب">'+ico('search')+'</button></div>'+
-    '<div class="win'+(heroAnim?' anim':'')+'"><div class="glass sky-'+sk+'">'+(sk==='night'?'<div class="stars"></div>':'')+
-    '<div class="pane-top"><span class="kick">'+kick+'</span><span class="lt">الآن '+clockStr(tz)+' في '+TZN[ctx]+'</span></div><div class="transom"></div>'+
-    '<div class="pane-main"><h1>'+esc(title)+'</h1><p>'+sub+'</p>'+wxl+'</div><div class="skyline">'+SKYLINE[ctx]+'</div><div class="refl"></div></div>'+
-    '<div class="sill" role="img" aria-label="تقدم الرحلة '+pct+'%"><i style="width:'+pct+'%"></i></div></div>'+
-    '<div class="tzrow">'+tzrow+'</div></header>';
-  heroAnim=false;
-  // boarding pass for the next flight
+  const syS=window.SYNC?window.SYNC.state():'off', syL=window.SYNC?window.SYNC.label():'';
+  const subl=[sub]; if(dayN) subl.push(dayN);
+  const tzs=[['mct','مسقط','Asia/Muscat'],['gz','قوانغتشو','Asia/Shanghai'],['bk','بانكوك','Asia/Bangkok']];
+  const head='<div class="mbar" aria-hidden="true"><b>'+esc(title)+'</b></div>'+
+    '<header class="th"><div class="th-top"><span class="brand2">رحلتي</span><button class="sync-chip" type="button" data-sync aria-label="حالة المزامنة"><i id="syDot" class="sy-dot '+syS+'"></i><span id="syLbl">'+esc(syL)+'</span></button>'+
+    '<button class="hsrch2" type="button" onclick="APP.search()" aria-label="بحث في الكتاب">'+ico('search')+'</button></div>'+
+    '<h1>'+esc(title)+'</h1><p class="th-sub">'+subl.map(esc).join('<i></i>')+(wx?'<i></i><span class="wxi">'+ico(wxIco(wx.code))+Math.round(wx.temp)+'° '+wxText(wx.code)+'</span>':'')+'</p>'+
+    (pct?'<div class="th-prog" role="img" aria-label="تقدم الرحلة '+pct+'%"><i style="width:'+pct+'%"></i></div>':'')+
+    '<div class="th-tz">'+tzs.map(([k,n,z])=>'<span class="'+((k===ctx)||(ctx==='tr'&&k==='gz')?'on':'')+'">'+n+' <b>'+clockStr(z)+'</b></span>').join('')+'</div></header>';
+  // summary: next flight and next prayer
   const nf=FLIGHTS.find(f=>new Date(f.dep)>now);
   let fl='';
   if(nf){const c=cdParts(new Date(nf.dep)-now); let ds='';
     try{ds=new Intl.DateTimeFormat('ar-u-nu-latn',{weekday:'long',day:'numeric',month:'long',timeZone:CTZ[nf.from]}).format(new Date(nf.dep));}catch(x){}
-    fl='<section class="bpass" aria-label="الرحلة القادمة"><div class="bp-head"><span>رحلتك القادمة</span><b>'+esc(nf.air)+(nf.no.startsWith('WY')?' '+nf.no:'')+'</b></div>'+
-      '<div class="bp-route"><div class="bp-pt"><b>'+APC[nf.from]+'</b><span>'+esc(nf.from)+'</span><em>'+nf.dl+'</em></div>'+
-      '<div class="bp-mid"><i></i>'+ico('plane')+'<i></i></div>'+
-      '<div class="bp-pt to"><b>'+APC[nf.to]+'</b><span>'+esc(nf.to)+'</span><em>'+nf.al+'</em></div></div>'+
-      '<div class="bp-perf"></div>'+
-      '<div class="bp-foot"><div><small>التاريخ</small><b>'+ds+'</b></div><div><small>رقم الحجز</small><b class="ltr">'+nf.ref+'</b></div>'+
-      '<div class="bp-cd"><small>متبقي</small><b>'+(c.d?c.d+' ي ':'')+c.h+' س '+c.m+' د</b></div></div></section>';}
-  // prayer times for the city you are in
+    fl='<div class="sm-row"><span class="sm-ic c-s">'+ico('plane')+'</span><div class="sm-tx"><b><span class="ltr">'+APC[nf.from]+' → '+APC[nf.to]+'</span><em>'+nf.dl+'</em></b>'+
+      '<small>'+ds+'، '+esc(nf.air)+(nf.no.startsWith('WY')?' '+nf.no:'')+'، حجز '+nf.ref+'</small></div><span class="sm-cd">'+(c.d?'بعد '+c.d+' ي':'بعد '+c.h+' س '+c.m+' د')+'</span></div>';}
   const pc=ctx==='tr'?'gz':ctx, pi=prayerInfo(pc), lh=Math.floor(pi.left), lm=Math.round((pi.left-lh)*60);
-  const pray='<section class="card2 pray" aria-label="مواقيت الصلاة"><div class="pr-top"><span class="pr-ic">'+ico('moon')+'</span><div class="pr-next"><small>الصلاة القادمة في '+CITY[pc].n+'</small>'+
-    '<b>'+PR_N[pi.next]+' <em>'+fmtH(pi.tomorrow?pi.r.fajr:pi.r[pi.next])+'</em></b><span>'+(pi.tomorrow?'فجر بكرة، ':'')+'بعد '+(lh?lh+' س ':'')+lm+' د</span></div>'+
-    '<button class="pr-qb" type="button" data-qibla="'+pc+'">'+ico('compass')+'<span>القبلة</span></button></div>'+
-    '<div class="pr-row">'+pi.order.map(k=>'<div class="pcell'+(k===pi.next&&!pi.tomorrow?' nx':'')+(pi.r[k]<=pi.now&&!pi.tomorrow?' past':'')+(k==='sunrise'?' sr':'')+'"><span>'+PR_N[k]+'</span><b>'+fmtH(pi.r[k])+'</b></div>').join('')+'</div></section>';
+  const pr='<div class="sm-row prr" data-prtoggle role="button" aria-expanded="'+(prOpen?'true':'false')+'"><span class="sm-ic c-b">'+ico('moon')+'</span><div class="sm-tx"><b>'+PR_N[pi.next]+'<em>'+fmtH(pi.tomorrow?pi.r.fajr:pi.r[pi.next])+'</em></b>'+
+    '<small>'+(pi.tomorrow?'فجر بكرة، ':'')+'بعد '+(lh?lh+' س ':'')+lm+' د في '+CITY[pc].n+'. اضغط للمواقيت</small></div><button class="sm-btn" type="button" data-qibla="'+pc+'">'+ico('compass')+'القبلة</button></div>'+
+    '<div class="pr-row'+(prOpen?' open':'')+'">'+pi.order.map(k=>'<div class="pcell'+(k===pi.next&&!pi.tomorrow?' nx':'')+(pi.r[k]<=pi.now&&!pi.tomorrow?' past':'')+'"><span>'+PR_N[k]+'</span><b>'+fmtH(pi.r[k])+'</b></div>').join('')+'</div>';
+  const sum='<section class="card2 sum">'+fl+pr+'</section>';
   // day planner
   const strip=DAYS.map(x=>{const dt=parseD(x.d);const [vd,vt]=vStats(x);const all=vt&&vd===vt;return '<button type="button" class="dchip '+x.c+(x.d===selDay?' on':'')+(x.d===today?' today':'')+(all?' alldone':'')+'" data-d="'+x.d+'"><span>'+WD[dt.getDay()].replace('ال','')+'</span><b>'+dt.getDate()+'</b>'+(all?'<em>'+CHK+'</em>':'<i></i>')+'</button>';}).join('');
   const day=DAYS.find(x=>x.d===selDay)||DAYS[0]; const dt=parseD(day.d);
@@ -1968,22 +2052,20 @@ function renderToday(){
     return x+'</li>';}).join('');
   const dv=vStats(day);
   const tv=DAYS.reduce((a,x)=>{const s=vStats(x);return [a[0]+s[0],a[1]+s[1]];},[0,0]);
-  const plan='<section class="card2 plan"><div class="dstrip" id="dstrip">'+strip+'</div>'+
+  const plan='<div class="sec-t">برنامج اليوم</div><section class="card2 plan"><div class="dstrip" id="dstrip">'+strip+'</div>'+
      '<div class="dayhead"><h3>'+WD[dt.getDay()]+' '+dt.getDate()+' '+MON[dt.getMonth()+1]+'</h3><span class="city '+day.c+'">'+esc(day.city)+'</span>'+(dv[1]?'<span class="vprog'+(dv[0]===dv[1]?' vfull':'')+'">'+CHK+dv[0]+'/'+dv[1]+'</span>':'')+'</div>'+
      '<ul class="tl">'+items+'</ul>'+
-     '<div class="vtrip"><div class="vbar"><i style="width:'+(tv[1]?Math.round(tv[0]/tv[1]*100):0)+'%"></i></div><span>زرت '+tv[0]+' من '+tv[1]+' محطة في الرحلة. اضغط الدائرة عند كل مكان تزوره.</span></div>'+
-     '<div class="btnrow"><button class="pbtn l" type="button" data-open="'+day.ch+'">'+ico('book')+'التفاصيل في الكتاب</button><button class="pbtn l" type="button" data-shareday="'+day.d+'">'+ico('send')+'أرسل البرنامج</button></div></section>';
-  const QA=[['driver','go','اعرضها للسائق','الأماكن والعبارات بالصيني','card','r'],['cur','go','محوّل العملات','يوان وبات وريال ودولار','coins','j'],
-    ['exp','go','المصاريف','سجّل واعرف الميزانية','wallet','b'],['cmp','open','مقارنة المصانع','السعر مقابل الجودة','scale','s'],
-    ['c2','open','الحجوزات والتذاكر','أرقام الحجز والتذاكر','ticket','s'],['c3','open','روابط التسجيل','TDAC وبطاقة الصين','globe','j'],
-    ['notes','open','ملاحظاتي','اكتب وارجع لها بأي وقت','pencil','b'],['book','go','الكتاب كاملاً','كل التفاصيل والخرائط','book','r']];
-  const quick='<div class="sec-t">اختصارات</div><div class="quick">'+QA.map(([k,a,t,s2,i,c])=>'<button class="qa" type="button" data-'+a+'="'+k+'"><span class="qi c-'+c+'">'+ico(i)+'</span><b>'+t+'</b><span class="qs">'+s2+'</span></button>').join('')+'</div>';
-  $('#v-today').innerHTML=hero+'<div class="wrap w2">'+fl+pray+plan+quick+'</div>';
+     '<div class="pl-foot"><span>زرت '+tv[0]+' من '+tv[1]+' محطة</span><button class="lnk" type="button" data-open="'+day.ch+'">'+ico('book')+'التفاصيل</button><button class="lnk" type="button" data-shareday="'+day.d+'">'+ico('send')+'أرسل</button></div></section>';
+  const QA=[['driver','go','السائق','card','r'],['cur','go','العملات','coins','j'],['exp','go','المصاريف','wallet','b'],['cmp','open','المقارنة','scale','s'],
+    ['c2','open','الحجوزات','ticket','s'],['c3','open','التسجيل','globe','j'],['notes','open','ملاحظاتي','pencil','b'],['book','go','الكتاب','book','r']];
+  const quick='<div class="sec-t">اختصارات</div><section class="card2 qgrid">'+QA.map(([k,a,t,i,c])=>'<button class="qg" type="button" data-'+a+'="'+k+'"><span class="qi c-'+c+'">'+ico(i)+'</span><span>'+t+'</span></button>').join('')+'</section>';
+  $('#v-today').innerHTML=head+'<div class="wrap w2">'+sum+plan+quick+'</div>';
   const ds=$('#dstrip .on'); if(ds){const st=$('#dstrip'); st.scrollLeft=ds.offsetLeft-(st.clientWidth-ds.clientWidth)/2;}
 }
 $('#v-today').addEventListener('click',e=>{
   const sb=e.target.closest('[data-sync]'); if(sb){show('exp'); setTimeout(()=>{const c=document.getElementById('syCard'); if(c) c.scrollIntoView({behavior:'smooth',block:'center'});},120); return;}
   const qb=e.target.closest('[data-qibla]'); if(qb){openQibla(qb.dataset.qibla); return;}
+  const pt=e.target.closest('[data-prtoggle]'); if(pt){prOpen=!prOpen; const r=pt.nextElementSibling; if(r) r.classList.toggle('open',prOpen); pt.setAttribute('aria-expanded',prOpen?'true':'false'); return;}
   const sd=e.target.closest('[data-shareday]'); if(sd){const dd=DAYS.find(x=>x.d===sd.dataset.shareday); if(!dd) return; const dt=parseD(dd.d);
     const txt='برنامج '+WD[dt.getDay()]+' '+dt.getDate()+' '+MON[dt.getMonth()+1]+' في '+dd.city+':\n'+dd.items.map(it=>'• '+it.t+': '+it.x+(it.m?' ('+it.m.map(m=>m[0]).join('، ')+')':'')).join('\n');
     if(navigator.share) navigator.share({title:'برنامج اليوم',text:txt}).catch(()=>{}); else (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast('تم نسخ برنامج اليوم'),()=>toast('النسخ غير متاح هنا')); return;}
@@ -2033,7 +2115,7 @@ function renderDriver(){
   const cust=load(customKey,[]);
   const cc=curCtx();
   const hint=cc==='bk'?'في بانكوك اعرض الاسم بالإنجليزي على السائق أو في تطبيق Grab':(cc==='gz'?'في الصين اعرض النص الصيني على السائق، واضغط اسمعها بالصوت':'اضغط أي بطاقة لتظهر بخط كبير، وتقدر تسمعها بالصوت');
-  let h='<div class="phead coral"><div class="in"><h2>اعرضها للسائق</h2><p>'+hint+'</p></div></div><div class="wrap">';
+  let h='<div class="mbar" aria-hidden="true"><b>اعرضها للسائق</b></div><div class="phead coral"><div class="in"><h2>اعرضها للسائق</h2><p>'+hint+'</p></div></div><div class="wrap">';
   h+='<div class="seg"><button type="button" data-seg="places" class="'+(drvSeg==='places'?'on':'')+'">الأماكن</button><button type="button" data-seg="phr" class="'+(drvSeg==='phr'?'on':'')+'">عبارات جاهزة</button><button type="button" data-seg="mine" class="'+(drvSeg==='mine'?'on':'')+'">بطاقاتي</button></div>';
   if(drvSeg==='places'){
     h+='<label class="dsearch">'+ico('search')+'<input id="dq" type="search" enterkeyhint="search" autocomplete="off" placeholder="ابحث عن مكان: سوق، فندق، مطار…"></label>';
@@ -2071,7 +2153,7 @@ let rates=Object.assign({OMR:0.3845,CNY:7.1,THB:32.5,USD:1},load('tripapp-rates'
 let curAmt=load('tripapp-curamt',{c:'CNY',v:100});
 const toOMR=(v,c)=>v/rates[c]*rates.OMR;
 function renderCur(){
-  let h='<div class="phead teal"><div class="in"><h2>محوّل العملات</h2><p>1 ريال = '+fmt(rates.CNY/rates.OMR,2)+' يوان = '+fmt(rates.THB/rates.OMR,1)+' بات</p></div></div><div class="wrap"><div class="cur">';
+  let h='<div class="mbar" aria-hidden="true"><b>محوّل العملات</b></div><div class="phead teal"><div class="in"><h2>محوّل العملات</h2><p>1 ريال = '+fmt(rates.CNY/rates.OMR,2)+' يوان = '+fmt(rates.THB/rates.OMR,1)+' بات</p></div></div><div class="wrap"><div class="cur">';
   CUR.forEach(([c,n,sym,bg,fg])=>{h+='<div class="row"><div class="fl" style="background:'+bg+';color:'+fg+'">'+sym+'</div><div class="nm">'+n+'<small>'+c+'</small></div><input id="cv-'+c+'" inputmode="decimal" type="text" aria-label="'+n+'"></div>';});
   h+='</div><div class="rstat" id="rstat"></div><div class="qamt">'+[10,50,100,500,1000,5000].map(v=>'<button type="button" data-q="'+v+'">'+v.toLocaleString('en-US')+'</button>').join('')+'</div>';
   const qc=load('tripapp-qcalc',{p:'',c:'CNY',q:'',u:''});
@@ -2141,7 +2223,7 @@ if(shop.some(s=>!s.id)){shop.forEach(s=>{if(!s.id)s.id=newId();});save('tripapp-
 let expSeg='exp', xd={cat:'أكل',who:'مشترك',cur:'CNY'};
 const saveExp=()=>save('tripapp-exp',exp), saveShop=()=>save('tripapp-shop',shop);
 function renderExp(){
-  let h='<div class="phead sun"><div class="in"><h2>المصاريف والمشتريات</h2><p>'+(exp.items.length?'صرفتوا '+fmt(exp.items.reduce((s,i)=>s+toOMR(i.a,i.c),0),1)+' ر.ع من ميزانية '+fmt(+exp.budget||0,0)+' ر.ع':'سجّل مصاريفكم، وتتزامن مع جوال زميلك')+'</p></div></div><div class="wrap">';
+  let h='<div class="mbar" aria-hidden="true"><b>المصاريف والمشتريات</b></div><div class="phead sun"><div class="in"><h2>المصاريف والمشتريات</h2><p>'+(exp.items.length?'صرفتوا '+fmt(exp.items.reduce((s,i)=>s+toOMR(i.a,i.c),0),1)+' ر.ع من ميزانية '+fmt(+exp.budget||0,0)+' ر.ع':'سجّل مصاريفكم، وتتزامن مع جوال زميلك')+'</p></div></div><div class="wrap">';
   h+='<div class="seg"><button type="button" data-es="exp" class="'+(expSeg==='exp'?'on':'')+'">المصاريف</button><button type="button" data-es="shop" class="'+(expSeg==='shop'?'on':'')+'">قائمة المشتريات</button></div>';
   if(expSeg==='exp'){
     const tot=exp.items.reduce((s,i)=>s+toOMR(i.a,i.c),0), b=+exp.budget||0, pct=b?Math.min(100,tot/b*100):0;
