@@ -1049,6 +1049,49 @@ body,.view{background:var(--app)}
 /* calmer cards */
 .card2{border-radius:20px}
 .sec-t{margin:18px 6px 8px;font-size:14px}
+
+/* ================= v7 · richer, still image-free ================= */
+body,.view{background:radial-gradient(120% 40% at 50% -6%,rgba(201,174,120,.22),transparent 70%) no-repeat,linear-gradient(180deg,#F7F5F0 0%,#F1F0EC 100%) fixed}
+.mbar b{background:rgba(247,245,240,.96)}
+/* today hero card: deep bronze with gold, compact */
+.th-card{position:relative;overflow:hidden;margin-top:10px;padding:18px 18px 14px;border-radius:24px;color:#F6EEDC;
+  background:radial-gradient(90% 120% at 100% 0%,rgba(233,207,143,.28),transparent 55%),radial-gradient(70% 90% at 0% 100%,rgba(42,119,104,.22),transparent 60%),linear-gradient(150deg,#3A2F27 0%,#271F1B 60%,#1E1916 100%);
+  box-shadow:0 18px 36px -20px rgba(30,22,16,.75),inset 0 1px 0 rgba(255,255,255,.08)}
+.th-card::before{content:"";position:absolute;inset:0;border-radius:24px;padding:1px;background:linear-gradient(135deg,rgba(242,228,191,.7),rgba(191,161,105,.15) 40%,rgba(242,228,191,.45));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.th-card h1{margin:0 0 4px;color:#FBF4E4;font-size:32px}
+.th-card .th-sub{color:rgba(246,238,220,.72)}
+.th-card .th-sub>i{background:rgba(233,207,143,.6)}
+.th-card .wxi{color:#F3E2B5}
+.th-card .th-prog{background:rgba(255,255,255,.12);height:4px;margin-top:14px}
+.th-card .th-prog i{background:linear-gradient(90deg,#B8964F,#F3E2B5);box-shadow:0 0 10px rgba(243,226,181,.6)}
+.th-card .th-tz{color:rgba(246,238,220,.6);margin-top:12px}
+.th-card .th-tz b{color:#FBF4E4}
+.th-card .th-tz .on,.th-card .th-tz .on b{color:#E9CF8F}
+.brand2{background:linear-gradient(90deg,#8E7240,#C9AE78);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:16px}
+/* gem-like icon tiles */
+.sm-ic.c-s,.qg .qi.c-s{background:linear-gradient(145deg,#6E8CAB,#41607E);color:#fff}
+.sm-ic.c-b,.qg .qi.c-b{background:linear-gradient(145deg,#D8BE86,#A0803F);color:#fff}
+.qg .qi.c-r{background:linear-gradient(145deg,#D0634F,#9C3424);color:#fff}
+.qg .qi.c-j{background:linear-gradient(145deg,#3E9A87,#21685A);color:#fff}
+.sm-ic,.qg .qi{box-shadow:0 8px 16px -10px rgba(30,22,16,.6),inset 0 1px 0 rgba(255,255,255,.25)}
+.sm-cd{background:linear-gradient(135deg,#F5E9CC,#EAD9AF);color:#6B5430}
+.sm-btn{background:linear-gradient(135deg,#E1F1EC,#CDE7DF)}
+/* selected day and tab in gold */
+.dchip.on{background:linear-gradient(150deg,#3A2F27,#1E1916);border-color:transparent}
+.dchip.on b{color:#F3E2B5}
+.tab-ind{background:linear-gradient(135deg,#F5E9CC,#E9D6A6);box-shadow:inset 0 0 0 1px rgba(191,161,105,.35)}
+.tab.on{color:#3A2F27}
+/* section titles with a gold accent */
+.sec-t{display:flex;align-items:center;gap:8px}
+.sec-t::before{content:"";width:4px;height:16px;border-radius:3px;background:linear-gradient(180deg,#E9CF8F,#A0803F)}
+.phead h2{position:relative;padding-bottom:10px}
+.phead h2::after{content:"";position:absolute;right:0;bottom:0;width:44px;height:4px;border-radius:3px;background:linear-gradient(90deg,#A0803F,#E9CF8F)}
+/* cards: soft gold hairline on top */
+.card2{border-color:rgba(225,220,208,.9);box-shadow:0 1px 2px rgba(30,22,16,.04),0 14px 30px -20px rgba(30,22,16,.28)}
+.card2.sum,.card2.plan,.card2.qgrid{background:linear-gradient(180deg,#FFFFFF,#FFFDF9)}
+.pbtn.sun,.nt-add{background:linear-gradient(135deg,#F2E4BF,#C9AE78 50%,#E9D6A6)}
+.cur .fl{box-shadow:0 8px 16px -10px rgba(30,22,16,.6),inset 0 1px 0 rgba(255,255,255,.25)}
+.tl .ib.c-b{background:#F4ECDA}.tl .ib.c-s{background:#E6EDF5}
 @media (max-width:370px){.th h1{font-size:27px}.qg{font-size:11px}.qg .qi{width:42px;height:42px}.pane-main h1{font-size:28px}.glass{height:200px}.bp-pt b{font-size:26px}.tz b{font-size:18px}.tl li{grid-template-columns:42px 28px minmax(0,1fr) auto;column-gap:6px}.tl::before{right:62px}}
 </style>
 </head>
@@ -2020,9 +2063,9 @@ function renderToday(){
   const head='<div class="mbar" aria-hidden="true"><b>'+esc(title)+'</b></div>'+
     '<header class="th"><div class="th-top"><span class="brand2">رحلتي</span><button class="sync-chip" type="button" data-sync aria-label="حالة المزامنة"><i id="syDot" class="sy-dot '+syS+'"></i><span id="syLbl">'+esc(syL)+'</span></button>'+
     '<button class="hsrch2" type="button" onclick="APP.search()" aria-label="بحث في الكتاب">'+ico('search')+'</button></div>'+
-    '<h1>'+esc(title)+'</h1><p class="th-sub">'+subl.map(esc).join('<i></i>')+(wx?'<i></i><span class="wxi">'+ico(wxIco(wx.code))+Math.round(wx.temp)+'° '+wxText(wx.code)+'</span>':'')+'</p>'+
+    '<div class="th-card"><h1>'+esc(title)+'</h1><p class="th-sub">'+subl.map(esc).join('<i></i>')+(wx?'<i></i><span class="wxi">'+ico(wxIco(wx.code))+Math.round(wx.temp)+'° '+wxText(wx.code)+'</span>':'')+'</p>'+
     (pct?'<div class="th-prog" role="img" aria-label="تقدم الرحلة '+pct+'%"><i style="width:'+pct+'%"></i></div>':'')+
-    '<div class="th-tz">'+tzs.map(([k,n,z])=>'<span class="'+((k===ctx)||(ctx==='tr'&&k==='gz')?'on':'')+'">'+n+' <b>'+clockStr(z)+'</b></span>').join('')+'</div></header>';
+    '<div class="th-tz">'+tzs.map(([k,n,z])=>'<span class="'+((k===ctx)||(ctx==='tr'&&k==='gz')?'on':'')+'">'+n+' <b>'+clockStr(z)+'</b></span>').join('')+'</div></div></header>';
   // summary: next flight and next prayer
   const nf=FLIGHTS.find(f=>new Date(f.dep)>now);
   let fl='';
@@ -2148,7 +2191,7 @@ $('#v-driver').addEventListener('input',e=>{ if(e.target.id!=='dq') return; cons
 document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#full').classList.remove('on');});
 
 // ===================== CURRENCY =====================
-const CUR=[['OMR','ريال عماني','ر.ع','#F1E9D8','#7A6136'],['CNY','يوان صيني','¥','var(--verm-l)','var(--verm)'],['THB','بات تايلاندي','฿','var(--jade-l)','var(--jade)'],['USD','دولار','$','var(--sky-l)','var(--sky)']];
+const CUR=[['OMR','ريال عماني','ر.ع','linear-gradient(145deg,#D8BE86,#A0803F)','#fff'],['CNY','يوان صيني','¥','linear-gradient(145deg,#D0634F,#9C3424)','#fff'],['THB','بات تايلاندي','฿','linear-gradient(145deg,#3E9A87,#21685A)','#fff'],['USD','دولار','$','linear-gradient(145deg,#6E8CAB,#41607E)','#fff']];
 let rates=Object.assign({OMR:0.3845,CNY:7.1,THB:32.5,USD:1},load('tripapp-rates',{}));
 let curAmt=load('tripapp-curamt',{c:'CNY',v:100});
 const toOMR=(v,c)=>v/rates[c]*rates.OMR;
