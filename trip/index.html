@@ -1164,6 +1164,13 @@ body,.view{background:radial-gradient(120% 40% at 50% -6%,rgba(201,174,120,.22),
 .cmp-entry{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
 .cmp-entry p{font-size:.9rem;line-height:1.8;margin:0 0 10px}
 .cmp-count{color:var(--brass-d)}
+
+.a2hs{position:fixed;left:12px;right:12px;bottom:calc(92px + env(safe-area-inset-bottom,0px));z-index:65;background:linear-gradient(150deg,#3A2F27,#1E1916);color:#F3E2B5;border-radius:18px;padding:14px 16px 14px 44px;box-shadow:0 18px 40px -16px rgba(0,0,0,.6);font-size:13.5px;line-height:1.75;opacity:0;transform:translateY(16px);transition:opacity .3s,transform .3s;text-align:right}
+.a2hs.on{opacity:1;transform:none}
+.a2hs .a2t{display:block;font-size:15px;margin-bottom:2px;color:#fff}
+.a2hs p{margin:0;color:#E9D9B4}.a2hs p b{color:#fff}
+.a2hs .a2x{position:absolute;left:8px;top:8px;width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:18px;cursor:pointer}
+.a2hs .a2i{margin-top:8px;border:0;border-radius:12px;padding:8px 16px;font-family:var(--f-body);font-weight:800;background:linear-gradient(135deg,#E9D29C,#C9A35E);color:#2A2119;cursor:pointer}
 @media (max-width:370px){.th h1{font-size:27px}.qg{font-size:11px}.qg .qi{width:42px;height:42px}.pane-main h1{font-size:28px}.glass{height:200px}.bp-pt b{font-size:26px}.tz b{font-size:18px}.tl li{grid-template-columns:42px 28px minmax(0,1fr) auto;column-gap:6px}.tl::before{right:62px}}
 </style>
 </head>
@@ -1941,6 +1948,9 @@ fl.then(go1,go1); setTimeout(go1,2500);
 // ===================== helpers =====================
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const normD=s=>String(s==null?'':s).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٫]/g,'.').replace(/[٬،，]/g,',').replace(/[０-９]/g,d=>String.fromCharCode(d.charCodeAt(0)-65248)).replace(/．/g,'.');
+const numP=s=>{const t=normD(s).replace(/,/g,'').replace(/\s/g,'');return parseFloat(t);};
+document.addEventListener('input',e=>{const t=e.target; if(!t||t.tagName!=='INPUT') return; const im=t.getAttribute('inputmode'); if(!(im==='decimal'||im==='numeric'||t.type==='number')) return; const v=t.value, nv=normD(v).replace(/,(?=\d{1,2}$)/,'.'); if(nv!==v&&t.type!=='number'){const p=t.selectionStart; t.value=nv; try{t.setSelectionRange(p,p);}catch(x){}}},true);
 const load=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v==null?d:v;}catch(e){return d;}};
 const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}};
 const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>';
@@ -2247,7 +2257,7 @@ function liveRates(force){
 }
 window.addEventListener('online',()=>liveRates(false));
 function fillCur(skip){const usd=curAmt.v/rates[curAmt.c];CUR.forEach(([c])=>{if(c===skip)return;const el=$('#cv-'+c);if(el)el.value=curAmt.v===''?'':fmt(usd*rates[c],c==='OMR'?3:2);});}
-function qcCalc(){const g=id=>$('#'+id); if(!g('qc-p')) return; const p=parseFloat(g('qc-p').value.replace(/,/g,'')), q=parseFloat(g('qc-q').value.replace(/,/g,'')), c=g('qc-c').value, u=g('qc-u').value.trim();
+function qcCalc(){const g=id=>$('#'+id); if(!g('qc-p')) return; const p=numP(g('qc-p').value.replace(/,/g,'')), q=numP(g('qc-q').value.replace(/,/g,'')), c=g('qc-c').value, u=g('qc-u').value.trim();
   save('tripapp-qcalc',{p:g('qc-p').value,c,q:g('qc-q').value,u}); const o=g('qcOut'); const nm=(CUR.find(x=>x[0]===c)||CUR[0])[1];
   if(!(p>0&&q>0)){o.innerHTML='<span class="muted">اكتب السعر والكمية</span>';return;} const tot=p*q;
   o.innerHTML='<div><small>الإجمالي</small><b>'+fmt(tot,2)+' '+nm+'</b></div><div class="om"><small>بالريال العماني</small><b>'+fmt(toOMR(tot,c),2)+' ر.ع</b></div>'+(c!=='OMR'?'<div class="pu"><small>سعر '+(u||'الوحدة')+' بالريال</small><b>'+fmt(toOMR(p,c),3)+'</b></div>':'');}
@@ -2255,8 +2265,8 @@ $('#v-cur').addEventListener('input',e=>{ if(e.target.id&&e.target.id.indexOf('q
 $('#v-cur').addEventListener('change',e=>{ if(e.target.id==='qc-c') qcCalc(); });
 $('#v-cur').addEventListener('input',e=>{
   const t=e.target;
-  if(t.id&&t.id.startsWith('cv-')){const c=t.id.slice(3);const v=parseFloat(t.value.replace(/,/g,''));curAmt={c,v:isNaN(v)?'':v};save('tripapp-curamt',curAmt);fillCur(c);}
-  if(t.dataset.rate){const v=parseFloat(t.value);if(v>0){rates[t.dataset.rate]=v;save('tripapp-rates',rates);rinfo.src='manual';save('tripapp-rateinfo',rinfo);fillCur();showRstat();$('#rateMsg').textContent='تم حفظ السعر';}}
+  if(t.id&&t.id.startsWith('cv-')){const c=t.id.slice(3);const v=numP(t.value.replace(/,/g,''));curAmt={c,v:isNaN(v)?'':v};save('tripapp-curamt',curAmt);fillCur(c);}
+  if(t.dataset.rate){const v=numP(t.value);if(v>0){rates[t.dataset.rate]=v;save('tripapp-rates',rates);rinfo.src='manual';save('tripapp-rateinfo',rinfo);fillCur();showRstat();$('#rateMsg').textContent='تم حفظ السعر';}}
 });
 $('#v-cur').addEventListener('click',e=>{
   const q=e.target.closest('[data-q]'); if(q){const c=curAmt.c||'CNY';curAmt={c,v:+q.dataset.q};save('tripapp-curamt',curAmt);fillCur();return;}
@@ -2327,11 +2337,11 @@ function renderExp(){
      '<div class="btnrow"><button class="pbtn" type="button" id="bkLoad">استرجاع البيانات</button></div><div class="msg ok" id="bkMsg"></div></div>';
   h+='</div>';
   $('#v-exp').innerHTML=h;
-  const xf=$('#xForm'); if(xf) xf.addEventListener('submit',e=>{e.preventDefault();const a=parseFloat($('#x-a').value.replace(/,/g,''));if(!(a>0)){$('#xMsg').textContent='اكتب مبلغاً صحيحاً.';return;}
+  const xf=$('#xForm'); if(xf) xf.addEventListener('submit',e=>{e.preventDefault();const a=numP($('#x-a').value.replace(/,/g,''));if(!(a>0)){$('#xMsg').textContent='اكتب مبلغاً صحيحاً.';return;}
     xd.cur=$('#x-c').value; const now=new Date();
     exp.items.push({id:Date.now()+'',a,c:xd.cur,cat:xd.cat,who:xd.who,n:$('#x-n').value.trim(),d:now.getDate()+' '+(MON[now.getMonth()+1]||(now.getMonth()+1))});saveExp();renderExp();const m=$('#xMsg');if(m){m.className='msg ok';m.textContent='تمت الإضافة';}});
   const sf=$('#sForm'); if(sf) sf.addEventListener('submit',e=>{e.preventDefault();const n=$('#s-n').value.trim();if(!n)return;shop.push({id:newId(),n,q:$('#s-q').value.trim(),w:$('#s-w').value.trim(),done:false});saveShop();renderExp();setTimeout(()=>{const i=$('#s-n');if(i)i.focus();},0);});
-  const bi=$('#budget'); if(bi) bi.addEventListener('change',()=>{const v=parseFloat(bi.value);exp.budget=v>0?v:'';saveExp();renderExp();});
+  const bi=$('#budget'); if(bi) bi.addEventListener('change',()=>{const v=numP(bi.value);exp.budget=v>0?v:'';saveExp();renderExp();});
 }
 const BK_KEYS=['tripapp-exp','tripapp-shop','tripapp-cards','tripapp-rates','tripapp-rateinfo','tripapp-curamt','tripbook-compare-v1','tripbook-notes','tripapp-visited'];
 function bkMake(){const o={};BK_KEYS.forEach(k=>{try{const v=localStorage.getItem(k);if(v!=null)o[k]=v;}catch(e){}});return 'TRIP1:'+btoa(unescape(encodeURIComponent(JSON.stringify(o))));}
@@ -2445,8 +2455,8 @@ $('#cmpSheet').addEventListener('click',e=>{
 });
 $('#cmpSheet').addEventListener('input',e=>{ if(e.target.id==='cMat'){const v=e.target.value; $('#cmpSheetBody').querySelectorAll('[data-cm]').forEach(b=>b.classList.toggle('on',b.dataset.cm===v));} });
 $('#cmpSheet').addEventListener('submit',e=>{ if(e.target.id!=='cForm') return; e.preventDefault(); const sb=$('#cmpSheetBody'), msg=$('#cMsg');
-  const mat=$('#cMat').value.trim(), fac=$('#cFac').value.trim(), price=parseFloat(($('#cPrice').value||'').replace(/,/g,'')), q=+sb.dataset.q||0;
-  if(!mat){msg.textContent='اختر المادة أو اكتبها.';return;} if(!fac){msg.textContent='اكتب اسم المصنع.';return;} if(!(price>0)){msg.textContent='اكتب السعر بالأرقام.';return;} if(!q){msg.textContent='اختر الجودة من 1 إلى 5 نجوم.';return;}
+  const mat=$('#cMat').value.trim(), fac=$('#cFac').value.trim(), price=numP(($('#cPrice').value||'').replace(/,/g,'')), q=+sb.dataset.q||0;
+  const bad=t=>{msg.textContent=t; toast(t); msg.scrollIntoView({block:'center',behavior:'smooth'});}; if(!mat){bad('اختر المادة أو اكتبها');return;} if(!fac){bad('اكتب اسم المصنع');return;} if(!(price>0)){bad('اكتب السعر، مثال: 12.5');return;} if(!q){bad('اختر الجودة بالنجوم');return;}
   const st=cLoad(); const rec={mat,fac,price,cur:sb.dataset.cur||'CNY',unit:sb.dataset.unit||'كيلو',q,moq:$('#cMoq').value.trim(),lead:$('#cLead').value.trim(),spec:$('#cSpec').value.trim(),note:$('#cNote').value.trim()};
   if(cmpEdit){const i=st.items.findIndex(x=>x.id===cmpEdit); if(i>=0) st.items[i]=Object.assign({},st.items[i],rec,{ex:0});}
   else st.items.push(Object.assign({id:Date.now()+''+Math.random().toString(36).slice(2,6)},rec));
@@ -2628,6 +2638,28 @@ function click(e){
 window.SYNC={card,click,state:()=>S.state,label,me:()=>S.me};
 try{window.APP&&window.APP.reload&&window.APP.reload();}catch(e){}
 start();
+})();
+</script>
+<script>
+(function(){
+  const sa=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+  if(sa||!/github\.io$/.test(location.hostname)) return;
+  let dis=false; try{dis=sessionStorage.getItem('a2hs-x')==='1';}catch(e){}
+  if(dis) return;
+  const ua=navigator.userAgent, ios=/iPhone|iPad|iPod/.test(ua), crios=/CriOS|FxiOS|EdgiOS/.test(ua), android=/Android/.test(ua);
+  let deferred=null;
+  const d=document.createElement('div'); d.className='a2hs'; d.setAttribute('role','note');
+  const steps=ios?(crios?'اضغط زر المشاركة <b>⬆︎</b> فوق يمين الشريط، ثم <b>«إضافة إلى الشاشة الرئيسية»</b>. إذا ما ظهر الخيار، افتح الرابط في <b>سفاري</b>.'
+                       :'اضغط زر المشاركة <b>⬆︎</b> تحت الشاشة، ثم <b>«إضافة إلى الشاشة الرئيسية»</b> ثم <b>إضافة</b>.')
+             :android?'من قائمة المتصفح <b>⋮</b> اختر <b>«تثبيت التطبيق»</b> أو <b>«إضافة إلى الشاشة الرئيسية»</b>.'
+             :'أضف هذه الصفحة إلى الشاشة الرئيسية من قائمة المتصفح.';
+  d.innerHTML='<button class="a2x" type="button" aria-label="إغلاق">×</button><b class="a2t">افتحه كتطبيق بملء الشاشة</b><p>'+steps+' بعدها افتحه من أيقونة «رحلتي».</p><button class="a2i" type="button" hidden>ثبّت التطبيق</button>';
+  document.body.appendChild(d);
+  const ib=d.querySelector('.a2i');
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;ib.hidden=false;});
+  ib.addEventListener('click',()=>{ if(!deferred) return; deferred.prompt(); deferred.userChoice.finally(()=>{deferred=null;d.remove();}); });
+  d.querySelector('.a2x').addEventListener('click',()=>{d.remove(); try{sessionStorage.setItem('a2hs-x','1');}catch(e){}});
+  setTimeout(()=>d.classList.add('on'),600);
 })();
 </script>
 
