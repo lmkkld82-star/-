@@ -1213,6 +1213,45 @@ body,.view{background:radial-gradient(120% 40% at 50% -6%,rgba(201,174,120,.22),
   .pp-det td{padding:4px 6px;border-bottom:1px solid #F0E9DC;vertical-align:top}
   .pp-foot{margin-top:8px;font-size:8.5pt;color:#6b625a;background:#FBF7EF;border-radius:10px;padding:8px 10px;break-inside:avoid}
 }
+
+/* pdf stage (same look as print) */
+#cmpStage{position:fixed;left:-10000px;top:0;z-index:-1;pointer-events:none}
+.pp-page{width:794px;height:1123px;box-sizing:border-box;padding:40px 38px;background:#fff;overflow:hidden}
+.pp-doc{direction:rtl;font-family:var(--f-body);color:#221d1a;font-size:14px;line-height:1.5}
+.pp-doc{direction:rtl;font-family:var(--f-body);color:#221d1a;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:14px}
+.pp-doc .pp-head{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#2C241E,#1A1512);color:#F3E2B5;border-radius:14px;padding:16px 20px;margin-bottom:10px}
+.pp-doc .pp-head small{color:#C9AE78;font-size:9pt}.pp-head h1{margin:2px 0;font-size:22pt;color:#fff}.pp-head p{margin:0;font-size:9.5pt;color:#E9D9B4}
+.pp-doc .pp-logo{font-size:28pt;color:#C9A35E}
+.pp-doc .pp-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.pp-doc .pp-kpis div{border:1px solid #E6DCCB;border-radius:12px;padding:8px;text-align:center;background:#FBF7EF}
+.pp-doc .pp-kpis b{display:block;font-size:17pt;color:#8E7240}.pp-kpis span{font-size:8.5pt;color:#6b625a}
+.pp-doc .pp-h2{font-size:12.5pt;margin:6px 0;border-right:4px solid #C29A4A;padding-right:8px}
+.pp-doc table{width:100%;border-collapse:collapse}
+.pp-doc .pp-sum{margin-bottom:12px;font-size:9.5pt}
+.pp-doc .pp-sum th{background:#F3EAD6;color:#5A4636;padding:6px;text-align:right;font-size:9pt}
+.pp-doc .pp-sum td{padding:6px;border-bottom:1px solid #EEE6D7;vertical-align:top}
+.pp-doc .pp-sum small,.pp-doc .pp-det small{display:block;color:#7b7168;font-size:8pt}
+.pp-doc .pp-sum td.w{background:#FBF1DA;font-weight:800}
+.pp-doc .pp-g{border:1px solid #E6DCCB;border-radius:14px;padding:10px 12px;margin-bottom:10px;break-inside:avoid;page-break-inside:avoid}
+.pp-doc .pp-gh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #EEE6D7;padding-bottom:5px;margin-bottom:6px}
+.pp-doc .pp-gh h3{margin:0;font-size:13pt}.pp-gh span{font-size:8.5pt;color:#7b7168}
+.pp-doc .pp-win{display:flex;justify-content:space-between;gap:8px;background:linear-gradient(135deg,#F5E9CC,#EEDDB5);border-radius:10px;padding:6px 10px;margin-bottom:6px;font-size:9.5pt;color:#4A3A1F}
+.pp-doc .pp-row{display:grid;grid-template-columns:22px 30% 1fr 46px;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed #EEE6D7}
+.pp-doc .pp-row:last-child{border-bottom:0}
+.pp-doc .pp-row.best .pp-rk{background:#A0803F;color:#fff}
+.pp-doc .pp-rk{width:20px;height:20px;border-radius:50%;background:#EFE8DB;display:grid;place-items:center;font-size:8.5pt;font-weight:800}
+.pp-doc .pp-nm b{display:block;font-size:10pt}
+.pp-doc .pst{color:#C29A4A;font-size:9pt;letter-spacing:1px}.pst i{font-style:normal;color:#DDD5C5}
+.pp-doc .pp-track{height:9px;background:#F1ECE2;border-radius:5px;overflow:hidden}
+.pp-doc .pp-track i{display:block;height:100%;background:#B9A57E;border-radius:5px}
+.pp-doc .pp-track i.c{background:#2A7768}
+.pp-doc .pp-bar span{font-size:8.5pt;color:#5d544c}
+.pp-doc .pp-sc{text-align:center}.pp-sc b{font-size:13pt;color:#221d1a}.pp-sc small{font-size:7.5pt;color:#7b7168}
+.pp-doc .pp-det{margin-top:6px;font-size:8.5pt}
+.pp-doc .pp-det th{background:#F7F2E8;padding:4px 6px;text-align:right;color:#6b625a}
+.pp-doc .pp-det td{padding:4px 6px;border-bottom:1px solid #F0E9DC;vertical-align:top}
+.pp-doc .pp-foot{margin-top:8px;font-size:8.5pt;color:#6b625a;background:#FBF7EF;border-radius:10px;padding:8px 10px;break-inside:avoid}
+.pp-doc .pp-g,.pp-doc .pp-sum,.pp-doc .pp-kpis{margin-bottom:12px}
 @media (max-width:370px){.th h1{font-size:27px}.qg{font-size:11px}.qg .qi{width:42px;height:42px}.pane-main h1{font-size:28px}.glass{height:200px}.bp-pt b{font-size:26px}.tz b{font-size:18px}.tl li{grid-template-columns:42px 28px minmax(0,1fr) auto;column-gap:6px}.tl::before{right:62px}}
 </style>
 </head>
@@ -2507,15 +2546,57 @@ function cPrintHTML(){
   h+='<div class="pp-foot"><b>طريقة التقييم:</b> درجة من 100، نصفها للسعر (الأرخص ياخذ 50 كاملة، والباقي حسب نسبته منه) ونصفها للجودة (النجوم من 5). كل الأسعار محوّلة للريال العماني بسعر الصرف وقت التصدير. طول الشريط يمثل السعر بالريال، والأخضر هو الأرخص.</div>';
   return h;
 }
-function cPrint(){
-  if(!cLoad().items.length){toast('ما في عروض للتصدير');return;}
+function cPrintFallback(){
   let pv=document.getElementById('cmpPrint'); if(!pv){pv=document.createElement('div');pv.id='cmpPrint';document.body.appendChild(pv);}
   pv.innerHTML=cPrintHTML(); document.body.classList.add('printing');
   const done=()=>{document.body.classList.remove('printing');window.removeEventListener('afterprint',done);};
   window.addEventListener('afterprint',done);
-  setTimeout(()=>{try{window.print();}catch(e){toast('الطباعة غير متاحة هنا');} setTimeout(()=>{if(!matchMedia('print').matches)done();},1500);},120);
-  toast('اختر «حفظ كـ PDF» من نافذة الطباعة');
+  setTimeout(()=>{try{window.print();}catch(e){} setTimeout(()=>{if(!matchMedia('print').matches)done();},1500);},120);
 }
+const loadJS=(urls)=>new Promise((res,rej)=>{let k=0;const next=()=>{if(k>=urls.length)return rej(new Error('load'));const s=document.createElement('script');s.src=urls[k++];s.onload=()=>res();s.onerror=()=>{s.remove();next();};document.head.appendChild(s);};next();});
+let pdfLibs=null;
+function getPdfLibs(){ if(!pdfLibs) pdfLibs=Promise.all([
+  window.htmlToImage?1:loadJS(['https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js','https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.js']),
+  (window.jspdf&&window.jspdf.jsPDF)?1:loadJS(['https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js'])
+ ]).catch(e=>{pdfLibs=null;throw e;}); return pdfLibs; }
+function cBuildPages(){
+  let st=document.getElementById('cmpStage'); if(!st){st=document.createElement('div');st.id='cmpStage';document.body.appendChild(st);}
+  st.innerHTML=''; const tmp=document.createElement('div'); tmp.innerHTML=cPrintHTML();
+  const blocks=[...tmp.children]; const pages=[]; let pg=null, inner=null;
+  const newPage=()=>{pg=document.createElement('div');pg.className='pp-page';inner=document.createElement('div');inner.className='pp-doc';pg.appendChild(inner);st.appendChild(pg);pages.push(pg);};
+  newPage(); const MAXH=1123-80;
+  blocks.forEach(b=>{ inner.appendChild(b); if(inner.scrollHeight>MAXH && inner.children.length>1){ inner.removeChild(b); newPage(); inner.appendChild(b); } });
+  // page numbers
+  pages.forEach((p,i)=>{const n=document.createElement('div');n.style.cssText='position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:11px;color:#9b9189;font-family:var(--f-body)';n.textContent='صفحة '+(i+1)+' من '+pages.length;p.style.position='relative';p.appendChild(n);});
+  return pages;
+}
+let cBusy=false;
+async function cPrint(){
+  if(cBusy) return; if(!cLoad().items.length){toast('ما في عروض للتصدير');return;}
+  cBusy=true; toast('جاري تجهيز ملف PDF…');
+  try{
+    await getPdfLibs(); if(document.fonts&&document.fonts.ready) await document.fonts.ready;
+    const pages=cBuildPages(), H=window.htmlToImage, {jsPDF}=window.jspdf;
+    const opt={pixelRatio:2,quality:0.92,backgroundColor:'#ffffff',width:794,height:1123,cacheBust:false};
+    try{ opt.fontEmbedCSS=await H.getFontEmbedCSS(pages[0]); }catch(e){}
+    const doc=new jsPDF({unit:'pt',format:'a4',orientation:'portrait',compress:true});
+    for(let i=0;i<pages.length;i++){
+      if(i===0){ try{await H.toJpeg(pages[0],opt);}catch(e){} } // Safari warm-up
+      const img=await H.toJpeg(pages[i],opt);
+      if(i>0) doc.addPage();
+      doc.addImage(img,'JPEG',0,0,595.28,841.89,undefined,'FAST');
+    }
+    const d=new Date(), name='مقارنة-المصانع-'+d.getDate()+'-'+(d.getMonth()+1)+'.pdf';
+    const blob=doc.output('blob'), file=new File([blob],name,{type:'application/pdf'});
+    document.getElementById('cmpStage').innerHTML='';
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{ await navigator.share({files:[file],title:'مقارنة المصانع'}); }catch(e){ if(e&&e.name!=='AbortError') cDownload(blob,name); }
+    } else cDownload(blob,name);
+  }catch(e){
+    toast('ما قدرت أجهز الملف، بفتح نافذة الطباعة'); cPrintFallback();
+  } finally { cBusy=false; }
+}
+function cDownload(blob,name){ const u=URL.createObjectURL(blob), a=document.createElement('a'); a.href=u; a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(u);a.remove();},4000); toast('تم تنزيل الملف'); }
 function cSummary(){return cGroups(cLoad().items).map(g=>'▪ '+g.mat+' (لكل '+g.unit+')\n'+g.list.map((i,ix)=>(ix===0&&g.list.length>1?'★ ':'- ')+i.fac+': '+fmt(i.price,2)+' '+cSym(i.cur)+' (≈'+fmt(cOMR(i),3)+' ر.ع)، جودة '+(i.q||0)+'/5، تقييم '+i._s+'/100'+(i.moq?'، الحد الأدنى '+i.moq:'')).join('\n')).join('\n\n');}
 function cSheet(it){
   cmpEdit=it?it.id:null; const d=it?Object.assign({},it):Object.assign({cur:'CNY',unit:'كيلو',q:0},cmpDraft);
