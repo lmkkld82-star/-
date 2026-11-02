@@ -1171,6 +1171,48 @@ body,.view{background:radial-gradient(120% 40% at 50% -6%,rgba(201,174,120,.22),
 .a2hs p{margin:0;color:#E9D9B4}.a2hs p b{color:#fff}
 .a2hs .a2x{position:absolute;left:8px;top:8px;width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:18px;cursor:pointer}
 .a2hs .a2i{margin-top:8px;border:0;border-radius:12px;padding:8px 16px;font-family:var(--f-body);font-weight:800;background:linear-gradient(135deg,#E9D29C,#C9A35E);color:#2A2119;cursor:pointer}
+
+.cpdf-top{float:left;margin:12px 0 0;border:1px solid var(--hair);background:var(--surf);border-radius:14px;padding:6px 12px;font-family:var(--f-body);font-weight:800;font-size:12.5px;color:var(--gold-d);cursor:pointer}
+#cmpPrint{display:none}
+@media print{
+  @page{size:A4;margin:11mm 10mm}
+  html,body{height:auto!important;overflow:visible!important;background:#fff!important}
+  body.printing>*:not(#cmpPrint){display:none!important}
+  body.printing #cmpPrint{display:block!important}
+  #cmpPrint{direction:rtl;font-family:var(--f-body);color:#221d1a;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:10.5pt}
+  .pp-head{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#2C241E,#1A1512);color:#F3E2B5;border-radius:14px;padding:16px 20px;margin-bottom:10px}
+  .pp-head small{color:#C9AE78;font-size:9pt}.pp-head h1{margin:2px 0;font-size:22pt;color:#fff}.pp-head p{margin:0;font-size:9.5pt;color:#E9D9B4}
+  .pp-logo{font-size:28pt;color:#C9A35E}
+  .pp-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+  .pp-kpis div{border:1px solid #E6DCCB;border-radius:12px;padding:8px;text-align:center;background:#FBF7EF}
+  .pp-kpis b{display:block;font-size:17pt;color:#8E7240}.pp-kpis span{font-size:8.5pt;color:#6b625a}
+  .pp-h2{font-size:12.5pt;margin:6px 0;border-right:4px solid #C29A4A;padding-right:8px}
+  table{width:100%;border-collapse:collapse}
+  .pp-sum{margin-bottom:12px;font-size:9.5pt}
+  .pp-sum th{background:#F3EAD6;color:#5A4636;padding:6px;text-align:right;font-size:9pt}
+  .pp-sum td{padding:6px;border-bottom:1px solid #EEE6D7;vertical-align:top}
+  .pp-sum small,.pp-det small{display:block;color:#7b7168;font-size:8pt}
+  .pp-sum td.w{background:#FBF1DA;font-weight:800}
+  .pp-g{border:1px solid #E6DCCB;border-radius:14px;padding:10px 12px;margin-bottom:10px;break-inside:avoid;page-break-inside:avoid}
+  .pp-gh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #EEE6D7;padding-bottom:5px;margin-bottom:6px}
+  .pp-gh h3{margin:0;font-size:13pt}.pp-gh span{font-size:8.5pt;color:#7b7168}
+  .pp-win{display:flex;justify-content:space-between;gap:8px;background:linear-gradient(135deg,#F5E9CC,#EEDDB5);border-radius:10px;padding:6px 10px;margin-bottom:6px;font-size:9.5pt;color:#4A3A1F}
+  .pp-row{display:grid;grid-template-columns:22px 30% 1fr 46px;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed #EEE6D7}
+  .pp-row:last-child{border-bottom:0}
+  .pp-row.best .pp-rk{background:#A0803F;color:#fff}
+  .pp-rk{width:20px;height:20px;border-radius:50%;background:#EFE8DB;display:grid;place-items:center;font-size:8.5pt;font-weight:800}
+  .pp-nm b{display:block;font-size:10pt}
+  .pst{color:#C29A4A;font-size:9pt;letter-spacing:1px}.pst i{font-style:normal;color:#DDD5C5}
+  .pp-track{height:9px;background:#F1ECE2;border-radius:5px;overflow:hidden}
+  .pp-track i{display:block;height:100%;background:#B9A57E;border-radius:5px}
+  .pp-track i.c{background:#2A7768}
+  .pp-bar span{font-size:8.5pt;color:#5d544c}
+  .pp-sc{text-align:center}.pp-sc b{font-size:13pt;color:#221d1a}.pp-sc small{font-size:7.5pt;color:#7b7168}
+  .pp-det{margin-top:6px;font-size:8.5pt}
+  .pp-det th{background:#F7F2E8;padding:4px 6px;text-align:right;color:#6b625a}
+  .pp-det td{padding:4px 6px;border-bottom:1px solid #F0E9DC;vertical-align:top}
+  .pp-foot{margin-top:8px;font-size:8.5pt;color:#6b625a;background:#FBF7EF;border-radius:10px;padding:8px 10px;break-inside:avoid}
+}
 @media (max-width:370px){.th h1{font-size:27px}.qg{font-size:11px}.qg .qi{width:42px;height:42px}.pane-main h1{font-size:28px}.glass{height:200px}.bp-pt b{font-size:26px}.tz b{font-size:18px}.tl li{grid-template-columns:42px 28px minmax(0,1fr) auto;column-gap:6px}.tl::before{right:62px}}
 </style>
 </head>
@@ -2406,6 +2448,7 @@ function renderCmpView(){
     h+='<div class="cempty"><b>ما في عروض للحين</b><p>في كل مصنع تزوره: اكتب المادة والسعر والجودة، وبعدها تشوف المقارنة هنا بشكل واضح.</p><button class="lnk" type="button" data-cdemo>جرّب بأمثلة</button></div></div>';
     $('#v-cmp').innerHTML=h; return;
   }
+  h+='<button class="cpdf-top" type="button" data-cpdf>تصدير PDF ⤓</button>';
   h+='<div class="cf-chips">'+mats.map(m=>{const n=m==='الكل'?st.items.length:st.items.filter(i=>i.mat===m).length;return '<button type="button" class="'+(m===cmpF?'on':'')+'" data-cf="'+esc(m)+'">'+esc(m)+'<em>'+n+'</em></button>';}).join('')+'</div>';
   h+='<div class="chow"><b>كيف يرتب؟</b> التقييم من 100: نصفه للسعر (الأرخص ياخذ الدرجة الكاملة) ونصفه للجودة (النجوم). الأسعار كلها محوّلة للريال بسعر الصرف الحالي.</div>';
   groups.filter(g=>cmpF==='الكل'||g.mat===cmpF).forEach(g=>{
@@ -2431,8 +2474,47 @@ function renderCmpView(){
     h+='</section>';
   });
   const hasEx=st.items.some(i=>i.ex);
-  h+='<div class="btnrow cft"><button class="pbtn l" type="button" data-cshare>'+ico('send')+'أرسل الملخص</button>'+(hasEx?'<button class="pbtn c" type="button" data-cclearex>احذف الأمثلة</button>':'')+'</div></div>';
+  h+='<div class="btnrow cft"><button class="pbtn sun" type="button" data-cpdf>'+ico('book')+'تصدير PDF</button><button class="pbtn l" type="button" data-cshare>'+ico('send')+'أرسل الملخص</button>'+(hasEx?'<button class="pbtn c" type="button" data-cclearex>احذف الأمثلة</button>':'')+'</div></div>';
   $('#v-cmp').innerHTML=h;
+}
+
+// ---------- PDF infographic (print view) ----------
+function cPrintHTML(){
+  const st=cLoad(), groups=cGroups(st.items.filter(i=>!i.ex).length?st.items.filter(i=>!i.ex):st.items);
+  const all=groups.flatMap(g=>g.list), facs=new Set(all.map(i=>i.fac)).size;
+  const now=new Date(), ds=now.getDate()+' '+(MON[now.getMonth()+1]||'')+' '+now.getFullYear();
+  const omrCny=(rates&&rates.OMR)?(rates.CNY/rates.OMR):18.5;
+  const S=n=>'<span class="pst">'+'★'.repeat(n||0)+'<i>'+'★'.repeat(5-(n||0))+'</i></span>';
+  let h='<div class="pp-head"><div><small>رحلة قوانغتشو وفوشان · نوفمبر 2026</small><h1>مقارنة عروض المصانع</h1><p>أبواب ونوافذ ومواد خام · '+ds+'</p></div><div class="pp-logo">◆</div></div>';
+  h+='<div class="pp-kpis"><div><b>'+all.length+'</b><span>عرض</span></div><div><b>'+groups.length+'</b><span>مادة</span></div><div><b>'+facs+'</b><span>مصنع ومحل</span></div><div><b>'+fmt(omrCny,2)+'</b><span>يوان = 1 ر.ع</span></div></div>';
+  // winners overview
+  const multi=groups.filter(g=>g.list.length>1);
+  if(multi.length){ h+='<h2 class="pp-h2">الخلاصة: الأفضل لكل مادة</h2><table class="pp-sum"><thead><tr><th>المادة</th><th>الأفضل قيمة</th><th>الأرخص</th><th>الأعلى جودة</th></tr></thead><tbody>'+
+    multi.map(g=>{const ch=g.list.find(i=>cOMR(i)===g.minO), hq=g.list.find(i=>(i.q||0)===g.maxQ);
+      return '<tr><td><b>'+esc(g.mat)+'</b><small>لكل '+esc(g.unit)+'</small></td><td class="w">'+esc(g.best.fac)+'<small>'+g.best._s+'/100</small></td><td>'+esc(ch.fac)+'<small><bdi>'+fmt(ch.price,2)+' '+cSym(ch.cur)+'</bdi></small></td><td>'+esc(hq.fac)+'<small>'+S(hq.q)+'</small></td></tr>';}).join('')+'</tbody></table>'; }
+  groups.forEach(g=>{
+    const maxO=Math.max(...g.list.map(cOMR));
+    h+='<section class="pp-g"><div class="pp-gh"><h3>'+esc(g.mat)+'</h3><span>'+g.list.length+' '+(g.list.length===1?'عرض':'عروض')+' · السعر لكل '+esc(g.unit)+'</span></div>';
+    if(g.list.length>1) h+='<div class="pp-win"><b>★ الأفضل قيمة: '+esc(g.best.fac)+'</b><span>تقييم '+g.best._s+' من 100 · '+fmt(cOMR(g.best),3)+' ر.ع لكل '+esc(g.unit)+'</span></div>';
+    h+='<div class="pp-bars">'+g.list.map((i,ix)=>{const o=cOMR(i), cheap=o===g.minO&&g.list.length>1;
+      return '<div class="pp-row'+(i===g.best&&g.list.length>1?' best':'')+'"><span class="pp-rk">'+(ix+1)+'</span><div class="pp-nm"><b>'+esc(i.fac)+'</b>'+S(i.q)+'</div>'+
+        '<div class="pp-bar"><div class="pp-track"><i class="'+(cheap?'c':'')+'" style="width:'+Math.max(6,Math.round(o/maxO*100))+'%"></i></div><span><bdi>'+fmt(i.price,2)+' '+cSym(i.cur)+'</bdi> · '+fmt(o,3)+' ر.ع</span></div>'+
+        '<div class="pp-sc"><b>'+i._s+'</b><small>/100</small></div></div>';}).join('')+'</div>';
+    const det=g.list.filter(i=>i.moq||i.lead||i.spec||i.note);
+    if(det.length) h+='<table class="pp-det"><thead><tr><th>المصنع</th><th>الحد الأدنى</th><th>مدة التصنيع</th><th>المواصفات</th><th>ملاحظات</th></tr></thead><tbody>'+det.map(i=>'<tr><td><b>'+esc(i.fac)+'</b></td><td>'+esc(i.moq||'—')+'</td><td>'+esc(i.lead||'—')+'</td><td>'+esc(i.spec||'—')+'</td><td>'+esc(i.note||'—')+'</td></tr>').join('')+'</tbody></table>';
+    h+='</section>';
+  });
+  h+='<div class="pp-foot"><b>طريقة التقييم:</b> درجة من 100، نصفها للسعر (الأرخص ياخذ 50 كاملة، والباقي حسب نسبته منه) ونصفها للجودة (النجوم من 5). كل الأسعار محوّلة للريال العماني بسعر الصرف وقت التصدير. طول الشريط يمثل السعر بالريال، والأخضر هو الأرخص.</div>';
+  return h;
+}
+function cPrint(){
+  if(!cLoad().items.length){toast('ما في عروض للتصدير');return;}
+  let pv=document.getElementById('cmpPrint'); if(!pv){pv=document.createElement('div');pv.id='cmpPrint';document.body.appendChild(pv);}
+  pv.innerHTML=cPrintHTML(); document.body.classList.add('printing');
+  const done=()=>{document.body.classList.remove('printing');window.removeEventListener('afterprint',done);};
+  window.addEventListener('afterprint',done);
+  setTimeout(()=>{try{window.print();}catch(e){toast('الطباعة غير متاحة هنا');} setTimeout(()=>{if(!matchMedia('print').matches)done();},1500);},120);
+  toast('اختر «حفظ كـ PDF» من نافذة الطباعة');
 }
 function cSummary(){return cGroups(cLoad().items).map(g=>'▪ '+g.mat+' (لكل '+g.unit+')\n'+g.list.map((i,ix)=>(ix===0&&g.list.length>1?'★ ':'- ')+i.fac+': '+fmt(i.price,2)+' '+cSym(i.cur)+' (≈'+fmt(cOMR(i),3)+' ر.ع)، جودة '+(i.q||0)+'/5، تقييم '+i._s+'/100'+(i.moq?'، الحد الأدنى '+i.moq:'')).join('\n')).join('\n\n');}
 function cSheet(it){
@@ -2484,6 +2566,7 @@ $('#v-cmp').addEventListener('click',e=>{
       {id:t0+'c',mat:'قطاع ألمنيوم (فريم)',fac:'علامة كبيرة',price:3.4,cur:'USD',unit:'كيلو',spec:'1.6 مم، كسر حراري',moq:'5 طن',lead:'30 يوم',note:'',q:5,ex:1});
     cSave(st); cmpF='الكل'; renderCmpView(); return;}
   if(e.target.closest('[data-cclearex]')){const st=cLoad(); st.items=st.items.filter(x=>!x.ex); cSave(st); renderCmpView(); return;}
+  if(e.target.closest('[data-cpdf]')){cPrint();return;}
   if(e.target.closest('[data-cshare]')){const t=cSummary(); if(navigator.share) navigator.share({title:'مقارنة المصانع',text:t}).catch(()=>{}); else (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('تم نسخ الملخص'),()=>toast('النسخ غير متاح هنا'));}
 });
 function appReload(){
