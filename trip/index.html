@@ -2651,7 +2651,7 @@ start();
   const d=document.createElement('div'); d.className='a2hs'; d.setAttribute('role','note');
   const steps=ios?(crios?'اضغط زر المشاركة <b>⬆︎</b> فوق يمين الشريط، ثم <b>«إضافة إلى الشاشة الرئيسية»</b>. إذا ما ظهر الخيار، افتح الرابط في <b>سفاري</b>.'
                        :'اضغط زر المشاركة <b>⬆︎</b> تحت الشاشة، ثم <b>«إضافة إلى الشاشة الرئيسية»</b> ثم <b>إضافة</b>.')
-             :android?'من قائمة المتصفح <b>⋮</b> اختر <b>«تثبيت التطبيق»</b> أو <b>«إضافة إلى الشاشة الرئيسية»</b>.'
+             :(android&&/SamsungBrowser/.test(ua))?'افتح هذا الرابط في <b>Chrome</b> (متصفح سامسونج يثبّته بنسخة قديمة فيحظرها Google Play)، ثم من القائمة <b>⋮</b> اختر <b>«إضافة إلى الشاشة الرئيسية»</b>.':android?'من قائمة المتصفح <b>⋮</b> اختر <b>«تثبيت التطبيق»</b> أو <b>«إضافة إلى الشاشة الرئيسية»</b>.'
              :'أضف هذه الصفحة إلى الشاشة الرئيسية من قائمة المتصفح.';
   d.innerHTML='<button class="a2x" type="button" aria-label="إغلاق">×</button><b class="a2t">افتحه كتطبيق بملء الشاشة</b><p>'+steps+' بعدها افتحه من أيقونة «رحلتي».</p><button class="a2i" type="button" hidden>ثبّت التطبيق</button>';
   document.body.appendChild(d);
