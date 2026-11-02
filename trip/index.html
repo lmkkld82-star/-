@@ -2284,6 +2284,10 @@ if(shop.some(s=>!s.id)){shop.forEach(s=>{if(!s.id)s.id=newId();});save('tripapp-
 {const cc=load('tripapp-cards',[]); if(cc.some(c=>!c.id)){cc.forEach(c=>{if(!c.id)c.id=newId();});save('tripapp-cards',cc);}}
 let expSeg='exp', xd={cat:'أكل',who:'مشترك',cur:'CNY'};
 const saveExp=()=>save('tripapp-exp',exp), saveShop=()=>save('tripapp-shop',shop);
+// everything recorded before 2 Nov 2026 14:40 (China time) counts as shared, as Khalid asked
+const SHARE_CUT=1793601600000;
+function migShared(){ let ch=false; (exp.items||[]).forEach(i=>{ const t=+i.id; if(t>0&&t<SHARE_CUT&&i.who!=='مشترك'){i.who='مشترك';ch=true;} }); if(ch) saveExp(); }
+migShared();
 function renderExp(){
   let h='<div class="mbar" aria-hidden="true"><b>المصاريف والمشتريات</b></div><div class="phead sun"><div class="in"><h2>المصاريف والمشتريات</h2><p>'+(exp.items.length?'صرفتوا '+fmt(exp.items.reduce((s,i)=>s+toOMR(i.a,i.c),0),1)+' ر.ع من ميزانية '+fmt(+exp.budget||0,0)+' ر.ع':'سجّل مصاريفكم، وتتزامن مع جوال زميلك')+'</p></div></div><div class="wrap">';
   h+='<div class="seg"><button type="button" data-es="exp" class="'+(expSeg==='exp'?'on':'')+'">المصاريف</button><button type="button" data-es="shop" class="'+(expSeg==='shop'?'on':'')+'">قائمة المشتريات</button></div>';
@@ -2478,7 +2482,7 @@ $('#v-cmp').addEventListener('click',e=>{
   if(e.target.closest('[data-cshare]')){const t=cSummary(); if(navigator.share) navigator.share({title:'مقارنة المصانع',text:t}).catch(()=>{}); else (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('تم نسخ الملخص'),()=>toast('النسخ غير متاح هنا'));}
 });
 function appReload(){
-  exp=load('tripapp-exp',{items:[],budget:1500}); shop=load('tripapp-shop',[]);
+  exp=load('tripapp-exp',{items:[],budget:1500}); shop=load('tripapp-shop',[]); migShared();
   try{visited=JSON.parse(localStorage.getItem('tripapp-visited')||'{}')||{};}catch(e){}
   const ae=document.activeElement; const typing=ae&&ae.closest&&ae.closest('.view')&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName);
   if(typing){setTimeout(appReload,1500);return;}
