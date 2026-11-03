@@ -10,8 +10,8 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"/>
 <meta name="apple-mobile-web-app-title" content="فلل المعبيلة"/>
-<meta name="theme-color" content="#0D5C4A" media="(prefers-color-scheme: light)"/>
-<meta name="theme-color" content="#0E3A30" media="(prefers-color-scheme: dark)"/>
+<meta name="theme-color" content="#14213D" media="(prefers-color-scheme: light)"/>
+<meta name="theme-color" content="#0B1120" media="(prefers-color-scheme: dark)"/>
 <title>فلل المعبيلة 6</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -447,6 +447,56 @@ body.on-summary .proj .nm{font-size:1rem;color:var(--hero-ink);font-weight:700;w
 .tpanel td{height:46px}
 .tpanel th{position:sticky;top:0}
 
+
+/* ===== Skin: midnight navy · champagne gold (matches the trip app) ===== */
+:root[data-skin="gold"]{
+  --bg:#F6F2EA;--surface:#FFFFFF;--surface2:#FAF6EE;--ink:#1B2233;--ink2:#454B5A;--mut:#7A7F8A;
+  --line:#ECE3D3;--line2:#DCCFB8;--pri:#14213D;--pri-ink:#FFFFFF;--pri-soft:#F8ECD2;
+  --focus:rgba(217,165,74,.35);--scrim:rgba(20,33,61,.45);
+  --hero:#14213D;--hero-mut:rgba(255,255,255,.72);--hero-hover:rgba(255,255,255,.12);
+  --gold:#D9A54A;--gold-l:#F3CF7C;
+}
+@media (prefers-color-scheme:dark){:root[data-skin="gold"]:not([data-theme="light"]){
+  --bg:#0E1424;--surface:#161E33;--surface2:#1C263F;--ink:#E8ECF4;--ink2:#B9C1D2;--mut:#8C95A8;
+  --line:#26314C;--line2:#34405E;--pri:#D9A54A;--pri-ink:#1A1405;--pri-soft:#2B2615;
+  --hero:#0B1120;--scrim:rgba(0,0,0,.6);
+}}
+:root[data-skin="gold"][data-theme="dark"]{
+  --bg:#0E1424;--surface:#161E33;--surface2:#1C263F;--ink:#E8ECF4;--ink2:#B9C1D2;--mut:#8C95A8;
+  --line:#26314C;--line2:#34405E;--pri:#D9A54A;--pri-ink:#1A1405;--pri-soft:#2B2615;
+  --hero:#0B1120;--scrim:rgba(0,0,0,.6);
+}
+[data-skin="gold"] .bar,[data-skin="gold"] .strip-wrap,[data-skin="gold"] .dash,[data-skin="gold"] .total{
+  background-color:var(--hero);
+  background-image:linear-gradient(135deg,rgba(217,165,74,.07) 25%,transparent 25%),linear-gradient(225deg,rgba(217,165,74,.07) 25%,transparent 25%),linear-gradient(160deg,#14213D 0%,#24365F 100%);
+  background-size:22px 22px,22px 22px,100% 100%;background-position:0 0}
+[data-skin="gold"][data-theme="dark"] .bar,[data-skin="gold"][data-theme="dark"] .strip-wrap,[data-skin="gold"][data-theme="dark"] .dash{background-image:linear-gradient(135deg,rgba(217,165,74,.06) 25%,transparent 25%),linear-gradient(225deg,rgba(217,165,74,.06) 25%,transparent 25%),linear-gradient(160deg,#0B1120 0%,#18233F 100%)}
+/* the three-colour rule under every navy band, as in the trip app */
+[data-skin="gold"] .dash,[data-skin="gold"] .strip-wrap{position:relative}
+[data-skin="gold"] .dash::after,[data-skin="gold"] .strip-wrap::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#D0453A,#D9A54A,#16917D)}
+[data-skin="gold"] .proj b,[data-skin="gold"] .dbig small,[data-skin="gold"] .dl{color:#fff}
+[data-skin="gold"] .dl{color:var(--gold)}
+[data-skin="gold"] .dbig{color:#fff}
+[data-skin="gold"] i.sb{background:var(--gold)}
+[data-skin="gold"] .mf-l svg{color:var(--gold)}
+[data-skin="gold"] .fact,[data-skin="gold"] .mfact,[data-skin="gold"] .stab:not([aria-current="true"]){background:rgba(255,255,255,.07);border-color:rgba(217,165,74,.32)}
+[data-skin="gold"] .stab[aria-current="true"]{box-shadow:0 10px 26px rgba(0,0,0,.28),inset 0 -3px 0 var(--sc)}
+[data-skin="gold"] .nav-top button[aria-current="page"]{background:rgba(217,165,74,.18);color:#fff}
+[data-skin="gold"] .nav-top button[aria-current="page"] svg{color:var(--gold)}
+/* floating tab bar: navy pill with gold icon for the active tab */
+@media (max-width:860px){
+  [data-skin="gold"] .tabs button[aria-current="page"]{color:var(--ink)}
+  [data-skin="gold"] .tabs button[aria-current="page"] svg{background:var(--hero);color:var(--gold)}
+}
+[data-skin="gold"] .btn-pri{box-shadow:0 4px 12px rgba(20,33,61,.18)}
+[data-skin="gold"] .add-row:hover{border-color:var(--gold);color:var(--ink);background:var(--pri-soft)}
+[data-skin="gold"] .wring,[data-skin="gold"] .panel{border-color:var(--line)}
+[data-skin="gold"] .wring{box-shadow:0 10px 30px rgba(20,33,61,.12)}
+[data-skin="gold"] .sync.on::before{background:#7fe0b8}
+[data-skin="gold"] .cell:focus,[data-skin="gold"] .inp:focus{border-color:var(--gold)}
+[data-skin="gold"] .hd-tot b,[data-skin="gold"] .ct-tot b{color:var(--ink)}
+[data-skin="gold"] .ct-tot{background:var(--pri-soft)}
+
 /* Workers ledger */
 .ledger{margin-top:28px}
 .ledger h2{font-size:1.15rem;font-weight:700;margin-bottom:12px}
@@ -709,7 +759,7 @@ var DDATA={
   utilities:[{"البيان / الشهر":"توصيل الماء","الكهرباء":0,"الماء":210,"غاز":0,"أخرى":0,"ملاحظات":""}],
   electrical:[],ceramic:[],doors:[],sanitary:[]
 };
-var DSET={confirmDelete:true,showZeros:false,compact:true,workersFull:false,decimals:3,theme:"light"};
+var DSET={confirmDelete:true,showZeros:false,compact:true,workersFull:false,decimals:3,theme:"light",skin:"gold"};
 /* Latest data from the phone (21 Oct 2026). Applied once on every device, then edits sync as usual. */
 var IMPORT={"name":"فلل المعبيلة 6","secs":[{"id":"workers","lb":"الأيدي العاملة","ic":"users","cols":[{"k":"البيان / نوع العمل","n":0},{"k":"عدد الأمتار","n":2},{"k":"سعر المتر","n":3},{"k":"ملاحظات","n":0}],"c":"teal"},{"id":"admin","lb":"المصاريف الإدارية والفنية","ic":"clipboard","cols":[{"k":"سعر الأرض","n":1},{"k":"رسوم البنك","n":1},{"k":"التثمين","n":1},{"k":"التأمين","n":1},{"k":"الاستشاري","n":1},{"k":"رسوم الإسكان","n":1},{"k":"البلدية","n":1},{"k":"تسليم علايم","n":1},{"k":"رسوم المكتب العقاري","n":1},{"k":"مسح طبغرافي","n":1},{"k":"لوحة","n":1},{"k":"الكاميرات","n":1}],"c":"violet"},{"id":"construction","lb":"الأعمال الإنشائية","ic":"building","cols":[{"k":"الحفار","n":1},{"k":"نقل تشينكو","n":1},{"k":"نقل نكال","n":1},{"k":"الدفعات","n":4},{"k":"تنكر ماي","n":1},{"k":"الرصانة والنقل ورفعها","n":1},{"k":"أدوات مساعدة فواتير الفورمن","n":1}],"c":"orange"},{"id":"materials","lb":"المواد الأساسية","ic":"brick","cols":[{"k":"البيان","n":0},{"k":"الطابوق","n":1},{"k":"الأسمنت","n":1},{"k":"الحديد","n":1},{"k":"الرمل","n":1},{"k":"الكنكري","n":1},{"k":"مسامير وسيمات","n":1},{"k":"سمنت ابيض","n":1},{"k":"أخرى","n":1}],"c":"red"},{"id":"utilities","lb":"فواتير الكهرباء والماء","ic":"drop","cols":[{"k":"البيان / الشهر","n":0},{"k":"الكهرباء","n":1},{"k":"الماء","n":1},{"k":"غاز","n":1},{"k":"أخرى","n":1},{"k":"ملاحظات","n":0}],"c":"blue"},{"id":"electrical","lb":"الأعمال الكهربائية وأدواتها","ic":"zap","cols":[{"k":"البيان","n":0},{"k":"العمالة","n":1},{"k":"المواد","n":1},{"k":"أخرى","n":1},{"k":"ملاحظات","n":0}],"c":"yellow"},{"id":"ceramic","lb":"السيراميك والانترلوك","ic":"tiles","cols":[{"k":"البيان","n":0},{"k":"النوع","n":0},{"k":"الكمية","n":2},{"k":"السعر","n":3},{"k":"ملاحظات","n":0}],"c":"magenta"},{"id":"doors","lb":"الأبواب والنوافذ","ic":"door","cols":[{"k":"البيان","n":0},{"k":"النوع","n":0},{"k":"الكمية","n":2},{"k":"السعر","n":3},{"k":"ملاحظات","n":0}],"c":"green"},{"id":"sanitary","lb":"الأدوات الصحية","ic":"bath","cols":[{"k":"البيان","n":0},{"k":"النوع","n":0},{"k":"الكمية","n":2},{"k":"السعر","n":3},{"k":"ملاحظات","n":0}],"c":"aqua"},{"id":"sec_1792029081599","lb":"مصاريف الأيدي العاملة","ic":"users","c":"blue","cols":[{"k":"البيان","n":0},{"k":"المبلغ","n":1},{"k":"ملاحظات","n":0},{"k":"أدوات كهربائية غرفة العمال","n":1},{"k":"بيبات غرفة العمال","n":1}]}],"data":{"workers":[{"البيان / نوع العمل":"بناء وتشييد","عدد الأمتار":864,"سعر المتر":13,"ملاحظات":""}],"admin":[{"سعر الأرض":63000,"رسوم البنك":50,"التثمين":50,"التأمين":50,"الاستشاري":50,"رسوم الإسكان":1062,"البلدية":54,"تسليم علايم":15,"رسوم المكتب العقاري":0,"مسح طبغرافي":100,"لوحة":"5","الكاميرات":"130"},{"سعر الأرض":0,"رسوم البنك":0,"التثمين":0,"التأمين":438,"الاستشاري":220,"رسوم الإسكان":277,"البلدية":0,"تسليم علايم":0,"رسوم المكتب العقاري":0,"مسح طبغرافي":0,"لوحة":0,"الكاميرات":0},{"سعر الأرض":0,"رسوم البنك":0,"التثمين":0,"التأمين":0,"الاستشاري":30,"رسوم الإسكان":0,"البلدية":0,"تسليم علايم":0,"رسوم المكتب العقاري":0,"مسح طبغرافي":0,"لوحة":0,"الكاميرات":0}],"construction":[{"الحفار":300,"نقل تشينكو":20,"نقل نكال":0,"الدفعات":0,"تنكر ماي":"25","الرصانة والنقل ورفعها":"40","أدوات مساعدة فواتير الفورمن":"88.5"},{"الحفار":250,"نقل تشينكو":0,"نقل نكال":10,"الدفعات":0,"تنكر ماي":0,"الرصانة والنقل ورفعها":0,"أدوات مساعدة فواتير الفورمن":0},{"الحفار":200,"نقل تشينكو":0,"نقل نكال":0,"الدفعات":0,"تنكر ماي":0,"الرصانة والنقل ورفعها":0,"أدوات مساعدة فواتير الفورمن":0}],"materials":[{"البيان":"الدفعة الأولى","الطابوق":306,"الأسمنت":0,"الحديد":"8554","الرمل":0,"الكنكري":0,"مسامير وسيمات":7.6,"سمنت ابيض":2.8,"أخرى":27},{"البيان":"","الطابوق":0,"الأسمنت":0,"الحديد":0,"الرمل":0,"الكنكري":0,"مسامير وسيمات":0,"سمنت ابيض":0,"أخرى":0}],"utilities":[{"البيان / الشهر":"توصيل الماء","الكهرباء":0,"الماء":210,"غاز":0,"أخرى":0,"ملاحظات":""}],"electrical":[],"ceramic":[],"doors":[],"sanitary":[],"sec_1792029081599":[{"البيان":"أدوات كهربائية غرفة العمال","المبلغ":"113","ملاحظات":"","أدوات كهربائية غرفة العمال":0,"بيبات غرفة العمال":0},{"البيان":"بيبات غرفة العمال","المبلغ":"30","ملاحظات":"","أدوات كهربائية غرفة العمال":0,"بيبات غرفة العمال":0}]},"wp":[],"settings":{"confirmDelete":true,"showZeros":true,"compact":true,"workersFull":false,"decimals":3,"theme":"light","linkMig":true},"at":"2026-10-21T11:12:08.993Z"};
 var KINDS={0:"نص",1:"مبلغ",2:"كمية",3:"سعر الوحدة",4:"دفعة للعمال"};
@@ -1015,7 +1065,7 @@ document.getElementById("snackU").onclick=function(){
 };
 
 /* ───────── Theme ───────── */
-function applyTheme(){var t=S.settings.theme;if(t==="auto")document.documentElement.removeAttribute("data-theme");else document.documentElement.setAttribute("data-theme",t);}
+function applyTheme(){document.documentElement.setAttribute("data-skin",S.settings.skin||"gold");var t=S.settings.theme;if(t==="auto")document.documentElement.removeAttribute("data-theme");else document.documentElement.setAttribute("data-theme",t);}
 
 /* ───────── Export / import ───────── */
 async function download(blob,name){
@@ -1328,6 +1378,7 @@ function vSettings(){
    +'<div style="padding:10px"><button class="btn btn-sec" data-act="newSec" style="width:100%">'+ic("plus","sm")+'إضافة قسم</button></div></div></section>'
    +'<section class="group"><h2>عام</h2><div class="panel">'
    +'<div class="srow"><div class="tx"><b>اسم المشروع</b><small>'+esc(S.name)+'</small></div><button class="btn btn-sec btn-sm" data-act="renameProj">تعديل</button></div>'
+   +'<div class="srow"><div class="tx"><b>النمط</b><small>ألوان التطبيق</small></div>'+seg("skin",[["gold","ليلي ذهبي"],["green","أخضر"]])+'</div>'
    +'<div class="srow"><div class="tx"><b>المظهر</b><small>التلقائي يتبع إعداد جهازك</small></div>'+seg("theme",[["auto","تلقائي"],["light","فاتح"],["dark","داكن"]])+'</div>'
    +'<div class="srow"><div class="tx"><b>المنازل العشرية</b><small>3 تعني عرض البيسة</small></div>'+seg("decimals",[[0,"0"],[2,"2"],[3,"3"]])+'</div>'
    +'</div></section>'
