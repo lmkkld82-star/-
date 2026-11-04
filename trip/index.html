@@ -1252,6 +1252,18 @@ body,.view{background:radial-gradient(120% 40% at 50% -6%,rgba(201,174,120,.22),
 .pp-doc .pp-det td{padding:4px 6px;border-bottom:1px solid #F0E9DC;vertical-align:top}
 .pp-doc .pp-foot{margin-top:8px;font-size:8.5pt;color:#6b625a;background:#FBF7EF;border-radius:10px;padding:8px 10px;break-inside:avoid}
 .pp-doc .pp-g,.pp-doc .pp-sum,.pp-doc .pp-kpis{margin-bottom:12px}
+
+/* private accounts + edit */
+.xacc-g{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.xacc-c{background:var(--satin);border:1px solid var(--hair);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;color:var(--ink)}
+.xacc-c small{font-size:12px;color:var(--muted);font-weight:700}.xacc-c b{font-size:20px;font-weight:800}.xacc-c b em{font-style:normal;font-size:12px;color:var(--muted)}.xacc-c span{font-size:11.5px;color:var(--muted)}
+.xacc-d{margin-top:8px;border-top:1px solid var(--hair);padding-top:6px}
+.xacc-d summary{cursor:pointer;font-size:13px;font-weight:800;color:var(--gold-d);padding:4px 0}
+.xacc-r{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed var(--hair);font-size:13.5px;color:var(--ink)}
+.xacc-r small{display:block;font-size:11.5px;color:var(--muted);font-weight:400}.xacc-r b{text-align:left;font-variant-numeric:tabular-nums}
+.xp.priv{opacity:.92}.xp.editing{outline:2px solid var(--gold-d);outline-offset:2px;border-radius:14px}
+.xtag{display:inline-block;background:var(--sky-l);color:var(--sky);border-radius:8px;padding:0 6px;font-size:10.5px;font-weight:800}
+.xbtns{display:flex;flex-direction:column;gap:4px}.del2.ed{color:var(--gold-d)}
 @media (max-width:370px){.th h1{font-size:27px}.qg{font-size:11px}.qg .qi{width:42px;height:42px}.pane-main h1{font-size:28px}.glass{height:200px}.bp-pt b{font-size:26px}.tz b{font-size:18px}.tl li{grid-template-columns:42px 28px minmax(0,1fr) auto;column-gap:6px}.tl::before{right:62px}}
 </style>
 </head>
@@ -2374,41 +2386,53 @@ const saveExp=()=>save('tripapp-exp',exp), saveShop=()=>save('tripapp-shop',shop
 const SHARE_CUT=1793601600000;
 function migShared(){ let ch=false; (exp.items||[]).forEach(i=>{ const t=+i.id; if(t>0&&t<SHARE_CUT&&i.who!=='مشترك'){i.who='مشترك';ch=true;} }); if(ch) saveExp(); }
 migShared();
+// expenses whose note names Khalid or Younis are kept in that person's own account, outside the shared total
+const xAcct=i=>{const n=String(i&&i.n||''); const k=n.indexOf('خالد'), y=n.indexOf('يونس'); if(k<0&&y<0) return null; if(k<0) return 'يونس'; if(y<0) return 'خالد'; return k<=y?'خالد':'يونس';};
+const xMain=()=>exp.items.filter(i=>!xAcct(i));
+let xEdit=null;
 function renderExp(){
-  let h='<div class="mbar" aria-hidden="true"><b>المصاريف والمشتريات</b></div><div class="phead sun"><div class="in"><h2>المصاريف والمشتريات</h2><p>'+(exp.items.length?'صرفتوا '+fmt(exp.items.reduce((s,i)=>s+toOMR(i.a,i.c),0),1)+' ر.ع من ميزانية '+fmt(+exp.budget||0,0)+' ر.ع':'سجّل مصاريفكم، وتتزامن مع جوال زميلك')+'</p></div></div><div class="wrap">';
+  const MAIN=xMain();
+  let h='<div class="mbar" aria-hidden="true"><b>المصاريف والمشتريات</b></div><div class="phead sun"><div class="in"><h2>المصاريف والمشتريات</h2><p>'+(exp.items.length?'صرفتوا '+fmt(MAIN.reduce((s,i)=>s+toOMR(i.a,i.c),0),1)+' ر.ع من ميزانية '+fmt(+exp.budget||0,0)+' ر.ع':'سجّل مصاريفكم، وتتزامن مع جوال زميلك')+'</p></div></div><div class="wrap">';
   h+='<div class="seg"><button type="button" data-es="exp" class="'+(expSeg==='exp'?'on':'')+'">المصاريف</button><button type="button" data-es="shop" class="'+(expSeg==='shop'?'on':'')+'">قائمة المشتريات</button></div>';
   if(expSeg==='exp'){
-    const tot=exp.items.reduce((s,i)=>s+toOMR(i.a,i.c),0), b=+exp.budget||0, pct=b?Math.min(100,tot/b*100):0;
+    const tot=MAIN.reduce((s,i)=>s+toOMR(i.a,i.c),0), b=+exp.budget||0, pct=b?Math.min(100,tot/b*100):0;
     h+='<div class="card2"><div class="tot"><div><small>المجموع</small><br><b>'+fmt(tot,1)+'</b> <small>ر.ع</small></div><div style="text-align:left"><small>الميزانية</small><br><input id="budget" type="text" inputmode="decimal" value="'+esc(exp.budget)+'" style="width:90px;font-size:16px;font-weight:800;border:1.5px solid #e3d9c6;border-radius:10px;padding:4px 8px;background:var(--app);font-family:var(--f-body);direction:ltr"> <small>ر.ع</small></div></div>'+
        '<div class="pbar'+(b&&tot>b?' over':'')+'"><i style="width:'+pct+'%"></i></div><small style="color:var(--muted)">'+(b?(tot>b?'تجاوزت الميزانية بـ '+fmt(tot-b,1)+' ر.ع':'متبقي '+fmt(b-tot,1)+' ر.ع ('+fmt(100-pct,0)+'%)'):'')+'</small>';
-    if(exp.items.length){
-      const byCat=CATS.map(([c,col])=>[c,col,exp.items.filter(i=>i.cat===c).reduce((s,i)=>s+toOMR(i.a,i.c),0)]).filter(x=>x[2]>0).sort((a,b)=>b[2]-a[2]);
+    if(MAIN.length){
+      const byCat=CATS.map(([c,col])=>[c,col,MAIN.filter(i=>i.cat===c).reduce((s,i)=>s+toOMR(i.a,i.c),0)]).filter(x=>x[2]>0).sort((a,b)=>b[2]-a[2]);
       const tc=byCat.reduce((s,x)=>s+x[2],0)||1, R=42, C=2*Math.PI*R; let off=0;
       const segs=byCat.map(([c,col,v])=>{const len=v/tc*C; const sg='<circle r="'+R+'" cx="60" cy="60" fill="none" stroke="'+col+'" stroke-width="15" stroke-dasharray="'+Math.max(0,len-1.2).toFixed(2)+' '+(C-Math.max(0,len-1.2)).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'"/>'; off+=len; return sg;}).join('');
       const top=byCat[0];
       h+='<div class="donut"><div class="dc"><svg viewBox="0 0 120 120" aria-hidden="true"><circle r="42" cx="60" cy="60" fill="none" stroke="var(--app2)" stroke-width="15"/><g transform="rotate(-90 60 60)">'+segs+'</g></svg>'+
          '<div class="ctr"><b>'+Math.round(top[2]/tc*100)+'%</b><small>'+top[0]+'</small></div></div>'+
          '<div class="dleg">'+byCat.map(([c,col,v])=>'<div><i style="background:'+col+'"></i><span>'+c+'</span><em>'+fmt(v,1)+' ر.ع</em></div>').join('')+'</div></div>';
-      const byDay=[]; exp.items.forEach(i=>{let g=byDay.find(x=>x.d===i.d); if(!g){g={d:i.d,v:0};byDay.push(g);} g.v+=toOMR(i.a,i.c);});
+      const byDay=[]; MAIN.forEach(i=>{let g=byDay.find(x=>x.d===i.d); if(!g){g={d:i.d,v:0};byDay.push(g);} g.v+=toOMR(i.a,i.c);});
       const lastD=byDay.slice(-7), mxd=Math.max.apply(null,lastD.map(x=>x.v))||1;
       if(lastD.length>1) h+='<div class="dbars" aria-label="المصروف حسب اليوم">'+lastD.map(x=>'<div class="db"><b>'+fmt(x.v,0)+'</b><i style="height:'+Math.max(4,Math.round(x.v/mxd*54))+'px"></i><span>'+esc(String(x.d||'').split(' ')[0])+'</span></div>').join('')+'</div>';
       const paid={خالد:0,يونس:0}; let shared=0;
-      exp.items.forEach(i=>{const v=toOMR(i.a,i.c); if(i.who==='مشترك'){shared+=v;} else paid[i.who]+=v;});
+      MAIN.forEach(i=>{const v=toOMR(i.a,i.c); if(i.who==='مشترك'){shared+=v;} else paid[i.who]+=v;});
       // shared items are assumed paid half-half already; personal items are each person's own
       h+='<div class="settle">خالد: '+fmt(paid['خالد'],1)+' ر.ع · يونس: '+fmt(paid['يونس'],1)+' ر.ع · مشترك: '+fmt(shared,1)+' ر.ع<br>نصيب كل واحد من المشترك: '+fmt(shared/2,1)+' ر.ع</div>';
     }
     h+='</div>';
-    h+='<div class="card2"><h3>إضافة مصروف</h3><form class="f2" id="xForm" autocomplete="off">'+
+    const ACC=['خالد','يونس'].map(p=>{const l=exp.items.filter(i=>xAcct(i)===p);return [p,l,l.reduce((s,i)=>s+toOMR(i.a,i.c),0)];});
+    if(ACC.some(a=>a[1].length)){
+      h+='<div class="card2 xacc"><h3>حسابات خاصة</h3><p class="bkp">أي مصروف في ملاحظته كلمة «خالد» أو «يونس» ينحسب هنا لحاله، وما يدخل في المجموع فوق.</p><div class="xacc-g">'+
+        ACC.map(([p,l,t])=>'<div class="xacc-c"><small>حساب '+p+'</small><b>'+fmt(t,1)+' <em>ر.ع</em></b><span>'+l.length+' '+(l.length===1?'مصروف':'مصاريف')+'</span></div>').join('')+'</div>'+
+        ACC.filter(a=>a[1].length).map(([p,l])=>'<details class="xacc-d"><summary>تفاصيل حساب '+p+'</summary>'+l.slice().reverse().map(i=>{const sym=(CUR.find(c=>c[0]===i.c)||CUR[0])[2];return '<div class="xacc-r"><span>'+esc(i.n||i.cat)+'<small>'+esc(i.d)+' · '+esc(i.cat)+'</small></span><b>'+fmt(i.a,2)+' '+sym+'<small>'+fmt(toOMR(i.a,i.c),2)+' ر.ع</small></b></div>';}).join('')+'</details>').join('')+'</div>';
+    }
+    h+='<div class="card2" id="xCard"><h3>'+(xEdit?'تعديل مصروف':'إضافة مصروف')+'</h3><form class="f2" id="xForm" autocomplete="off">'+
       '<label>المبلغ<input id="x-a" type="text" inputmode="decimal" required placeholder="0"></label>'+
       '<label>العملة<select id="x-c">'+CUR.map(c=>'<option value="'+c[0]+'"'+(xd.cur===c[0]?' selected':'')+'>'+c[1]+'</option>').join('')+'</select></label>'+
       '<div class="full2"><div style="font-size:12px;font-weight:800;color:var(--hdr1);margin-bottom:4px">الفئة</div><div class="chips" id="x-cat">'+CATS.map(c=>'<button type="button" data-cat="'+c[0]+'" class="'+(xd.cat===c[0]?'on':'')+'">'+c[0]+'</button>').join('')+'</div></div>'+
       '<div class="full2"><div style="font-size:12px;font-weight:800;color:var(--hdr1);margin-bottom:4px">من دفع؟</div><div class="chips" id="x-who">'+WHO.map(w=>'<button type="button" data-who="'+w+'" class="'+(xd.who===w?'on':'')+'">'+w+'</button>').join('')+'</div></div>'+
       '<label class="full2">ملاحظة<input id="x-n" placeholder="مثال: عشاء في شياوبي"></label>'+
-      '<div class="full2"><button class="pbtn sun" type="submit">إضافة</button><div class="msg" id="xMsg"></div></div></form></div>';
+      '<div class="full2"><button class="pbtn sun" type="submit">'+(xEdit?'حفظ التعديل':'إضافة')+'</button>'+(xEdit?'<button class="pbtn c" type="button" id="xCancel" style="margin-inline-start:8px">إلغاء</button>':'')+'<div class="msg" id="xMsg"></div></div></form></div>';
     if(exp.items.length){
       h+='<div class="sec-t">السجل ('+exp.items.length+')</div>';
       exp.items.slice().reverse().forEach(i=>{const col=(CATS.find(c=>c[0]===i.cat)||CATS[6])[1];const sym=(CUR.find(c=>c[0]===i.c)||CUR[0])[2];
-        h+='<div class="xp"><div class="dot" style="background:'+col+'22;color:'+col+'">'+esc(i.cat.slice(0,2))+'</div><div class="tx">'+esc(i.n||i.cat)+'<small>'+esc(i.who)+' · '+esc(i.d)+'</small></div><div class="am">'+fmt(i.a,2)+' '+sym+'<small>'+fmt(toOMR(i.a,i.c),2)+' ر.ع</small></div><button class="del2" type="button" data-delx="'+i.id+'">حذف</button></div>';});
+        const ac=xAcct(i);
+        h+='<div class="xp'+(ac?' priv':'')+(xEdit===i.id?' editing':'')+'"><div class="dot" style="background:'+col+'22;color:'+col+'">'+esc(i.cat.slice(0,2))+'</div><div class="tx">'+esc(i.n||i.cat)+'<small>'+(ac?'<span class="xtag">حساب '+ac+'</span> ':'')+esc(i.who)+' · '+esc(i.d)+'</small></div><div class="am">'+fmt(i.a,2)+' '+sym+'<small>'+fmt(toOMR(i.a,i.c),2)+' ر.ع</small></div><div class="xbtns"><button class="del2 ed" type="button" data-edx="'+i.id+'">تعديل</button><button class="del2" type="button" data-delx="'+i.id+'">حذف</button></div></div>';});
       h+='<div class="btnrow"><button class="pbtn l" type="button" id="xCopy">نسخ الملخص</button>'+(navigator.share?'<button class="pbtn l" type="button" id="xShare">مشاركة</button>':'')+'</div><div class="msg ok" id="xMsg2"></div>';
     } else h+='<div class="empty2">لا توجد مصاريف بعد. سجّل أول مصروف من النموذج أعلاه.</div>';
   } else {
@@ -2429,7 +2453,10 @@ function renderExp(){
   $('#v-exp').innerHTML=h;
   const xf=$('#xForm'); if(xf) xf.addEventListener('submit',e=>{e.preventDefault();const a=numP($('#x-a').value.replace(/,/g,''));if(!(a>0)){$('#xMsg').textContent='اكتب مبلغاً صحيحاً.';return;}
     xd.cur=$('#x-c').value; const now=new Date();
+    if(xEdit){ const it=exp.items.find(x=>x.id===xEdit); if(it){ Object.assign(it,{a,c:xd.cur,cat:xd.cat,who:xd.who,n:$('#x-n').value.trim()}); } xEdit=null; saveExp(); renderExp(); toast('تم حفظ التعديل'); return; }
     exp.items.push({id:Date.now()+'',a,c:xd.cur,cat:xd.cat,who:xd.who,n:$('#x-n').value.trim(),d:now.getDate()+' '+(MON[now.getMonth()+1]||(now.getMonth()+1))});saveExp();renderExp();const m=$('#xMsg');if(m){m.className='msg ok';m.textContent='تمت الإضافة';}});
+  if(xEdit){ const it=exp.items.find(x=>x.id===xEdit); if(it){ $('#x-a').value=it.a; $('#x-n').value=it.n||''; } }
+  const xc=$('#xCancel'); if(xc) xc.addEventListener('click',()=>{xEdit=null;renderExp();});
   const sf=$('#sForm'); if(sf) sf.addEventListener('submit',e=>{e.preventDefault();const n=$('#s-n').value.trim();if(!n)return;shop.push({id:newId(),n,q:$('#s-q').value.trim(),w:$('#s-w').value.trim(),done:false});saveShop();renderExp();setTimeout(()=>{const i=$('#s-n');if(i)i.focus();},0);});
   const bi=$('#budget'); if(bi) bi.addEventListener('change',()=>{const v=numP(bi.value);exp.budget=v>0?v:'';saveExp();renderExp();});
 }
@@ -2438,11 +2465,12 @@ function bkMake(){const o={};BK_KEYS.forEach(k=>{try{const v=localStorage.getIte
 function bkRead(s){s=(s||'').replace(/\s+/g,'');const i=s.indexOf('TRIP1:');if(i<0)throw 0;return JSON.parse(decodeURIComponent(escape(atob(s.slice(i+6)))));}
 function bkDesc(o){const n=k=>{try{const v=JSON.parse(o[k]||'null');return Array.isArray(v)?v.length:(v&&Array.isArray(v.items)?v.items.length:0);}catch(e){return 0;}};
   return n('tripapp-exp')+' مصروف · '+n('tripapp-shop')+' غرض في القائمة · '+n('tripbook-compare-v1')+' عرض مصنع · '+n('tripbook-notes')+' ملاحظة';}
-function expSummary(){const tot=exp.items.reduce((s,i)=>s+toOMR(i.a,i.c),0);return 'مصاريف الرحلة: '+fmt(tot,1)+' ر.ع\n'+CATS.map(([c])=>{const v=exp.items.filter(i=>i.cat===c).reduce((s,i)=>s+toOMR(i.a,i.c),0);return v?'- '+c+': '+fmt(v,1)+' ر.ع':'';}).filter(Boolean).join('\n');}
+function expSummary(){const M=xMain(), tot=M.reduce((s,i)=>s+toOMR(i.a,i.c),0), pv=p=>exp.items.filter(i=>xAcct(i)===p).reduce((s,i)=>s+toOMR(i.a,i.c),0);return 'مصاريف الرحلة: '+fmt(tot,1)+' ر.ع\n'+(pv('خالد')||pv('يونس')?'(خارج المجموع: حساب خالد '+fmt(pv('خالد'),1)+' ر.ع · حساب يونس '+fmt(pv('يونس'),1)+' ر.ع)\n':'')+CATS.map(([c])=>{const v=M.filter(i=>i.cat===c).reduce((s,i)=>s+toOMR(i.a,i.c),0);return v?'- '+c+': '+fmt(v,1)+' ر.ع':'';}).filter(Boolean).join('\n');}
 $('#v-exp').addEventListener('click',e=>{
   const s=e.target.closest('[data-es]'); if(s){expSeg=s.dataset.es;renderExp();return;}
   const c=e.target.closest('[data-cat]'); if(c){xd.cat=c.dataset.cat;document.querySelectorAll('#x-cat button').forEach(b=>b.classList.toggle('on',b===c));return;}
   const w=e.target.closest('[data-who]'); if(w){xd.who=w.dataset.who;document.querySelectorAll('#x-who button').forEach(b=>b.classList.toggle('on',b===w));return;}
+  const ex=e.target.closest('[data-edx]'); if(ex){const it=exp.items.find(i=>i.id===ex.dataset.edx); if(it){xEdit=it.id; xd.cat=it.cat; xd.who=it.who; xd.cur=it.c; renderExp(); const c=$('#xCard'); if(c) c.scrollIntoView({behavior:'smooth',block:'start'}); setTimeout(()=>{const a=$('#x-a'); if(a) a.focus();},350);} return;}
   const dx=e.target.closest('[data-delx]'); if(dx){if(dx.dataset.armed){exp.items=exp.items.filter(i=>i.id!==dx.dataset.delx);saveExp();renderExp();}else{dx.dataset.armed='1';dx.textContent='تأكيد؟';setTimeout(()=>{if(dx.isConnected){delete dx.dataset.armed;dx.textContent='حذف';}},3000);}return;}
   const ds=e.target.closest('[data-dels]'); if(ds){shop.splice(+ds.dataset.dels,1);saveShop();renderExp();return;}
   if(e.target.id==='sClear'){shop=shop.filter(s=>!s.done);saveShop();renderExp();return;}
