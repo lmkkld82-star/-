@@ -804,16 +804,23 @@ S.importStamp=IMPORT.at;
 migrate();
 try{var _st=localStorage.getItem(STORE+"set");if(_st)S.settings=Object.assign(clone(DSET),S.settings,JSON.parse(_st));}catch(e){}
 if(!S.settings.zeroOff){S.settings.showZeros=false;S.settings.zeroOff=true;}
-function lsSave(){try{localStorage.setItem(STORE,JSON.stringify({name:S.name,secs:S.secs,data:S.data,wp:S.wp,settings:S.settings,importStamp:S.importStamp||"",payMig:S.payMig||""}));localStorage.setItem(STORE+"set",JSON.stringify(S.settings));}catch(e){}}
+function lsSave(){try{localStorage.setItem(STORE,JSON.stringify({name:S.name,secs:S.secs,data:S.data,wp:S.wp,settings:S.settings,importStamp:S.importStamp||"",payMig:S.payMig||""}));localStorage.setItem(STORE+"set",JSON.stringify(S.settings));localStorage.setItem(STORE+"docs",JSON.stringify({u:S.docU,j:S.docJ}));}catch(e){}}
 
 /* ───────── Live sync (shared store) ─────────
-   app/meta      → project name + section order
-   secs/<id>     → one section: name, icon, colour, columns, rows
-   pays/<id>     → one worker payment
-   Each change is written only to the record it touches, so two people
-   editing different sections or payments never overwrite each other. */
-var SYNC={db:null,mode:"loading",ready:false,synced:{},timer:null,got:{meta:false,secs:false,pays:false},pending:false,quietUntil:0};
+   This phone's copy is always the source of truth. The shared store holds one record per
+   part of the project:
+     app/meta      → project name + section order
+     secs/<id>     → one section: name, icon, colour, columns, rows
+     pays/<id>     → one worker payment
+   Every record carries _u, the time it was last edited. When this phone and the store
+   disagree, the newer edit wins; nothing older can ever overwrite something newer. */
+var SYNC={db:null,mode:"loading",remote:{},timer:null,pending:false,quietUntil:0};
 function newId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function canon(v){
+  if(Array.isArray(v))return"["+v.map(canon).join(",")+"]";
+  if(v&&typeof v==="object")return"{"+Object.keys(v).filter(function(k){return k!=="_u"&&k!=="_del";}).sort().map(function(k){return JSON.stringify(k)+":"+canon(v[k]);}).join(",")+"}";
+  return JSON.stringify(v===undefined?null:v);
+}
 function docsOf(X){
   var out={"app/meta":{name:X.name,order:X.secs.map(function(s){return s.id;}),importStamp:IMPORT.at,payMig:X.payMig||""}};
   X.secs.forEach(function(s){out["secs/"+s.id]={lb:s.lb,ic:s.ic,c:s.c,cols:s.cols,rows:X.data[s.id]||[]};});
@@ -821,43 +828,59 @@ function docsOf(X){
   return out;
 }
 function docsFromState(){return docsOf(S);}
-/* what this device last confirmed with the shared store — kept on the phone so edits made
-   just before the app was closed are sent on the next launch instead of being lost */
-function saveSynced(){try{localStorage.setItem(STORE+"synced",JSON.stringify(SYNC.synced));}catch(e){}}
-function loadSynced(){try{return JSON.parse(localStorage.getItem(STORE+"synced")||"null");}catch(e){return null;}}
+/* stamp every record that changed on this phone */
+function markChanges(){
+  var d=docsFromState(),now=Date.now(),ch=false;
+  Object.keys(d).forEach(function(p){var j=canon(d[p]);if(S.docJ[p]!==j){S.docJ[p]=j;S.docU[p]=Math.max(now,(S.docU[p]||0)+1);ch=true;}});
+  Object.keys(S.docJ).forEach(function(p){if(!(p in d)&&S.docJ[p]!==null){S.docJ[p]=null;S.docU[p]=Math.max(now,(S.docU[p]||0)+1);ch=true;}});
+  return ch;
+}
+(function(){
+  var dm=null;try{dm=JSON.parse(localStorage.getItem(STORE+"docs")||"null");}catch(e){}
+  if(dm&&dm.u&&dm.j){S.docU=dm.u;S.docJ=dm.j;}
+  else{
+    // first run of this version: what is already on this phone counts as newer than older shared copies
+    S.docU={};S.docJ={};var d0=docsFromState();
+    Object.keys(d0).forEach(function(p){S.docJ[p]=canon(d0[p]);S.docU[p]=_r?1:0;});
+    lsSave();
+  }
+  if(markChanges())lsSave();
+})();
+function canSend(){return !!SYNC.db&&SYNC.mode!=="ro"&&SYNC.mode!=="denied"&&SYNC.mode!=="local";}
 function save(){
-  SYNC.quietUntil=Date.now()+1500;lsSave();
-  if(SYNC.db&&SYNC.ready&&SYNC.mode==="live"){clearTimeout(SYNC.timer);SYNC.timer=setTimeout(flush,450);setSync("saving");}
+  SYNC.quietUntil=Date.now()+1500;markChanges();lsSave();
+  if(canSend()){clearTimeout(SYNC.timer);SYNC.timer=setTimeout(flush,450);setSync("saving");}
 }
 var _flushing=false,_again=false;
+async function sendOne(p,body,lu){await SYNC.db.doc(p).set(body);SYNC.remote[p]={u:lu,j:S.docJ[p]};}
 async function flush(){
+  if(!canSend())return;
   if(_flushing){_again=true;return;}
   _flushing=true;
   try{
     do{
       _again=false;
-      var want=docsFromState(),ops=[];
-      Object.keys(want).forEach(function(k){var j=JSON.stringify(want[k]);if(SYNC.synced[k]!==j)ops.push([k,want[k],j]);});
-      Object.keys(SYNC.synced).forEach(function(k){if(!(k in want))ops.push([k,null,null]);});
-      for(var n=0;n<ops.length;n++){
-        var op=ops[n];
-        try{
-          if(op[1]===null){await SYNC.db.doc(op[0]).delete();delete SYNC.synced[op[0]];}
-          else{await SYNC.db.doc(op[0]).set(op[1]);SYNC.synced[op[0]]=op[2];}
-          saveSynced();
-        }catch(e){
+      var d=docsFromState();
+      var paths=Object.keys(S.docU);
+      for(var n=0;n<paths.length;n++){
+        var p=paths[n],lu=S.docU[p]||0,r=SYNC.remote[p],ru=r?r.u:-1;
+        if(!(lu>ru))continue;                                   // the store already has this or something newer
+        var body=S.docJ[p]===null?{_del:true,_u:lu}:(d[p]?Object.assign({},d[p],{_u:lu}):null);
+        if(!body)continue;
+        try{await sendOne(p,body,lu);}
+        catch(e){
           var c=e&&e.code;
           if(c==="invalid_argument"){SYNC.mode="ro";setSync();render();return;}
-          if(c==="denied"){SYNC.mode="denied";SYNC.ready=false;setSync();render();return;}
+          if(c==="denied"){SYNC.mode="denied";setSync();return;}
           if(c==="quota_exceeded"){snack("المساحة المشتركة ممتلئة. احذف بعض السطور ثم حاول مرة أخرى");setSync("error");return;}
           if(c==="revoked"||c==="not_granted"||c==="capability_disabled"){SYNC.mode="local";setSync();return;}
-          await new Promise(function(r){setTimeout(r,600+Math.random()*600);});
-          try{if(op[1]===null){await SYNC.db.doc(op[0]).delete();delete SYNC.synced[op[0]];}else{await SYNC.db.doc(op[0]).set(op[1]);SYNC.synced[op[0]]=op[2];}}
-          catch(e2){setSync("error");return;}
+          await new Promise(function(res){setTimeout(res,700+Math.random()*700);});
+          try{await sendOne(p,body,lu);}catch(e2){setSync("error");return;}
         }
       }
     }while(_again);
-    saveSynced();setSync("live");
+    if(SYNC.mode==="loading")SYNC.mode="live";
+    setSync("live");
   }finally{_flushing=false;}
 }
 function setSync(st){
@@ -866,110 +889,58 @@ function setSync(st){
   if(m==="loading"){txt="جارٍ الاتصال…";cls="wait";}
   else if(m==="local"){txt="محفوظ على هذا الجهاز فقط";cls="off";}
   else if(m==="ro"){txt="عرض فقط";cls="off";}
-  else if(m==="denied"){txt="المزامنة متوقفة";cls="err";}
-  else if(st==="saving"){txt="جارٍ الحفظ…";cls="wait";}
-  else if(st==="error"){txt="تعذّر الحفظ، سيُعاد المحاولة";cls="err";}
+  else if(m==="denied"){txt="محفوظ على جهازك، المزامنة متوقفة";cls="err";}
+  else if(st==="saving"||_flushing){txt="جارٍ الحفظ…";cls="wait";}
+  else if(st==="error"){txt="تعذّر الإرسال، سيُعاد المحاولة";cls="err";}
   else{txt="مباشر مع شريكك";cls="on";}
   el.className="sync "+cls;el.textContent=txt;
 }
 function isBusy(){var a=document.activeElement;return !!S.modal||!!(a&&/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName));}
 function remoteChanged(){
-  saveSynced();lsSave();
-  if(!SYNC.ready)return;
+  lsSave();
   if(isBusy()){SYNC.pending=true;return;}
   render();
   if(Date.now()>SYNC.quietUntil)snack("وصل تحديث من شريكك");
 }
-function flushNow(){if(SYNC.db&&SYNC.ready&&SYNC.mode==="live"){clearTimeout(SYNC.timer);flush();}}
-document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")flushNow();});
+function flushNow(){if(canSend()){clearTimeout(SYNC.timer);flush();}}
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")flushNow();else if(canSend())flush();});
 window.addEventListener("pagehide",flushNow);
+window.addEventListener("online",function(){if(canSend())flush();});
 document.addEventListener("focusout",function(){setTimeout(function(){if(SYNC.pending&&!isBusy()){SYNC.pending=false;render();snack("وصل تحديث من شريكك");}},120);});
 
-function localPending(path){var w=docsFromState()[path];var j=w===undefined?undefined:JSON.stringify(w);return j!==SYNC.synced[path]&&!(j===undefined&&SYNC.synced[path]===undefined);}
-function applyMeta(snap){
-  var path="app/meta";
-  if(snap.exists){
-    var b=snap.data(),j=JSON.stringify(b);
-    if(SYNC.ready&&SYNC.synced[path]===j)return false;
-    if(SYNC.ready&&localPending(path))return false;
-    SYNC.synced[path]=j;S.name=b.name||S.name;S._order=b.order||[];S.importStamp=b.importStamp||"";S.payMig=b.payMig||"";
-    return true;
-  }
-  return false;
-}
 function sortSecs(){var o=S._order||[];S.secs.sort(function(a,b){var ia=o.indexOf(a.id),ib=o.indexOf(b.id);return(ia<0?999:ia)-(ib<0?999:ib);});}
-function applySecs(qs){
-  var changed=false;
-  qs.docChanges().forEach(function(ch){
-    var id=ch.doc.id,path="secs/"+id,b=ch.doc.data(),j=JSON.stringify(b);
-    if(ch.type==="removed"){
-      if(SYNC.ready&&localPending(path))return;
-      delete SYNC.synced[path];
-      var k=S.secs.findIndex(function(s){return s.id===id;});
-      if(k>=0){S.secs.splice(k,1);delete S.data[id];if(S.act===id)S.act="";changed=true;}
-      return;
-    }
-    if(SYNC.synced[path]===j)return;
-    if(SYNC.ready&&localPending(path))return;
-    SYNC.synced[path]=j;
-    var sec={id:id,lb:b.lb,ic:b.ic,c:b.c,cols:b.cols||[]};
-    var k2=S.secs.findIndex(function(s){return s.id===id;});
-    if(k2>=0)S.secs[k2]=sec;else S.secs.push(sec);
-    S.data[id]=clone(b.rows||[]);changed=true;
-  });
-  if(changed)sortSecs();
-  return changed;
+/* put one record from the store into this phone's copy */
+function putDoc(path,b){
+  var seg=path.split("/"),id=seg[1];
+  if(seg[0]==="app"){if(b){S.name=b.name||S.name;S._order=b.order||[];if(b.payMig)S.payMig=b.payMig;}return;}
+  if(seg[0]==="secs"){
+    var k=S.secs.findIndex(function(s){return s.id===id;});
+    if(!b){if(k>=0){S.secs.splice(k,1);delete S.data[id];if(S.act===id)S.act="";}return;}
+    var sec={id:id,lb:b.lb,ic:b.ic,c:b.c,cols:clone(b.cols||[])};
+    if(k>=0)S.secs[k]=sec;else S.secs.push(sec);
+    S.data[id]=clone(b.rows||[]);return;
+  }
+  if(seg[0]==="pays"){
+    var kp=S.wp.findIndex(function(x){return x.id===id;});
+    if(!b){if(kp>=0)S.wp.splice(kp,1);return;}
+    var pp={id:id,d:b.d||"",desc:b.desc||"",a:num(b.a),t:b.t||0};
+    if(kp>=0)S.wp[kp]=pp;else S.wp.push(pp);
+  }
 }
-function applyPays(qs){
-  var changed=false;
-  qs.docChanges().forEach(function(ch){
-    var id=ch.doc.id,path="pays/"+id,b=ch.doc.data(),j=JSON.stringify(b);
-    var k=S.wp.findIndex(function(p){return p.id===id;});
-    if(ch.type==="removed"){
-      if(SYNC.ready&&localPending(path))return;
-      delete SYNC.synced[path];if(k>=0){S.wp.splice(k,1);changed=true;}return;
-    }
-    if(SYNC.synced[path]===j)return;
-    if(SYNC.ready&&localPending(path))return;
-    SYNC.synced[path]=j;
-    var p={id:id,d:b.d||"",desc:b.desc||"",a:num(b.a),t:b.t||0};
-    if(k>=0)S.wp[k]=p;else S.wp.push(p);changed=true;
-  });
-  if(changed)S.wp.sort(function(a,b){return(a.t||0)-(b.t||0);});
-  return changed;
+/* compare one record from the store with this phone's copy; the newer edit wins */
+function applyRemote(path,body){
+  var del=!!body._del,u=typeof body._u==="number"?body._u:0,j=del?null:canon(body);
+  SYNC.remote[path]={u:u,j:j};
+  var lu=(path in S.docU)?S.docU[path]:-1;
+  if(j===S.docJ[path]){if(u>lu)S.docU[path]=u;return false;}
+  if(u>=lu){putDoc(path,del?null:body);S.docU[path]=u;S.docJ[path]=j;return true;}
+  return false;                                                 // this phone is newer: flush sends it
 }
-function restoreUnsent(){
-  var L=SYNC.localCopy,last=SYNC.lastSynced;if(!L||!last)return 0;
-  var mine=docsOf(L),n=0;
-  var paths=Object.keys(mine).concat(Object.keys(last).filter(function(k){return!(k in mine);}));
-  paths.forEach(function(path){
-    var j=mine[path]===undefined?undefined:JSON.stringify(mine[path]);
-    if(j===last[path])return;                     // nothing unsent for this record
-    var seg=path.split("/"),id=seg[1];n++;
-    if(seg[0]==="app"){S.name=L.name;S._order=L.secs.map(function(s){return s.id;});}
-    else if(seg[0]==="secs"){
-      var k=S.secs.findIndex(function(s){return s.id===id;}),ls=L.secs.find(function(s){return s.id===id;});
-      if(ls){if(k>=0)S.secs[k]=ls;else S.secs.push(ls);S.data[id]=L.data[id]||[];}
-      else if(k>=0){S.secs.splice(k,1);delete S.data[id];}
-    }else if(seg[0]==="pays"){
-      var kp=S.wp.findIndex(function(p){return p.id===id;}),lp=L.wp.find(function(p){return p.id===id;});
-      if(lp){if(kp>=0)S.wp[kp]=lp;else S.wp.push(lp);}else if(kp>=0)S.wp.splice(kp,1);
-    }
-  });
-  if(n)sortSecs();
-  return n;
-}
-function maybeReady(){
-  if(SYNC.ready||!SYNC.got.meta||!SYNC.got.secs||!SYNC.got.pays)return;
-  SYNC.ready=true;SYNC.mode=SYNC.mode==="ro"?"ro":"live";
-  sortSecs();
-  S.importStamp=IMPORT.at;
-  if(!S.secs.length&&SYNC.localCopy&&SYNC.localCopy.secs.length){var L=SYNC.localCopy;S.name=L.name;S.secs=L.secs;S.data=L.data;S.wp=L.wp;migrate();lsSave();flush();render();setSync("saving");return;}
-  var re=restoreUnsent();
-  if(S.secs.length)migrate();lsSave();saveSynced();
-  if(re)snack("أُرسلت تعديلاتك الأخيرة اللي ما وصلت قبل");
-  flush();
-  render();setSync("live");
+function afterRemote(changed,meta){
+  if(meta&&meta.fromCache===false&&SYNC.mode==="loading")SYNC.mode="live";
+  if(changed){S.wp.sort(function(a,b){return(a.t||0)-(b.t||0);});sortSecs();remoteChanged();}
+  clearTimeout(SYNC.timer);SYNC.timer=setTimeout(flush,changed?600:150);
+  setSync();
 }
 
 /* Firebase (used when the page is not inside the Claude viewer: GitHub Pages / Netlify) */
@@ -996,24 +967,29 @@ async function firebaseDb(){
 }
 function startSync(){
   var getDb=(window.claude&&typeof window.claude.use==="function")?window.claude.use("db"):firebaseDb();
-  var localCopy={name:S.name,secs:clone(S.secs),data:clone(S.data),wp:clone(S.wp),payMig:S.payMig};
-  SYNC.lastSynced=loadSynced();
-  SYNC.localCopy=localCopy;
   Promise.race([getDb,new Promise(function(r){setTimeout(function(){r(null);},12000);})]).then(function(db){
     if(!db){SYNC.mode="local";render();return;}
-    SYNC.db=db;
-    // shared data replaces this device's copy once it arrives
-    S.secs=[];S.data={};S.wp=[];S._order=[];S.importStamp="";S.payMig="";
+    SYNC.db=db;setSync();
     var fail=function(e){
       if(e&&e.code==="unavailable")return;
-      SYNC.mode=e&&e.code==="denied"?"denied":"local";
-      // fall back to this device's own copy so the app stays usable
-      var L=SYNC.localCopy;if(!SYNC.ready&&L){S.name=L.name;S.secs=L.secs;S.data=L.data;S.wp=L.wp;}
-      SYNC.ready=false;render();setSync();
+      SYNC.mode=e&&e.code==="denied"?"denied":"local";   // keep working on this phone's copy
+      setSync();
     };
-    db.doc("app/meta").onSnapshot(function(snap){var c=applyMeta(snap);if(c)sortSecs();if(!SYNC.got.meta){SYNC.got.meta=true;maybeReady();}else if(c)remoteChanged();},fail);
-    db.collection("secs").onSnapshot(function(qs){var c=applySecs(qs);if(!SYNC.got.secs){SYNC.got.secs=true;maybeReady();}else if(c)remoteChanged();},fail);
-    db.collection("pays").onSnapshot(function(qs){var c=applyPays(qs);if(!SYNC.got.pays){SYNC.got.pays=true;maybeReady();}else if(c)remoteChanged();},fail);
+    db.doc("app/meta").onSnapshot(function(snap){
+      var c=false;if(snap.exists)c=applyRemote("app/meta",snap.data()||{});
+      afterRemote(c,snap.metadata);
+    },fail);
+    ["secs","pays"].forEach(function(col){
+      db.collection(col).onSnapshot(function(qs){
+        var c=false;
+        qs.docChanges().forEach(function(ch){
+          var path=col+"/"+ch.doc.id;
+          if(ch.type==="removed"){delete SYNC.remote[path];return;}   // re-sent below if this phone still has it
+          if(applyRemote(path,ch.doc.data()||{}))c=true;
+        });
+        afterRemote(c,qs.metadata);
+      },fail);
+    });
   },function(){SYNC.mode="local";render();});
 }
 async function getDownloads(){try{if(window.claude&&window.claude.use)return await window.claude.use("downloads");}catch(e){}return null;}
@@ -1157,8 +1133,8 @@ function render(){
   var ch=document.querySelector(".strip"),chX=ch?ch.scrollLeft:null,sd=document.querySelector(".side"),sdY=sd?sd.scrollTop:0;
   document.body.classList.toggle("on-summary",S.view==="summary"&&!(S.sOpen&&S.q));
   document.getElementById("root").innerHTML=vBar()+'<main id="content"'+(S.anim?' class="enter"':'')+'>'+vContent()+'</main>'+vTabs()+vModal();S.anim=false;
-  var dn=document.getElementById("dbigN");if(dn&&!S._counted&&SYNC.mode!=="loading"){S._counted=true;countUp(dn,+dn.dataset.v);}
-  bind();setSync(SYNC.timer&&_flushing?"saving":"live");SYNC.pending=false;
+  var dn=document.getElementById("dbigN");if(dn&&!S._counted){S._counted=true;countUp(dn,+dn.dataset.v);}
+  bind();setSync();SYNC.pending=false;
   var ch2=document.querySelector(".strip");
   if(ch2){if(chX!==null)ch2.scrollLeft=chX;var on=ch2.querySelector('[aria-current="true"]');if(on){var a=on.getBoundingClientRect(),b=ch2.getBoundingClientRect();if(a.left<b.left+8||a.right>b.right-8)ch2.scrollLeft+=(a.left+a.width/2)-(b.left+b.width/2);}}
   var sd2=document.querySelector(".side");if(sd2)sd2.scrollTop=sdY;
@@ -1172,8 +1148,7 @@ function countUp(el,to){
   requestAnimationFrame(step);
 }
 function vContent(){
-  if(SYNC.mode==="loading")return'<div class="page single"><div class="panel empty">'+ic("table")+'<h3>جارٍ تحميل بيانات المشروع</h3><p>نجلب آخر نسخة مشتركة بينك وبين شريكك.</p></div></div>';
-  if(SYNC.ready&&!S.secs.length&&S.view!=="settings")return'<div class="page single"><div class="panel empty">'+ic("folder")+'<h3>لا توجد بيانات مشتركة بعد</h3><p>استورد آخر نسخة احتياطية من التطبيق القديم لتظهر هنا لك ولشريكك.</p><label class="btn btn-pri">'+ic("download","sm")+'استيراد نسخة احتياطية<input type="file" accept=".json,application/json" class="impf" hidden/></label></div></div>';
+  if(!S.secs.length&&S.view!=="settings")return'<div class="page single"><div class="panel empty">'+ic("folder")+'<h3>لا توجد بيانات مشتركة بعد</h3><p>استورد آخر نسخة احتياطية من التطبيق القديم لتظهر هنا لك ولشريكك.</p><label class="btn btn-pri">'+ic("download","sm")+'استيراد نسخة احتياطية<input type="file" accept=".json,application/json" class="impf" hidden/></label></div></div>';
   return vContentInner();
 }
 function vContentInner(){
