@@ -375,7 +375,7 @@ function subscribeAll(){
     const got=new Set();
     const timer=setTimeout(()=>{if(!ready){loadNote='تعذّر الوصول لبيانات المتجر الآن. تحقق من الاتصال، وستظهر البيانات تلقائيًا عند عودته.';render()}},10000);
     const mark=k=>{got.add(k);if(got.size>=COLS.length+1&&!ready){ready=true;clearTimeout(timer);okStatus()}};
-    const onErr=e=>{clearTimeout(timer);setStatus('err','غير متصل');if(!ready){loadNote='تعذّر تحميل البيانات. أعد فتح الصفحة لاحقًا.';render()}};
+    const onErr=e=>{clearTimeout(timer);const c=String(e&&e.code||'');setStatus('err',c.includes('permission')?'مرفوض':'غير متصل');if(!ready){loadNote=(c.includes('permission')?'قاعدة البيانات رفضت الاتصال: قواعد الحماية في Firebase لا تسمح لسيلفر بعد.':'تعذّر تحميل البيانات. أعد فتح الصفحة لاحقًا.')+' (رمز: '+(c||'unknown')+')';render()}};
     COLS.forEach(c=>cloud.collection(c).onSnapshot(snap=>{const o={};snap.docs.forEach(d=>{o[d.id]=d.data()});D[c]=o;mark(c);render()},onErr));
     cloud.doc('settings/main').onSnapshot(s=>{if(s.exists)SET={...SET,...s.data()};else if(fbSync&&s.metadata&&!s.metadata.fromCache&&!seeded){seeded=true;seedCloud()}mark('settings');render()},onErr);
 }
