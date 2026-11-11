@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="سيلفر">
 <link rel="icon" type="image/png" href="icon-512.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>سيلفر</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Cormorant+Garamond:wght@600&display=swap">
@@ -369,24 +369,63 @@ async function saveSettings(patch){
   if(cloud){try{await cloud.doc('settings/main').set(SET)}catch(e){toast(errMsg(e))}}else lsSave();
   render();
 }
-async function boot(){
-  const use=window.claude&&window.claude.use;
-  let db=null;
-  if(use){try{db=await window.claude.use('db')}catch(e){db=null}
-    try{dl=await window.claude.use('downloads')}catch(e){dl=null}}
-  if(db){
-    cloud=db;
+let seeded=false;
+async function seedCloud(){try{for(let i=0;i<SEED.length;i++)await cloud.collection('products').doc('p'+(i+1)).set({...SEED[i],ts:Date.now()});await cloud.doc('settings/main').set(SET)}catch(e){}}
+function subscribeAll(){
     const got=new Set();
     const timer=setTimeout(()=>{if(!ready){loadNote='تعذّر الوصول لبيانات المتجر الآن. تحقق من الاتصال، وستظهر البيانات تلقائيًا عند عودته.';render()}},10000);
     const mark=k=>{got.add(k);if(got.size>=COLS.length+1&&!ready){ready=true;clearTimeout(timer);okStatus()}};
     const onErr=e=>{clearTimeout(timer);setStatus('err','غير متصل');if(!ready){loadNote='تعذّر تحميل البيانات. أعد فتح الصفحة لاحقًا.';render()}};
     COLS.forEach(c=>cloud.collection(c).onSnapshot(snap=>{const o={};snap.docs.forEach(d=>{o[d.id]=d.data()});D[c]=o;mark(c);render()},onErr));
-    cloud.doc('settings/main').onSnapshot(s=>{if(s.exists)SET={...SET,...s.data()};mark('settings');render()},onErr);
-  }else{
+    cloud.doc('settings/main').onSnapshot(s=>{if(s.exists)SET={...SET,...s.data()};else if(fbSync&&s.metadata&&!s.metadata.fromCache&&!seeded){seeded=true;seedCloud()}mark('settings');render()},onErr);
+}
+async function boot(){
+  const use=window.claude&&window.claude.use;
+  let db=null;
+  if(use){try{db=await window.claude.use('db')}catch(e){db=null}
+    try{dl=await window.claude.use('downloads')}catch(e){dl=null}}
+  if(db){cloud=db;subscribeAll()}
+  else if(FB_CONFIG&&!use){try{await bootFirebase()}catch(e){console.error(e);setStatus('err','غير متصل');loadNote='تعذّر الاتصال بخادم المزامنة. تحقق من الإنترنت ثم أعد فتح الصفحة.';render()}}
+  else{
     if(!lsLoad()){SEED.forEach((p,i)=>D.products['p'+(i+1)]={...p,ts:Date.now()});lsSave()}
     ready=true;okStatus();render();
   }
 }
+
+/* ---------- Firebase sync (GitHub version) ---------- */
+const FB_CONFIG={apiKey:"AIzaSyCddsEwcS28synmIBdZgO3sjxW8svFmiqk",authDomain:"villa-tracker-d6afd.firebaseapp.com",projectId:"villa-tracker-d6afd",appId:"1:243044987734:web:4ed6fee900f3872601dcf7"};
+let fbUser=null,needLogin=false,fbAu=null,fbAuth=null;
+let fbSync=false;
+async function bootFirebase(){
+  const base='https://www.gstatic.com/firebasejs/10.12.2/';
+  const [A,F]=await Promise.all([import(base+'firebase-app.js'),import(base+'firebase-firestore.js')]);
+  const app=A.initializeApp(FB_CONFIG,'silver');
+  let fdb;try{fdb=F.initializeFirestore(app,{localCache:F.persistentLocalCache({tabManager:F.persistentMultipleTabManager()})})}catch(e){fdb=F.getFirestore(app)}
+  const P='silver_';
+  const wrapDoc=ref=>({set:d=>F.setDoc(ref,d),delete:()=>F.deleteDoc(ref),
+    onSnapshot:(n,e)=>F.onSnapshot(ref,s=>n({exists:s.exists(),data:()=>s.data(),metadata:s.metadata}),e)});
+  cloud={
+    collection:c=>{const cref=F.collection(fdb,P+c);return{doc:id=>wrapDoc(F.doc(cref,id)),
+      onSnapshot:(n,e)=>F.onSnapshot(cref,s=>n({docs:s.docs.map(d=>({id:d.id,data:()=>d.data()})),metadata:s.metadata}),e)}},
+    doc:p=>{const x=p.split('/');return wrapDoc(F.doc(fdb,P+x[0],x[1]))}};
+  fbSync=true;setStatus('','يتصل…');subscribeAll();
+}
+function vLogin(){return `<div class="card pad" style="max-width:420px;width:100%;margin:24px auto;display:flex;flex-direction:column;gap:14px">
+  <img src="${LOGO}" alt="" style="width:96px;height:96px;border-radius:50%;margin:0 auto;box-shadow:0 0 0 3px var(--gold)">
+  <div style="text-align:center"><h2 style="margin:0;font-size:1.4rem">تسجيل الدخول</h2><p class="muted" style="margin:4px 0 0">ادخل بحساب المتجر لترى نفس البيانات على كل الأجهزة.</p></div>
+  <form id="loginForm" style="display:flex;flex-direction:column;gap:12px" novalidate>
+    <div class="f"><label for="lg-email">البريد الإلكتروني</label><input class="inp num" id="lg-email" type="email" autocomplete="username" required></div>
+    <div class="f"><label for="lg-pass">كلمة المرور</label><input class="inp num" id="lg-pass" type="password" autocomplete="current-password" required></div>
+    <div id="lgErr" class="badge bad" hidden style="white-space:normal;justify-content:center;padding:8px 12px"></div>
+    <button class="btn gold block" id="lgBtn" type="submit">دخول</button>
+  </form></div>`}
+document.addEventListener('submit',async e=>{if(e.target.id!=='loginForm')return;e.preventDefault();
+  const em=$('#lg-email').value.trim(),pw=$('#lg-pass').value,err=$('#lgErr'),btn=$('#lgBtn');err.hidden=true;
+  if(!em||!pw){err.textContent='اكتب البريد وكلمة المرور.';err.hidden=false;return}
+  btn.disabled=true;btn.textContent='جارٍ الدخول…';
+  try{await fbAu.signInWithEmailAndPassword(fbAuth,em,pw)}catch(x){const c=x&&x.code||'';
+    err.textContent=c.includes('network')?'لا يوجد اتصال بالإنترنت.':c.includes('too-many')?'محاولات كثيرة. انتظر قليلًا ثم أعد المحاولة.':'البريد أو كلمة المرور غير صحيحة.';
+    err.hidden=false;btn.disabled=false;btn.textContent='دخول'}});
 
 /* ---------- derived data ---------- */
 const withId=o=>Object.entries(o).map(([id,v])=>({id,...v}));
@@ -427,6 +466,7 @@ function render(top){
   const cur=TABOF[route]||route;
   document.querySelectorAll('.tab').forEach(t=>{if(t.dataset.go===cur)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current')});
   const v=$('#view');
+  if(needLogin){swap(v,vLogin());return}
   if(!ready){v.innerHTML=`<div class="loading">${loadNote?esc(loadNote):'<div class="spin"></div>جارٍ تحميل بيانات المتجر…'}</div>`;return}
   const V={home:vHome,sales:vSales,stock:vStock,more:vMore,customers:vCustomers,expenses:vExpenses,reports:vReports,settings:vSettings}[route];
   swap(v,V());
@@ -600,17 +640,18 @@ function vSettings(){
   </div>
   <div class="sec"><h3>البيانات</h3></div>
   <div class="card list">
-    <div class="row"><div class="av" style="color:${cloud?'var(--ok)':'var(--gold-ink)'}">${IC.cash}</div><div class="mid"><div class="t">${cloud?'محفوظة في حسابك':'محفوظة على هذا الجهاز'}</div><div class="s" style="white-space:normal">${cloud?'تظهر نفس البيانات على كل أجهزتك، ولكل من تشاركه التطبيق بصلاحية تعديل.':'افتح التطبيق من حسابك في Claude لتُحفظ البيانات وتظهر على كل أجهزتك.'}</div></div></div>
-    ${(dl||!cloud)?`<button class="row" data-act="export" data-v="sales"><div class="av">${IC.down}</div><div class="mid"><div class="t">تصدير المبيعات</div><div class="s">ملف CSV يفتح في Excel</div></div>${IC.chev}</button>
+    <div class="row"><div class="av" style="color:${cloud?'var(--ok)':'var(--gold-ink)'}">${IC.cash}</div><div class="mid"><div class="t">${fbSync?'متزامنة بين كل الأجهزة':cloud?'محفوظة في حسابك':'محفوظة على هذا الجهاز'}</div><div class="s" style="white-space:normal">${fbSync?'أي تعديل على أي جهاز يظهر فورًا على كل من يفتح الرابط.':cloud?'تظهر نفس البيانات على كل أجهزتك، ولكل من تشاركه التطبيق بصلاحية تعديل.':'البيانات على هذا الجهاز فقط. احفظ نسخة احتياطية بانتظام.'}</div></div></div>
+    ${(dl||!cloud||fbSync)?`<button class="row" data-act="export" data-v="sales"><div class="av">${IC.down}</div><div class="mid"><div class="t">تصدير المبيعات</div><div class="s">ملف CSV يفتح في Excel</div></div>${IC.chev}</button>
     <button class="row" data-act="export" data-v="products"><div class="av">${IC.down}</div><div class="mid"><div class="t">تصدير المخزون</div><div class="s">ملف CSV يفتح في Excel</div></div>${IC.chev}</button>
     <button class="row" data-act="export" data-v="expenses"><div class="av">${IC.down}</div><div class="mid"><div class="t">تصدير المصروفات</div><div class="s">ملف CSV يفتح في Excel</div></div>${IC.chev}</button>`:''}
   </div>
-  ${!cloud?`<div class="sec"><h3>النسخ الاحتياطي</h3></div>
+  ${(!cloud||fbSync)?`<div class="sec"><h3>النسخ الاحتياطي</h3></div>
   <div class="card list">
     <button class="row" data-act="backup"><div class="av" style="color:var(--ok)">${IC.down}</div><div class="mid"><div class="t">حفظ نسخة احتياطية</div><div class="s" style="white-space:normal">ملف واحد فيه كل المبيعات والمخزون والعملاء. احفظه دوريًا، أو انقله لجهاز آخر.</div></div>${IC.chev}</button>
-    <button class="row" data-act="restore"><div class="av" style="color:var(--c-orange)">${IC.box}</div><div class="mid"><div class="t" data-lbl>استرجاع من نسخة احتياطية</div><div class="s" style="white-space:normal">يستبدل كل البيانات الحالية على هذا الجهاز بمحتوى الملف.</div></div>${IC.chev}</button>
+    ${!cloud?`<button class="row" data-act="restore"><div class="av" style="color:var(--c-orange)">${IC.box}</div><div class="mid"><div class="t" data-lbl>استرجاع من نسخة احتياطية</div><div class="s" style="white-space:normal">يستبدل كل البيانات الحالية على هذا الجهاز بمحتوى الملف.</div></div>${IC.chev}</button>`:''}
     <input type="file" id="restoreFile" accept=".json,application/json" hidden>
-  </div>`:''}`;
+  </div>`:''}
+  ${fbUser?`<div class="card list"><button class="row" data-act="logout"><div class="av" style="color:var(--bad)">${IC.user}</div><div class="mid"><div class="t" data-lbl>تسجيل الخروج</div><div class="s n">${esc(fbUser.email||'')}</div></div>${IC.chev}</button></div>`:''}`;
 }
 
 /* ---------- sheets ---------- */
@@ -844,6 +885,7 @@ document.addEventListener('click',async e=>{
     case 'round':saveSettings({round:b.dataset.v});break;
     case 'export':exportCsv(b.dataset.v);break;
     case 'backup':backup();break;
+    case 'logout':if(!armed(b,'اضغط مرة أخرى لتسجيل الخروج'))break;fbAu.signOut(fbAuth);break;
     case 'restore':if(!armed(b,'اضغط مرة أخرى واختر ملف النسخة'))break;$('#restoreFile').click();break;
   }
 });
