@@ -401,7 +401,7 @@ async function bootFirebase(){
   const [A,F]=await Promise.all([import(base+'firebase-app.js'),import(base+'firebase-firestore.js')]);
   const app=A.initializeApp(FB_CONFIG,'silver');
   let fdb;try{fdb=F.initializeFirestore(app,{localCache:F.persistentLocalCache({tabManager:F.persistentMultipleTabManager()})})}catch(e){fdb=F.getFirestore(app)}
-  const P='silver_';
+  const P='villa6_silver_';
   const wrapDoc=ref=>({set:d=>F.setDoc(ref,d),delete:()=>F.deleteDoc(ref),
     onSnapshot:(n,e)=>F.onSnapshot(ref,s=>n({exists:s.exists(),data:()=>s.data(),metadata:s.metadata}),e)});
   cloud={
