@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#22305c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="المساعد">
+<title>المساعد الذكي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+:root{
+  --navy:#22305c;--navy-2:#1a2549;--gold:#c9a24e;--gold-soft:#f5ecd8;
+  --ivory:#f5f2ec;--card:#fff;--ink:#1a2140;--muted:#6c7084;--line:#e7e2d7;
+  --ok:#2f8a52;--ok-soft:#e2f2e7;--bad:#bf3f2e;--bad-soft:#f9e3df;
+  --font:"Tajawal",Tahoma,"Segoe UI",sans-serif;--r:18px;color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--ivory)}
+body{color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;display:flex;flex-direction:column}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+header{background:var(--navy);color:#fff;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 12px;display:flex;align-items:center;gap:10px}
+header h1{margin:0;font-size:19px;font-weight:800;flex:1}
+.dot{width:10px;height:10px;border-radius:50%;background:#888;flex:none}
+.dot.ok{background:#4fd18a}.dot.bad{background:#ff7a66}
+.hbtn{background:rgba(255,255,255,.12);border:0;color:#fff;border-radius:12px;padding:7px 12px;font-weight:700;font-size:14px}
+.bar{background:var(--card);border-bottom:1px solid var(--line);padding:8px 16px;display:flex;gap:8px;align-items:center}
+.bar select{flex:1;min-width:0;border:1px solid var(--line);border-radius:12px;padding:7px 10px;background:#fff}
+main{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg{max-width:88%;padding:10px 14px;border-radius:var(--r);white-space:pre-wrap;word-wrap:break-word;overflow-wrap:anywhere}
+.me{align-self:flex-start;background:var(--navy);color:#fff;border-bottom-right-radius:6px}
+.bot{align-self:flex-end;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:6px}
+.bot.err{background:var(--bad-soft);border-color:#efc4bc;color:var(--bad)}
+.meta{font-size:12px;color:var(--muted);margin-top:4px}
+.empty{margin:auto;text-align:center;color:var(--muted);max-width:340px}
+.empty b{display:block;color:var(--ink);font-size:18px;margin-bottom:6px}
+footer{background:var(--card);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:flex-end}
+footer textarea{flex:1;resize:none;border:1px solid var(--line);border-radius:16px;padding:10px 14px;max-height:140px;min-height:46px;background:#fff}
+.send{background:var(--gold);color:var(--navy-2);border:0;border-radius:16px;padding:0 18px;height:46px;font-weight:800}
+.send:disabled{opacity:.5}
+.sheet{position:fixed;inset:0;background:rgba(20,26,50,.45);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+.panel{background:var(--ivory);width:100%;max-width:560px;max-height:92vh;overflow-y:auto;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))}
+.panel h2{margin:0 0 12px;font-size:19px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+label{display:block;font-weight:700;font-size:14px;margin:0 0 4px}
+.field{margin-bottom:12px}
+.field input{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff;direction:ltr;text-align:left}
+.hint{font-size:13px;color:var(--muted);margin-top:4px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:14px;padding:10px 16px;font-weight:800}
+.btn.p{background:var(--navy);color:#fff}.btn.g{background:var(--gold);color:var(--navy-2)}.btn.s{background:#ece8df}
+.status{margin-top:10px;padding:10px 12px;border-radius:12px;font-size:14px}
+.status.ok{background:var(--ok-soft);color:var(--ok)}.status.bad{background:var(--bad-soft);color:var(--bad)}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tabs button{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px;font-weight:700}
+.tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+ol.steps{padding-inline-start:20px;margin:0}
+ol.steps li{margin-bottom:14px}
+pre{direction:ltr;text-align:left;background:#1a2140;color:#e8eaf2;border-radius:12px;padding:10px 12px;margin:6px 0 0;overflow-x:auto;font-size:13px;line-height:1.5;position:relative}
+.copy{font-size:12px;border:0;background:var(--gold-soft);border-radius:8px;padding:3px 10px;margin-top:4px;font-weight:700}
+</style>
+</head>
+<body>
+<header>
+  <span class="dot" id="dot" title="حالة الاتصال"></span>
+  <h1>المساعد الذكي</h1>
+  <button class="hbtn" id="newBtn">محادثة جديدة</button>
+  <button class="hbtn" id="setBtn">الإعدادات</button>
+</header>
+<div class="bar">
+  <span style="font-size:14px;color:var(--muted);font-weight:700">النموذج</span>
+  <select id="model"><option value="auto">auto (اختيار تلقائي)</option></select>
+</div>
+<main id="chat"></main>
+<footer>
+  <textarea id="input" rows="1" placeholder="اكتب رسالتك…"></textarea>
+  <button class="send" id="send">إرسال</button>
+</footer>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="panel">
+    <div class="tabs">
+      <button id="tabConn" class="on">الاتصال</button>
+      <button id="tabGuide">طريقة التشغيل</button>
+    </div>
+
+    <section id="paneConn">
+      <div class="card">
+        <div class="field">
+          <label for="url">عنوان خادم OmniRoute</label>
+          <input id="url" type="url" placeholder="http://localhost:20128" autocomplete="off">
+          <div class="hint">على نفس الجوال (Termux): <b dir="ltr">http://localhost:20128</b> — أو رابط https لخادمك إن كان على الإنترنت.</div>
+        </div>
+        <div class="field">
+          <label for="key">مفتاح API</label>
+          <input id="key" type="password" placeholder="sk-…" autocomplete="off">
+          <div class="hint">من لوحة OmniRoute ← API Keys. يُحفظ على هذا الجهاز فقط.</div>
+        </div>
+        <div class="row">
+          <button class="btn p" id="testBtn">حفظ واختبار الاتصال</button>
+          <button class="btn s" id="dashBtn">فتح لوحة OmniRoute</button>
+        </div>
+        <div id="status" class="status" hidden></div>
+      </div>
+    </section>
+
+    <section id="paneGuide" hidden>
+      <div class="card">
+        <ol class="steps">
+          <li>ثبّت تطبيق <b>Termux</b> من F-Droid (نسخة متجر Play قديمة).</li>
+          <li>افتح Termux وانسخ هذا الأمر (مرة واحدة فقط):
+            <pre>pkg update -y && pkg install -y nodejs-lts python build-essential git</pre>
+            <button class="copy">نسخ</button></li>
+          <li>شغّل OmniRoute (كل مرة تريد استخدامه):
+            <pre>npx -y omniroute@latest</pre>
+            <button class="copy">نسخ</button>
+            <div class="hint">اترك Termux مفتوحاً في الخلفية، وأوقف "تحسين البطارية" له.</div></li>
+          <li>اضغط <b>فتح لوحة OmniRoute</b> في تبويب الاتصال، وأنشئ كلمة مرور للوحة.</li>
+          <li>من <b>Providers</b> اربط مزوّداً واحداً على الأقل (مثلاً Gemini أو Groq أو OpenRouter بمفتاحهم المجاني).</li>
+          <li>من <b>API Keys</b> أنشئ مفتاحاً وانسخه، ثم الصقه هنا في تبويب الاتصال واضغط <b>حفظ واختبار</b>.</li>
+        </ol>
+        <div class="hint">على الكمبيوتر بدلاً من الجوال: <span dir="ltr">npm install -g omniroute && omniroute</span> ثم افتح هذه الصفحة من نفس الكمبيوتر.</div>
+      </div>
+    </section>
+    <div class="row"><button class="btn g" id="closeBtn" style="flex:1">إغلاق</button></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const store = {
+    get(k, d){ try{ const v = localStorage.getItem('ai_'+k); return v===null?d:JSON.parse(v); }catch(e){ return d; } },
+    set(k, v){ try{ localStorage.setItem('ai_'+k, JSON.stringify(v)); }catch(e){} }
+  };
+  let cfg = store.get('cfg', {url:'http://localhost:20128', key:'', model:'auto'});
+  let history = store.get('history', []);
+  let busy = false, controller = null;
+
+  const base = () => cfg.url.replace(/\/+$/,'').replace(/\/v1$/,'');
+  const headers = () => ({'Content-Type':'application/json','Authorization':'Bearer '+cfg.key});
+
+  function setDot(state){ $('dot').className = 'dot' + (state?' '+state:''); }
+  function showStatus(ok, text){ const s=$('status'); s.hidden=false; s.className='status '+(ok?'ok':'bad'); s.textContent=text; }
+
+  function explain(err){
+    const m = String(err && err.message || err);
+    if (/Failed to fetch|NetworkError|Load failed/i.test(m))
+      return 'لا يمكن الوصول للخادم. تأكد أن OmniRoute يعمل (في Termux) وأن العنوان صحيح. إن ظهر طلب إذن "الوصول للشبكة المحلية" فاسمح به.';
+    return m;
+  }
+
+  function render(){
+    const c = $('chat'); c.innerHTML = '';
+    if (!history.length){
+      c.innerHTML = '<div class="empty"><b>مرحباً 👋</b>' + (cfg.key
+        ? 'اكتب سؤالك بالأسفل.'
+        : 'ابدأ من <b>الإعدادات</b>: ضع عنوان OmniRoute ومفتاحك، أو افتح "طريقة التشغيل".') + '</div>';
+      return;
+    }
+    history.forEach(m => c.appendChild(bubble(m)));
+    c.scrollTop = c.scrollHeight;
+  }
+  function bubble(m){
+    const d = document.createElement('div');
+    d.className = 'msg ' + (m.role==='user'?'me':'bot') + (m.error?' err':'');
+    d.textContent = m.content;
+    if (m.model){ const s=document.createElement('div'); s.className='meta'; s.textContent=m.model; d.appendChild(s); }
+    return d;
+  }
+
+  async function loadModels(){
+    const r = await fetch(base()+'/v1/models', {headers: headers()});
+    if (r.status===401 || r.status===403) throw new Error('المفتاح مرفوض ('+r.status+'). انسخه من جديد من لوحة OmniRoute.');
+    if (!r.ok) throw new Error('رد الخادم: '+r.status);
+    const j = await r.json();
+    const ids = (j.data||[]).map(x=>x.id).filter(Boolean).sort();
+    const sel = $('model'); sel.innerHTML = '<option value="auto">auto (اختيار تلقائي)</option>';
+    ids.filter(i=>i!=='auto').forEach(i=>{ const o=document.createElement('option'); o.value=o.textContent=i; sel.appendChild(o); });
+    sel.value = ids.includes(cfg.model) ? cfg.model : 'auto';
+    return ids.length;
+  }
+
+  async function test(){
+    cfg.url = $('url').value.trim() || 'http://localhost:20128';
+    cfg.key = $('key').value.trim();
+    store.set('cfg', cfg);
+    if (!cfg.key){ showStatus(false,'ضع مفتاح API أولاً.'); return; }
+    showStatus(true,'جارٍ الاتصال…');
+    try{
+      const n = await loadModels();
+      setDot('ok');
+      showStatus(true, 'تم الاتصال ✓ — ' + (n ? n+' نموذج متاح.' : 'لا توجد نماذج بعد؛ اربط مزوّداً من لوحة OmniRoute.'));
+      render();
+    }catch(e){ setDot('bad'); showStatus(false, explain(e)); }
+  }
+
+  async function send(){
+    const text = $('input').value.trim();
+    if (busy){ controller && controller.abort(); return; }
+    if (!text) return;
+    if (!cfg.key){ openSheet(); return; }
+    $('input').value=''; autosize();
+    history.push({role:'user', content:text});
+    const reply = {role:'assistant', content:'…'};
+    history.push(reply); render();
+    const node = $('chat').lastChild;
+    busy = true; $('send').textContent='إيقاف';
+    controller = new AbortController();
+    try{
+      const msgs = history.filter(m=>m!==reply && !m.error).map(m=>({role:m.role, content:m.content}));
+      const r = await fetch(base()+'/v1/chat/completions', {
+        method:'POST', headers: headers(), signal: controller.signal,
+        body: JSON.stringify({model: $('model').value || 'auto', messages: msgs, stream: true})
+      });
+      if (!r.ok){
+        let t=''; try{ const j=await r.json(); t=(j.error&&(j.error.message||j.error))||JSON.stringify(j); }catch(e){ t=r.statusText; }
+        throw new Error('خطأ '+r.status+': '+t);
+      }
+      setDot('ok');
+      reply.content='';
+      const reader = r.body.getReader(), dec = new TextDecoder(); let buf='';
+      for(;;){
+        const {done, value} = await reader.read(); if (done) break;
+        buf += dec.decode(value, {stream:true});
+        const lines = buf.split('\n'); buf = lines.pop();
+        for (const line of lines){
+          const l = line.trim(); if (!l.startsWith('data:')) continue;
+          const data = l.slice(5).trim(); if (data==='[DONE]') continue;
+          try{
+            const j = JSON.parse(data);
+            const delta = j.choices && j.choices[0] && (j.choices[0].delta||j.choices[0].message);
+            if (delta && delta.content){ reply.content += delta.content; }
+            if (j.model) reply.model = j.model;
+          }catch(e){}
+        }
+        node.textContent = reply.content || '…';
+        $('chat').scrollTop = $('chat').scrollHeight;
+      }
+      if (!reply.content) reply.content = '(لا يوجد رد)';
+    }catch(e){
+      if (e.name==='AbortError'){ reply.content = (reply.content==='…'?'':reply.content) + ' ⏹'; }
+      else { reply.content = explain(e); reply.error = true; setDot('bad'); }
+    }finally{
+      busy=false; controller=null; $('send').textContent='إرسال';
+      store.set('history', history); render();
+    }
+  }
+
+  function autosize(){ const t=$('input'); t.style.height='auto'; t.style.height=Math.min(t.scrollHeight,140)+'px'; }
+  function openSheet(){ $('url').value=cfg.url; $('key').value=cfg.key; $('status').hidden=true; $('sheet').hidden=false; }
+  function tab(g){ $('paneConn').hidden=g; $('paneGuide').hidden=!g; $('tabConn').classList.toggle('on',!g); $('tabGuide').classList.toggle('on',g); }
+
+  $('setBtn').onclick = openSheet;
+  $('closeBtn').onclick = ()=>{ $('sheet').hidden=true; };
+  $('sheet').onclick = e=>{ if(e.target.id==='sheet') $('sheet').hidden=true; };
+  $('tabConn').onclick = ()=>tab(false);
+  $('tabGuide').onclick = ()=>tab(true);
+  $('testBtn').onclick = test;
+  $('dashBtn').onclick = ()=>{ window.open(($('url').value.trim()||cfg.url).replace(/\/+$/,'')+'/dashboard','_blank'); };
+  $('newBtn').onclick = ()=>{ if (busy) return; history=[]; store.set('history',history); render(); };
+  $('send').onclick = send;
+  $('input').addEventListener('input', autosize);
+  $('input').addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey && !('ontouchstart' in window)){ e.preventDefault(); send(); } });
+  $('model').onchange = ()=>{ cfg.model=$('model').value; store.set('cfg',cfg); };
+  document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>{
+    const t=b.previousElementSibling.textContent;
+    (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{b.textContent='تم النسخ ✓';setTimeout(()=>b.textContent='نسخ',1500);}).catch(()=>{});
+  });
+
+  render();
+  if (cfg.key) loadModels().then(()=>setDot('ok')).catch(()=>setDot('bad')); else openSheet();
+})();
+</script>
+</body>
+</html>
